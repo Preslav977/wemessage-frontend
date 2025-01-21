@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import {
+  UserSignUpObjectContext,
   FirstNameContext,
   LastNameContext,
   UserNameContext,
@@ -11,56 +12,41 @@ import {
   BackgroundPictureContext,
 } from "./contexts/UserRegistrationContext";
 
-// import './App.css'
+import SignUpFormComponent from "./components/SignUpFormComponent";
 
 function App() {
   const [firstName, setFirstName] = useState("");
 
-  const [lastName, setLastName] = useState("");
+  // const [lastName, setLastName] = useState("");
 
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
 
-  const [password, setPassword] = useState("");
+  // const [password, setPassword] = useState("");
 
-  const [confirmPassword, setConfirmPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [bio, setBio] = useState("");
+  // const [bio, setBio] = useState("");
 
-  const [profilePicture, setProfilePicture] = useState("");
+  // const [profilePicture, setProfilePicture] = useState("");
 
-  const [backgroundPicture, setBackgroundPicture] = useState("");
+  // const [backgroundPicture, setBackgroundPicture] = useState("");
+
+  // const [userSignUpObj, setUserSignUpObj] = useState({
+  //   first_name: "",
+  //   last_name: "",
+  //   username: "",
+  //   password: "",
+  //   confirm_password: "",
+  //   bio: "",
+  //   profile_picture: "",
+  //   background_picture: "",
+  // });
 
   return (
     <>
-      <FirstNameContext.Provider
-        value={{ firstName, setFirstName }}
-      ></FirstNameContext.Provider>
-
-      <LastNameContext.Provider
-        value={{ lastName, setLastName }}
-      ></LastNameContext.Provider>
-
-      <UserNameContext.Provider
-        value={{ username, setUsername }}
-      ></UserNameContext.Provider>
-
-      <PasswordContext.Provider
-        value={{ password, setPassword }}
-      ></PasswordContext.Provider>
-
-      <ConfirmPasswordContext.Provider
-        value={{ confirmPassword, setConfirmPassword }}
-      ></ConfirmPasswordContext.Provider>
-
-      <BioContext.Provider value={{ bio, setBio }}></BioContext.Provider>
-
-      <ProfilePictureContext.Provider
-        value={{ profilePicture, setProfilePicture }}
-      ></ProfilePictureContext.Provider>
-
-      <BackgroundPictureContext.Provider
-        value={{ backgroundPicture, setBackgroundPicture }}
-      ></BackgroundPictureContext.Provider>
+      <FirstNameContext.Provider value={{ firstName, setFirstName }}>
+        <SignUpFormComponent />
+      </FirstNameContext.Provider>
     </>
   );
 }

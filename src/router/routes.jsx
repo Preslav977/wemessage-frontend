@@ -4,6 +4,6 @@ import App from "../App";
 
 import SignUpFormComponent from "../components/SignUpFormComponent";
 
-const router = createBrowserRouter([{ path: "/", element: <App /> }]);
+const routes = [{ path: "/", element: <App /> }];
 
-export default router;
+export default routes;

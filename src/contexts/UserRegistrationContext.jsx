@@ -1,5 +1,7 @@
 import { createContext } from "react";
 
+export const UserSignUpObjectContext = createContext(null);
+
 export const FirstNameContext = createContext(null);
 
 export const LastNameContext = createContext(null);
