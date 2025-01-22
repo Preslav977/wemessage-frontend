@@ -84,6 +84,10 @@
   border-radius: 50%;
 }
 
+.submitBtn:hover {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 1000px) {
   .formRightSideFlexedContainer {
     display: none;
