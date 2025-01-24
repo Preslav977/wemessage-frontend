@@ -136,6 +136,7 @@ function SignUpFormComponent() {
                   maxLength={30}
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
+                  role="first_name"
                   required
                 />
                 {firstName.length < 1 && (
@@ -160,6 +161,7 @@ function SignUpFormComponent() {
                   maxLength={30}
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
+                  role="last_name"
                   required
                 />
                 {lastName.length < 1 && (
@@ -184,6 +186,7 @@ function SignUpFormComponent() {
                 maxLength={30}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                role="username"
                 required
               />
               {username.length < 1 && (
@@ -207,6 +210,7 @@ function SignUpFormComponent() {
                 minLength={8}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                role="password"
                 required
               />
               {!password.match(passwordRegex) && (
@@ -228,6 +232,7 @@ function SignUpFormComponent() {
                 minLength={8}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                role="confirm_password"
                 required
               />
               {password !== confirmPassword && (
