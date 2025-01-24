@@ -2,7 +2,9 @@ import styles from "./SignUpFormComponent.module.css";
 
 import { Link } from "react-router-dom";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
 
 import {
   FirstNameContext,
@@ -10,11 +12,11 @@ import {
   UserNameContext,
   PasswordContext,
   ConfirmPasswordContext,
-  BioContext,
-  ProfilePictureContext,
-  BackgroundPictureContext,
   UserSignUpObjectContext,
 } from "../contexts/UserRegistrationContext";
+
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 function SignUpFormComponent() {
   const { firstName, setFirstName } = useContext(FirstNameContext);
@@ -29,19 +31,17 @@ function SignUpFormComponent() {
     ConfirmPasswordContext,
   );
 
-  const { bio, setBio } = useContext(BioContext);
-
-  const { profilePicture, setProfilePicture } = useContext(
-    ProfilePictureContext,
-  );
-
-  const { backgroundPicture, setBackgroundPicture } = useContext(
-    BackgroundPictureContext,
-  );
-
   const { userSignUpObj, setUserSignUpObj } = useContext(
     UserSignUpObjectContext,
   );
+
+  const [firstNameError, setFirstNameError] = useState("");
+
+  const [lastNameError, setLastNameError] = useState("");
+
+  const [usernameError, setUsernameError] = useState("");
+
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -81,9 +81,29 @@ function SignUpFormComponent() {
         }),
       });
 
-      const result = await response.json();
+      if (response.status === 200) {
+        setFirstName("");
+        setLastName("");
+        setUsername("");
+        setPassword("");
+        setConfirmPassword("");
 
-      console.log(result);
+        navigate("/login");
+      } else {
+        const result = await response.json();
+
+        result.map((err) => {
+          if (err.msg === "First name is already taken") {
+            setFirstNameError(err.msg);
+          } else if (err.msg === "Last name is already taken") {
+            setLastNameError(err.msg);
+          } else {
+            setUsernameError(err.msg);
+          }
+        });
+      }
+
+      // console.log(result);
     } catch (err) {
       console.log(err);
     }
@@ -105,7 +125,9 @@ function SignUpFormComponent() {
           <form className={styles.formContainer} onSubmit={handleSubmit}>
             <div className={styles.formFlexedContainer}>
               <div className={styles.formContent}>
-                <label htmlFor="first_name">First name:</label>
+                <label htmlFor="first_name">
+                  First name: <span className={styles.error}>*</span>
+                </label>
                 <input
                   type="text"
                   name="first_name"
@@ -116,10 +138,20 @@ function SignUpFormComponent() {
                   onChange={(e) => setFirstName(e.target.value)}
                   required
                 />
+                {firstName.length < 1 && (
+                  <span className={styles.error}>
+                    First name must be between 1 and 30 characters
+                  </span>
+                )}
+                {firstNameError && (
+                  <span className={styles.error}>{firstNameError}</span>
+                )}
               </div>
 
               <div className={styles.formContent}>
-                <label htmlFor="last_name">Last name:</label>
+                <label htmlFor="last_name">
+                  Last name: <span className={styles.error}>*</span>
+                </label>
                 <input
                   type="text"
                   name="last_name"
@@ -130,10 +162,20 @@ function SignUpFormComponent() {
                   onChange={(e) => setLastName(e.target.value)}
                   required
                 />
+                {lastName.length < 1 && (
+                  <span className={styles.error}>
+                    Last name must be between 1 and 30 characters
+                  </span>
+                )}
+                {lastNameError && (
+                  <span className={styles.error}>{lastNameError}</span>
+                )}
               </div>
             </div>
             <div className={styles.formContent}>
-              <label htmlFor="username">Username:</label>
+              <label htmlFor="username">
+                Username: <span className={styles.error}>*</span>
+              </label>
               <input
                 type="text"
                 name="username"
@@ -144,10 +186,20 @@ function SignUpFormComponent() {
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
+              {username.length < 1 && (
+                <span className={styles.error}>
+                  Username must be between 1 and 30 characters
+                </span>
+              )}
+              {usernameError && (
+                <span className={styles.error}>{usernameError}</span>
+              )}
             </div>
 
             <div className={styles.formContent}>
-              <label htmlFor="password">Password:</label>
+              <label htmlFor="password">
+                Password: <span className={styles.error}>*</span>
+              </label>
               <input
                 type="password"
                 name="password"
@@ -157,10 +209,18 @@ function SignUpFormComponent() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              {!password.match(passwordRegex) && (
+                <span className={styles.error}>
+                  Password must be 8 characters long, and contain one lower, one
+                  uppercase and one special character
+                </span>
+              )}
             </div>
 
             <div className={styles.formContent}>
-              <label htmlFor="confirm_password">Confirm password:</label>
+              <label htmlFor="confirm_password">
+                Confirm Password: <span className={styles.error}>*</span>
+              </label>
               <input
                 type="password"
                 name="confirm_password"
@@ -170,10 +230,12 @@ function SignUpFormComponent() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
+              {password !== confirmPassword && (
+                <span className={styles.error}>Passwords must match</span>
+              )}
             </div>
             <p className={styles.loginAnchorLink}>
-              Already have an account?{" "}
-              <Link to="http://localhost:5000/users/login">Log In</Link>
+              Already have an account? <Link to="/login">Log In</Link>
             </p>
             <div className={styles.submitBtnContainer}>
               <button className={styles.submitBtn}>Submit</button>
