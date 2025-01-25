@@ -8,7 +8,8 @@
   padding: 1.5rem;
 }
 
-.formContainerWrapper {
+.formContainerWrapper,
+.formContainer {
   /* outline: 2px solid black; */
   width: 100%;
 }
@@ -37,11 +38,6 @@
   /* outline: 2px solid blue; */
   display: flex;
   justify-content: space-between;
-}
-
-.formContainer {
-  /* outline: 2px solid red; */
-  width: 100%;
 }
 
 .formContainer input {

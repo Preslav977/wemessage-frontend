@@ -75,6 +75,25 @@ button:focus-visible {
   box-sizing: border-box;
 }
 
-body {
+/* body {
   min-height: 80vh;
+} */
+
+@keyframes spin {
+  from {
+    transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.loading {
+  animation: spin 3000ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  /* display: inline-block; */
+  width: 15px;
+  height: 15px;
 }

@@ -12,7 +12,13 @@ import {
   UserSignUpObjectContext,
 } from "./contexts/UserRegistrationContext";
 
+import {
+  UserLogInObjectContext,
+  UserLoggedInContext,
+} from "./contexts/UserLoggedInContext";
+
 import SignUpFormComponent from "./components/SignUpFormComponent";
+import LogInFormComponent from "./components/LogInFormComponent";
 
 function App() {
   const [firstName, setFirstName] = useState("");
@@ -42,37 +48,53 @@ function App() {
     background_picture: "",
   });
 
+  const [userLogInObj, setUserLoginInObj] = useState({});
+
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
   return (
     <>
-      <UserSignUpObjectContext.Provider
-        value={{ userSignUpObj, setUserSignUpObj }}
+      <UserLogInObjectContext.Provider
+        value={[userLogInObj, setUserLoginInObj]}
       >
-        <BackgroundPictureContext.Provider
-          value={{ backgroundPicture, setBackgroundPicture }}
+        <UserLoggedInContext.Provider
+          value={[isUserLoggedIn, setIsUserLoggedIn]}
         >
-          <ProfilePictureContext.Provider
-            value={{ profilePicture, setProfilePicture }}
+          <UserSignUpObjectContext.Provider
+            value={{ userSignUpObj, setUserSignUpObj }}
           >
-            <BioContext.Provider value={{ bio, setBio }}>
-              <ConfirmPasswordContext.Provider
-                value={{ confirmPassword, setConfirmPassword }}
+            <BackgroundPictureContext.Provider
+              value={{ backgroundPicture, setBackgroundPicture }}
+            >
+              <ProfilePictureContext.Provider
+                value={{ profilePicture, setProfilePicture }}
               >
-                <PasswordContext.Provider value={{ password, setPassword }}>
-                  <UserNameContext.Provider value={{ username, setUsername }}>
-                    <LastNameContext.Provider value={{ lastName, setLastName }}>
-                      <FirstNameContext.Provider
-                        value={{ firstName, setFirstName }}
+                <BioContext.Provider value={{ bio, setBio }}>
+                  <ConfirmPasswordContext.Provider
+                    value={{ confirmPassword, setConfirmPassword }}
+                  >
+                    <PasswordContext.Provider value={{ password, setPassword }}>
+                      <UserNameContext.Provider
+                        value={{ username, setUsername }}
                       >
-                        <SignUpFormComponent />
-                      </FirstNameContext.Provider>
-                    </LastNameContext.Provider>
-                  </UserNameContext.Provider>
-                </PasswordContext.Provider>
-              </ConfirmPasswordContext.Provider>
-            </BioContext.Provider>
-          </ProfilePictureContext.Provider>
-        </BackgroundPictureContext.Provider>
-      </UserSignUpObjectContext.Provider>
+                        <LastNameContext.Provider
+                          value={{ lastName, setLastName }}
+                        >
+                          <FirstNameContext.Provider
+                            value={{ firstName, setFirstName }}
+                          >
+                            <LogInFormComponent />
+                          </FirstNameContext.Provider>
+                        </LastNameContext.Provider>
+                      </UserNameContext.Provider>
+                    </PasswordContext.Provider>
+                  </ConfirmPasswordContext.Provider>
+                </BioContext.Provider>
+              </ProfilePictureContext.Provider>
+            </BackgroundPictureContext.Provider>
+          </UserSignUpObjectContext.Provider>
+        </UserLoggedInContext.Provider>
+      </UserLogInObjectContext.Provider>
     </>
   );
 }
