@@ -19,6 +19,7 @@ import {
 
 import SignUpFormComponent from "./components/SignUpFormComponent";
 import LogInFormComponent from "./components/LogInFormComponent";
+import PopUpModalComponent from "./components/PopUpModalComponent";
 
 function App() {
   const [firstName, setFirstName] = useState("");
@@ -83,7 +84,7 @@ function App() {
                           <FirstNameContext.Provider
                             value={{ firstName, setFirstName }}
                           >
-                            <LogInFormComponent />
+                            <LogInFormComponent popUpText={"Login failed"} />
                           </FirstNameContext.Provider>
                         </LastNameContext.Provider>
                       </UserNameContext.Provider>

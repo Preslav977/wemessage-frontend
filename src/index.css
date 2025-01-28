@@ -75,10 +75,6 @@ button:focus-visible {
   box-sizing: border-box;
 }
 
-/* body {
-  min-height: 80vh;
-} */
-
 @keyframes spin {
   from {
     transform: rotate(0turn);

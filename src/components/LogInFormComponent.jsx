@@ -16,6 +16,8 @@ import {
   UserLoggedInContext,
 } from "../contexts/UserLoggedInContext";
 
+import PopUpModalComponent from "./PopUpModalComponent";
+
 function LogInFormComponent() {
   const { username, setUsername } = useContext(UserNameContext);
 
@@ -29,7 +31,12 @@ function LogInFormComponent() {
 
   const [loading, setLoading] = useState(false);
 
+  const [popUpModalState, setPopUpModalState] = useState(null);
+
   const navigate = useNavigate();
+
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -48,6 +55,8 @@ function LogInFormComponent() {
 
       if (response.status === 401) {
         setError("Wrong username or password");
+
+        setPopUpModalState(true);
       }
 
       const result = await response.json();
@@ -79,9 +88,11 @@ function LogInFormComponent() {
 
       setUserLogInObj(userLoggedInInformation);
 
-      setTimeout(() => {
-        navigate("/signup");
-      }, 3000);
+      // setTimeout(() => {
+      //   navigate("/signup");
+      // }, 3000);
+
+      setPopUpModalState(false);
 
       console.log(result);
     } catch (err) {
@@ -104,7 +115,7 @@ function LogInFormComponent() {
         <div className={styles.formFlexedContainer}>
           <form className={styles.formContainer} onSubmit={handleLogin}>
             <div className={styles.formContent}>
-              <label htmlFor="username">Username:</label>
+              <label htmlFor="username">Username: </label>
               <input
                 type="text"
                 name="username"
@@ -117,6 +128,11 @@ function LogInFormComponent() {
                 required
               />
               {error && <span className={styles.error}>{error}</span>}
+              {username.length < 1 && (
+                <span className={styles.error}>
+                  Username required to log in
+                </span>
+              )}
             </div>
             <div className={styles.formContent}>
               <label htmlFor="password">Password:</label>
@@ -130,6 +146,11 @@ function LogInFormComponent() {
                 role="password"
                 required
               />
+              {password.length < 1 && (
+                <span className={styles.error}>
+                  Password required to log in
+                </span>
+              )}
             </div>
             <p className={styles.signUpAnchorLink}>
               Don&apos;t have an account? <Link to="/signup">Sign Up</Link>
@@ -153,6 +174,11 @@ function LogInFormComponent() {
           </div>
         </div>
       </div>
+      {popUpModalState ? (
+        <PopUpModalComponent popUpText={"Wrong credentials"} />
+      ) : (
+        ""
+      )}
     </main>
   );
 }

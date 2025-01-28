@@ -1,4 +1,16 @@
 .mainContainer {
+  /* max-width: 900px;
+  min-height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.5rem; */
+  /* background-color: #f4f7f3; */
+  /* background-color: #0b090a; */
+}
+
+.formContainerWrapper {
   max-width: 900px;
   min-height: 100vh;
   margin: 0 auto;
@@ -6,9 +18,10 @@
   flex-direction: column;
   justify-content: center;
   padding: 1.5rem;
+  position: relative;
 }
 
-.formContainerWrapper,
+/* .formContainerWrapper, */
 .formContainer {
   width: 100%;
 }
@@ -94,3 +107,10 @@
   font-size: 0.8rem;
   color: crimson;
 }
+
+/* .formHeaderName,
+.formHeader,
+label,
+.signUpAnchorLink {
+  color: #f4f7f3;
+} */
