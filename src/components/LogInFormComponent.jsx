@@ -100,6 +100,61 @@ function LogInFormComponent() {
     }
   }
 
+  async function handleGuestLogin(e) {
+    e.preventDefault();
+
+    const guestUsername = "preslaw1";
+    const guestPassword = "12345678Bg@";
+
+    try {
+      const response = await fetch("http://localhost:5000/users/login_guest", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: guestUsername,
+          password: guestPassword,
+        }),
+      });
+
+      const result = await response.json();
+
+      const bearerToken = `Bearer ${result.token}`;
+
+      localStorage.setItem("token", bearerToken);
+
+      setLoading(true);
+
+      setIsUserLoggedIn(true);
+
+      const fetchLoggedInUserInformation = await fetch(
+        "http://localhost:5000/users",
+        {
+          mode: "cors",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        },
+      );
+
+      const userLogInObj = await fetchLoggedInUserInformation.json();
+
+      const userLoggedInInformation = {
+        ...userLogInObj,
+        userLogInObj,
+      };
+
+      setUserLogInObj(userLoggedInInformation);
+
+      setPopUpModalState(false);
+
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <main className={styles.mainContainer}>
       <div className={styles.formContainerWrapper}>
@@ -130,7 +185,7 @@ function LogInFormComponent() {
               {error && <span className={styles.error}>{error}</span>}
               {username.length < 1 && (
                 <span className={styles.error}>
-                  Username required to log in
+                  Username is required to log in
                 </span>
               )}
             </div>
@@ -148,7 +203,7 @@ function LogInFormComponent() {
               />
               {password.length < 1 && (
                 <span className={styles.error}>
-                  Password required to log in
+                  Password is required to log in
                 </span>
               )}
             </div>
@@ -158,7 +213,12 @@ function LogInFormComponent() {
             <div className={styles.submitBtnContainer}>
               {loading ? (
                 <button className={styles.submitBtn}>
-                  Loading... <img className="loading" src="loader.svg" alt="" />
+                  Loading...{" "}
+                  <img
+                    className="loading"
+                    src="loader.svg"
+                    alt="loading spinner"
+                  />
                 </button>
               ) : (
                 <button className={styles.submitBtn}>Submit</button>
@@ -166,16 +226,26 @@ function LogInFormComponent() {
             </div>
           </form>
           <div className={styles.formRightSideFlexedContainer}>
-            <img
-              className={styles.formRightSideFlexedImage}
-              src="wemessage.jpg"
-              alt="wemessage"
-            />
+            <figure className={styles.figureFormContainer}>
+              <img
+                className={styles.formRightSideFlexedImage}
+                src="wemessage.jpg"
+                alt="wemessage"
+              />
+              <form onSubmit={handleGuestLogin}>
+                <button className={styles.submitBtn}>Guest Login</button>
+              </form>
+            </figure>
           </div>
         </div>
       </div>
       {popUpModalState ? (
-        <PopUpModalComponent popUpText={"Wrong credentials"} />
+        <PopUpModalComponent
+          popUpModalBackgroundColor={"crimson"}
+          popUpModalContentColor={"white"}
+          popUpModalBorderColor={"crimson"}
+          popUpModalContentText={"Wrong credentials"}
+        />
       ) : (
         ""
       )}

@@ -84,7 +84,7 @@ function App() {
                           <FirstNameContext.Provider
                             value={{ firstName, setFirstName }}
                           >
-                            <LogInFormComponent popUpText={"Login failed"} />
+                            <LogInFormComponent />
                           </FirstNameContext.Provider>
                         </LastNameContext.Provider>
                       </UserNameContext.Provider>

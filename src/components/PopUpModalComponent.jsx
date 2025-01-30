@@ -1,12 +1,23 @@
 import styles from "./PopUpModalComponent.module.css";
 
-function PopUpModalComponent({ backgroundColor, popUpText }) {
+function PopUpModalComponent({
+  popUpModalBackgroundColor,
+  popUpModalContentColor,
+  popUpModalOutlineColor,
+  popUpModalContentText,
+}) {
   return (
     <div
-      className={styles.modalContainer}
-      style={{ backgroundColor: backgroundColor }}
+      className={styles.popUpModalContainer}
+      style={{
+        backgroundColor: popUpModalBackgroundColor,
+        color: popUpModalContentColor,
+        outlineColor: popUpModalOutlineColor,
+      }}
     >
-      <p>{popUpText}</p>
+      <div className={styles.popUpModalContent}>
+        <p>{popUpModalContentText}</p>
+      </div>
     </div>
   );
 }

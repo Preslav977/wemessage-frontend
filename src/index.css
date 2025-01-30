@@ -90,6 +90,6 @@ button:focus-visible {
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   /* display: inline-block; */
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
 }
