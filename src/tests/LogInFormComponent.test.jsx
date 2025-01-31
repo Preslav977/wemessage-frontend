@@ -12,7 +12,7 @@ describe("should render LogInFormComponent", () => {
 
     render(<RouterProvider router={router} />);
 
-    screen.debug();
+    // screen.debug();
 
     expect(screen.getByText("Wemessage").textContent).toMatch(/wemessage/i);
 
@@ -39,5 +39,31 @@ describe("should render LogInFormComponent", () => {
     expect(screen.queryAllByRole("button")[0], { name: "Guest Login" });
 
     expect(screen.queryAllByRole("button")[1], { name: "Submit" });
+  });
+
+  it("should hide span errors when user types", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByRole("username"), "preslaw");
+
+    expect(screen.getByRole("username")).toHaveValue("preslaw");
+
+    await user.type(screen.getByRole("password"), "12345678Bg@");
+
+    expect(screen.getByRole("password")).toHaveValue("12345678Bg@");
+
+    expect(
+      screen.queryByText("Username is required to log in"),
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByText("Password is required to log in"),
+    ).not.toBeInTheDocument();
   });
 });
