@@ -16,10 +16,7 @@ import {
   UserLogInObjectContext,
   UserLoggedInContext,
 } from "./contexts/UserLoggedInContext";
-
-import SignUpFormComponent from "./components/SignUpFormComponent";
-import LogInFormComponent from "./components/LogInFormComponent";
-import PopUpModalComponent from "./components/PopUpModalComponent";
+import { Outlet } from "react-router-dom";
 
 function App() {
   const [firstName, setFirstName] = useState("");
@@ -84,7 +81,7 @@ function App() {
                           <FirstNameContext.Provider
                             value={{ firstName, setFirstName }}
                           >
-                            <LogInFormComponent />
+                            <Outlet />
                           </FirstNameContext.Provider>
                         </LastNameContext.Provider>
                       </UserNameContext.Provider>

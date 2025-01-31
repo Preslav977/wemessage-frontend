@@ -70,13 +70,14 @@
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
-  margin-top: 0.3rem;
+  margin-top: 0.5rem;
 }
 
 .submitBtn {
   padding: 0.25rem 0.5rem;
   display: flex;
   align-items: center;
+  transition: opacity 1.5s ease-in-out;
 }
 
 .formRightSideFlexedContainer {
@@ -91,6 +92,7 @@
 
 .submitBtn:hover {
   cursor: pointer;
+  opacity: 0.75;
 }
 
 @media screen and (max-width: 1000px) {
@@ -116,11 +118,3 @@ label,
 .signUpAnchorLink {
   color: #f4f7f3;
 } */
-
-.figureFormContainer {
-  /* outline: 2px solid beige; */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}

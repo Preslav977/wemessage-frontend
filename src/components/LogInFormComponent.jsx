@@ -106,6 +106,10 @@ function LogInFormComponent() {
     const guestUsername = "preslaw1";
     const guestPassword = "12345678Bg@";
 
+    setUsername(guestUsername);
+
+    setPassword(guestPassword);
+
     try {
       const response = await fetch("http://localhost:5000/users/login_guest", {
         method: "POST",
@@ -148,8 +152,6 @@ function LogInFormComponent() {
       setUserLogInObj(userLoggedInInformation);
 
       setPopUpModalState(false);
-
-      console.log(result);
     } catch (err) {
       console.log(err);
     }
@@ -221,21 +223,25 @@ function LogInFormComponent() {
                   />
                 </button>
               ) : (
-                <button className={styles.submitBtn}>Submit</button>
+                <>
+                  <button
+                    className={styles.submitBtn}
+                    type="submit"
+                    onClick={handleGuestLogin}
+                  >
+                    Guest Login
+                  </button>
+                  <button className={styles.submitBtn}>Submit</button>
+                </>
               )}
             </div>
           </form>
           <div className={styles.formRightSideFlexedContainer}>
-            <figure className={styles.figureFormContainer}>
-              <img
-                className={styles.formRightSideFlexedImage}
-                src="wemessage.jpg"
-                alt="wemessage"
-              />
-              <form onSubmit={handleGuestLogin}>
-                <button className={styles.submitBtn}>Guest Login</button>
-              </form>
-            </figure>
+            <img
+              className={styles.formRightSideFlexedImage}
+              src="wemessage.jpg"
+              alt="wemessage"
+            />
           </div>
         </div>
       </div>
