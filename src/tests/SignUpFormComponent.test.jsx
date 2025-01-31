@@ -160,13 +160,13 @@ describe("should render SignUpFormComponent", () => {
 
     render(<RouterProvider router={router} />);
 
-    screen.debug();
+    // screen.debug();
 
     const user = userEvent.setup();
 
     await user.click(screen.getByText("Log In"));
 
-    screen.debug();
+    // screen.debug();
 
     expect(screen.getByText("Wemessage").textContent).toMatch(/wemessage/i);
 
