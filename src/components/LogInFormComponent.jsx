@@ -214,7 +214,7 @@ function LogInFormComponent() {
             </p>
             <div className={styles.submitBtnContainer}>
               {loading ? (
-                <button className={styles.submitBtn}>
+                <button data-testid="loading-btn" className={styles.submitBtn}>
                   Loading...{" "}
                   <img
                     className="loading"

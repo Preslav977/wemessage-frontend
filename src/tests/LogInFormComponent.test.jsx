@@ -1,8 +1,19 @@
-import { render, screen } from "@testing-library/react";
+import {
+  findByTestId,
+  findByText,
+  getByRole,
+  getByTestId,
+  getByText,
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import routes from "../router/routes";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import { vi } from "vitest";
 
 describe("should render LogInFormComponent", () => {
   it("should render the content of this component", () => {
@@ -65,5 +76,43 @@ describe("should render LogInFormComponent", () => {
     expect(
       screen.queryByText("Password is required to log in"),
     ).not.toBeInTheDocument();
+
+    expect(screen.queryAllByRole("button")[0], { name: "Guest Login" });
+
+    expect(screen.queryAllByRole("button")[1], { name: "Submit" });
+  });
+
+  it("should render loading spinner when guest login button is clicked", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    expect(screen.queryAllByRole("button")[0], { name: "Guest Login" });
+
+    expect(screen.queryAllByRole("button")[1], { name: "Submit" });
+
+    const guestLogInBtn = screen.queryAllByRole("button");
+
+    await user.click(guestLogInBtn[0]);
+
+    expect(
+      screen.queryByText("Username is required to log in"),
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByText("Password is required to log in"),
+    ).not.toBeInTheDocument();
+
+    const loadingBtn = await screen.findByTestId("loading-btn");
+
+    expect(loadingBtn).toBeInTheDocument();
+
+    screen.debug();
+
+    // screen.debug();
   });
 });
