@@ -1,4 +1,5 @@
 import styles from "./PopUpModalComponent.module.css";
+import PropTypes from "prop-types";
 
 function PopUpModalComponent({
   popUpModalBackgroundColor,
@@ -22,5 +23,12 @@ function PopUpModalComponent({
     </div>
   );
 }
+
+PopUpModalComponent.propTypes = {
+  popUpModalBackgroundColor: PropTypes.string,
+  popUpModalContentColor: PropTypes.string,
+  popUpModalOutlineColor: PropTypes.string,
+  popUpModalContentText: PropTypes.string,
+};
 
 export default PopUpModalComponent;
