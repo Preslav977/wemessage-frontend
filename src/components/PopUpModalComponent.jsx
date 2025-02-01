@@ -8,6 +8,7 @@ function PopUpModalComponent({
 }) {
   return (
     <div
+      data-testid="modal"
       className={styles.popUpModalContainer}
       style={{
         backgroundColor: popUpModalBackgroundColor,
