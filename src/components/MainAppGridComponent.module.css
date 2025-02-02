@@ -1,0 +1,49 @@
+.mainGridContainer {
+  outline: 2px solid black;
+  display: grid;
+  grid-template-columns: 150px 300px 1fr;
+  min-height: 100vh;
+  gap: 1rem;
+  padding: 1rem 1rem 1rem 0;
+}
+
+.asideMainNavigationContainer {
+  background-color: aquamarine;
+}
+
+.mainGridSection {
+  background-color: beige;
+}
+
+.secondaryGridSection {
+  background-color: blanchedalmond;
+}
+
+.mainNavigation {
+  /* outline: 2px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 97vh;
+}
+
+.liFlexedImgAnchorContainer {
+  display: flex;
+  align-items: center;
+  /* padding-top: 0.5rem;
+  padding-left: 1em;
+  margin-bottom: 0.5rem; */
+  padding: 0.8rem;
+  gap: 0.5em;
+  /* outline: 2px solid rebeccapurple; */
+  transition: background-color 0.5s ease-in-out;
+}
+
+.liFlexedImgAnchorContainer:hover {
+  cursor: pointer;
+  background-color: blue;
+}
+
+.mainNavigationSvg {
+  max-width: 30px;
+}

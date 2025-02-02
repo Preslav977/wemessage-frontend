@@ -12,6 +12,8 @@ import {
   UserSignUpObjectContext,
 } from "./contexts/UserRegistrationContext";
 
+import MainAppGridComponent from "./components/MainAppGridComponent";
+
 import {
   UserLogInObjectContext,
   UserLoggedInContext,
@@ -81,6 +83,7 @@ function App() {
                           <FirstNameContext.Provider
                             value={{ firstName, setFirstName }}
                           >
+                            <MainAppGridComponent />
                             <Outlet />
                           </FirstNameContext.Provider>
                         </LastNameContext.Provider>
