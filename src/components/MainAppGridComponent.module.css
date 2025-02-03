@@ -20,7 +20,6 @@
 }
 
 .mainNavigation {
-  /* outline: 2px solid black; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -30,12 +29,8 @@
 .liFlexedImgAnchorContainer {
   display: flex;
   align-items: center;
-  /* padding-top: 0.5rem;
-  padding-left: 1em;
-  margin-bottom: 0.5rem; */
   padding: 0.8rem;
   gap: 0.5em;
-  /* outline: 2px solid rebeccapurple; */
   transition: background-color 0.5s ease-in-out;
 }
 

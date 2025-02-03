@@ -83,7 +83,6 @@ function App() {
                           <FirstNameContext.Provider
                             value={{ firstName, setFirstName }}
                           >
-                            <MainAppGridComponent />
                             <Outlet />
                           </FirstNameContext.Provider>
                         </LastNameContext.Provider>
