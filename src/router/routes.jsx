@@ -4,6 +4,7 @@ import LogInFormComponent from "../components/LogInFormComponent";
 import SignUpFormComponent from "../components/SignUpFormComponent";
 import MainAppGridComponent from "../components/MainAppGridComponent";
 import ManageUserProfileComponent from "../components/ManageUserProfileComponent";
+import UserProfileComponent from "../components/UserProfileComponent";
 
 const routes = [
   {
@@ -16,8 +17,8 @@ const routes = [
         path: "/profile/:id",
         element: (
           <MainAppGridComponent
-            left={<ManageUserProfileComponent />}
-            right={<p>123</p>}
+            mainGridSectionContent={<ManageUserProfileComponent />}
+            secondaryGridSectionContent={<UserProfileComponent />}
           ></MainAppGridComponent>
         ),
       },

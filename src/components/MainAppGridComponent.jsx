@@ -1,6 +1,9 @@
 import styles from "./MainAppGridComponent.module.css";
 
-function MainAppGridComponent({ left, right }) {
+function MainAppGridComponent({
+  mainGridSectionContent,
+  secondaryGridSectionContent,
+}) {
   return (
     <main className={styles.mainGridContainer}>
       <aside className={styles.asideMainNavigationContainer}>
@@ -51,8 +54,12 @@ function MainAppGridComponent({ left, right }) {
           </ul>
         </nav>
       </aside>
-      <section className={styles.mainGridSection}>{left}</section>
-      <section className={styles.secondaryGridSection}>{right}</section>
+      <section className={styles.mainGridSection}>
+        {mainGridSectionContent}
+      </section>
+      <section className={styles.secondaryGridSection}>
+        {secondaryGridSectionContent}
+      </section>
     </main>
   );
 }

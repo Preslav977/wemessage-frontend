@@ -3,16 +3,16 @@ import styles from "./ManageUserProfileComponent.module.css";
 function ManageUserProfileComponent() {
   return (
     <>
-      <h2 className={styles.h2}>Manage Profile</h2>
+      <h2>Manage Profile</h2>
       <nav>
-        <ul>
-          <li>
+        <ul className={styles.ulFlexedLiContainer}>
+          <li className={styles.liFlexedContent}>
             <a href="">Profile</a>
           </li>
-          <li>
+          <li className={styles.liFlexedContent}>
             <a href="">Edit Profile</a>
           </li>
-          <li>
+          <li className={styles.liFlexedContent}>
             <a href="">Change Password</a>
           </li>
         </ul>
