@@ -1,6 +1,6 @@
-import styles from "./UserProfileComponent.module.css";
+import styles from "./UserProfile.module.css";
 
-function UserProfileComponent() {
+function UserProfile() {
   return (
     <>
       <div className={styles.userBgContainer}>
@@ -48,4 +48,4 @@ function UserProfileComponent() {
   );
 }
 
-export default UserProfileComponent;
+export default UserProfile;

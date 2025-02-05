@@ -1,6 +1,6 @@
-import styles from "./MainAppGridComponent.module.css";
+import styles from "./MainGridInterface.module.css";
 
-function MainAppGridComponent({
+function MainGridInterface({
   mainGridSectionContent,
   secondaryGridSectionContent,
 }) {
@@ -64,4 +64,4 @@ function MainAppGridComponent({
   );
 }
 
-export default MainAppGridComponent;
+export default MainGridInterface;

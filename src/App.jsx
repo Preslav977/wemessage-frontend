@@ -12,8 +12,6 @@ import {
   UserSignUpObjectContext,
 } from "./contexts/UserRegistrationContext";
 
-import MainAppGridComponent from "./components/MainAppGridComponent";
-
 import {
   UserLogInObjectContext,
   UserLoggedInContext,

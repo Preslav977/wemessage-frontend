@@ -1,6 +1,6 @@
-import styles from "./EditUserProfileComponent.module.css";
+import styles from "./EditUserProfile.module.css";
 
-function EditUserProfileComponent() {
+function EditUserProfile() {
   return (
     <div className={styles.sectionWrapper}>
       <div className={styles.changeProfilePictureContainer}>
@@ -62,4 +62,4 @@ function EditUserProfileComponent() {
   );
 }
 
-export default EditUserProfileComponent;
+export default EditUserProfile;

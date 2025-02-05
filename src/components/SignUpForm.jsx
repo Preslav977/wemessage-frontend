@@ -1,4 +1,4 @@
-import styles from "./SignUpFormComponent.module.css";
+import styles from "./SignUpForm.module.css";
 
 import { Link } from "react-router-dom";
 
@@ -18,7 +18,7 @@ import {
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-function SignUpFormComponent() {
+function SignUpForm() {
   const { firstName, setFirstName } = useContext(FirstNameContext);
 
   const { lastName, setLastName } = useContext(LastNameContext);
@@ -259,4 +259,4 @@ function SignUpFormComponent() {
   );
 }
 
-export default SignUpFormComponent;
+export default SignUpForm;

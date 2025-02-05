@@ -1,13 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
-import LogInFormComponent from "../components/LogInFormComponent";
 
 import App from "../App";
 
-import SignUpFormComponent from "../components/SignUpFormComponent";
-import MainAppGridComponent from "../components/MainAppGridComponent";
-import ManageUserProfileComponent from "../components/ManageUserProfileComponent";
-import UserProfileComponent from "../components/UserProfileComponent";
-import EditUserProfileComponent from "../components/EditUserProfileComponent";
+import SignUpForm from "../components/SignUpForm";
+import LogInForm from "../components/LogInForm";
+import MainGridInterface from "../components/MainGridInterface";
+import ManageUserProfile from "../components/ManageUserProfile";
+import UserProfile from "../components/UserProfile";
+import EditUserProfile from "../components/EditUserProfile";
 import ChangeUserProfilePasswords from "../components/ChangeUserProfilePasswords";
 
 const router = createBrowserRouter([
@@ -15,33 +15,33 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
-      { path: "/login", element: <LogInFormComponent /> },
-      { path: "/signup", element: <SignUpFormComponent /> },
+      { path: "/login", element: <LogInForm /> },
+      { path: "/signup", element: <SignUpForm /> },
       {
         path: "/profile/:id",
         element: (
-          <MainAppGridComponent
-            mainGridSectionContent={<ManageUserProfileComponent />}
-            secondaryGridSectionContent={<UserProfileComponent />}
-          ></MainAppGridComponent>
+          <MainGridInterface
+            mainGridSectionContent={<ManageUserProfile />}
+            secondaryGridSectionContent={<UserProfile />}
+          ></MainGridInterface>
         ),
       },
       {
         path: "/profile/edit/:id",
         element: (
-          <MainAppGridComponent
-            mainGridSectionContent={<ManageUserProfileComponent />}
-            secondaryGridSectionContent={<EditUserProfileComponent />}
-          ></MainAppGridComponent>
+          <MainGridInterface
+            mainGridSectionContent={<ManageUserProfile />}
+            secondaryGridSectionContent={<EditUserProfile />}
+          ></MainGridInterface>
         ),
       },
       {
         path: "/profile/change_passwords/:id",
         element: (
-          <MainAppGridComponent
-            mainGridSectionContent={<ManageUserProfileComponent />}
+          <MainGridInterface
+            mainGridSectionContent={<ManageUserProfile />}
             secondaryGridSectionContent={<ChangeUserProfilePasswords />}
-          ></MainAppGridComponent>
+          ></MainGridInterface>
         ),
       },
     ],

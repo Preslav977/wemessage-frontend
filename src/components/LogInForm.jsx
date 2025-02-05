@@ -1,4 +1,4 @@
-import styles from "./LogInFormComponent.module.css";
+import styles from "./LogInForm.module.css";
 
 import { Link } from "react-router-dom";
 
@@ -16,9 +16,9 @@ import {
   UserLoggedInContext,
 } from "../contexts/UserLoggedInContext";
 
-import PopUpModalComponent from "./PopUpModalComponent";
+import PopUpModal from "./PopUpModal";
 
-function LogInFormComponent() {
+function LogInForm() {
   const { username, setUsername } = useContext(UserNameContext);
 
   const { password, setPassword } = useContext(PasswordContext);
@@ -246,7 +246,7 @@ function LogInFormComponent() {
         </div>
       </div>
       {popUpModalState ? (
-        <PopUpModalComponent
+        <PopUpModal
           popUpModalBackgroundColor={"crimson"}
           popUpModalContentColor={"white"}
           popUpModalBorderColor={"crimson"}
@@ -259,4 +259,4 @@ function LogInFormComponent() {
   );
 }
 
-export default LogInFormComponent;
+export default LogInForm;

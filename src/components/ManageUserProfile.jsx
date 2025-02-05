@@ -1,6 +1,6 @@
-import styles from "./ManageUserProfileComponent.module.css";
+import styles from "./ManageUserProfile.module.css";
 
-function ManageUserProfileComponent() {
+function ManageUserProfile() {
   return (
     <>
       <h2>Manage Profile</h2>
@@ -21,4 +21,4 @@ function ManageUserProfileComponent() {
   );
 }
 
-export default ManageUserProfileComponent;
+export default ManageUserProfile;
