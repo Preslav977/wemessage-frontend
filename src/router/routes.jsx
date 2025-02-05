@@ -6,6 +6,7 @@ import MainAppGridComponent from "../components/MainAppGridComponent";
 import ManageUserProfileComponent from "../components/ManageUserProfileComponent";
 import UserProfileComponent from "../components/UserProfileComponent";
 import EditUserProfileComponent from "../components/EditUserProfileComponent";
+import ChangeUserProfilePasswords from "../components/ChangeUserProfilePasswords";
 
 const routes = [
   {
@@ -29,6 +30,15 @@ const routes = [
           <MainAppGridComponent
             mainGridSectionContent={<ManageUserProfileComponent />}
             secondaryGridSectionContent={<EditUserProfileComponent />}
+          ></MainAppGridComponent>
+        ),
+      },
+      {
+        path: "/profile/change_passwords/:id",
+        element: (
+          <MainAppGridComponent
+            mainGridSectionContent={<ManageUserProfileComponent />}
+            secondaryGridSectionContent={<ChangeUserProfilePasswords />}
           ></MainAppGridComponent>
         ),
       },
