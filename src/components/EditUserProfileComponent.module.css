@@ -1,0 +1,94 @@
+.sectionWrapper {
+  height: 400px;
+  /* outline: 2px solid black; */
+}
+
+.changeProfilePictureContainer {
+  display: flex;
+  justify-content: space-between;
+  /* outline: 2px solid black; */
+  margin-bottom: 1em;
+}
+
+.editUserProfileLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: 2px solid black;
+  padding: 0.2em 0.2em;
+  gap: 0.5rem;
+}
+
+.editUserProfileImage {
+  /* outline: 2px solid black; */
+  width: 15px;
+}
+
+.editInputProfileImage {
+  opacity: 0;
+  /* visibility: hidden; */
+  width: 10px;
+}
+
+.userProfileContainer {
+  /* outline: 2px solid black; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flexedUserProfileContent {
+  outline: 2px solid black;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: gray;
+}
+
+.userProfileImage {
+  width: 30px;
+  height: 30px;
+  outline: 2px solid black;
+  border-radius: 50%;
+}
+
+hr {
+  margin-top: 1em;
+}
+
+.formGroup {
+  display: flex;
+  gap: 0.8em;
+  margin-top: 1em;
+}
+
+.formInputGroup,
+.formTextareaGroup {
+  display: flex;
+  flex-direction: column;
+  /* outline: 2px solid black; */
+  margin-bottom: 0.5rem;
+}
+
+.formGroupContent,
+.formTextareaGroup {
+  width: 100%;
+}
+
+.formTextareaGroup textarea {
+  resize: none;
+}
+
+.submitBtnContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+
+.submitBtn {
+  padding: 0.4em 0.7em;
+  text-transform: capitalize;
+}

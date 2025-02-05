@@ -19,6 +19,8 @@
 
 .secondaryGridSection {
   background-color: blanchedalmond;
+  padding: 1em;
+  outline: 2px solid black;
 }
 
 .mainNavigation {
