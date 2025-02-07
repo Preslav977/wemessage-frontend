@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, useActionData } from "react-router-dom";
 
 import App from "../App";
 
@@ -21,8 +21,8 @@ const router = createBrowserRouter([
         path: "/profile/:id",
         element: (
           <MainGridInterface
-            mainGridSectionContent={<ManageUserProfile />}
-            secondaryGridSectionContent={<UserProfile />}
+            leftGridComponent={<ManageUserProfile />}
+            rightGridComponent={<UserProfile />}
           ></MainGridInterface>
         ),
       },
@@ -30,8 +30,8 @@ const router = createBrowserRouter([
         path: "/profile/edit/:id",
         element: (
           <MainGridInterface
-            mainGridSectionContent={<ManageUserProfile />}
-            secondaryGridSectionContent={<EditUserProfile />}
+            leftGridComponent={<ManageUserProfile />}
+            rightGridComponent={<EditUserProfile />}
           ></MainGridInterface>
         ),
       },
@@ -39,8 +39,8 @@ const router = createBrowserRouter([
         path: "/profile/change_passwords/:id",
         element: (
           <MainGridInterface
-            mainGridSectionContent={<ManageUserProfile />}
-            secondaryGridSectionContent={<ChangeUserProfilePasswords />}
+            leftGridComponent={<ManageUserProfile />}
+            rightGridComponent={<ChangeUserProfilePasswords />}
           ></MainGridInterface>
         ),
       },

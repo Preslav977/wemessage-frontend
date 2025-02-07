@@ -2,12 +2,11 @@ import styles from "./UserProfile.module.css";
 
 import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
 import { BackgroundPictureContext } from "../contexts/UserRegistrationContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { Buffer } from "buffer";
 
 function UserProfile() {
-  const [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
+  let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
   const { backgroundPicture, setBackgroundPicture } = useContext(
     BackgroundPictureContext,
   );
@@ -19,18 +18,12 @@ function UserProfile() {
 
     const formDataObj = formData.get("file");
 
-    // const { name, lastModified, size, type } = formData.get("file");
+    const updateBackgroundPictureObj = {
+      ...backgroundPicture,
+      formDataObj,
+    };
 
-    // formData.append("file", name, lastModified, size, type);
-
-    console.log(formData);
-
-    // const updateBackgroundPictureObj = {
-    //   ...backgroundPicture,
-    //   backgroundPictureObj,
-    // };
-
-    // console.log(backgroundPicture);
+    setBackgroundPicture(updateBackgroundPictureObj);
 
     try {
       const response = await fetch(
@@ -39,19 +32,33 @@ function UserProfile() {
           method: "PUT",
           headers: {
             Authorization: localStorage.getItem("token"),
-            // "Content-Type": "multipart/form-data",
           },
-          // body: JSON.stringify({
-          //   background_picture: backgroundPicture,
-          // }),
           body: formData,
         },
       );
-      console.log(response);
 
       const result = await response.json();
 
       console.log(result);
+
+      const fetchLoggedInUserInformation = await fetch(
+        "http://localhost:5000/users",
+        {
+          mode: "cors",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        },
+      );
+
+      userLogInObj = await fetchLoggedInUserInformation.json();
+
+      const userLoggedInInformation = {
+        ...userLogInObj,
+        userLogInObj,
+      };
+
+      setUserLogInObj(userLoggedInInformation);
     } catch (err) {
       console.log(err);
     }
@@ -63,14 +70,14 @@ function UserProfile() {
         {userLogInObj.background_picture === "" ? (
           <img
             className={styles.userBgImg}
-            src="/user-default-bg-image.jpg"
+            src="user-default-bg-image.jpg"
             alt="user background image"
           />
         ) : (
           <img
             className={styles.userBgImg}
             src={userLogInObj.background_picture}
-            alt="user background image"
+            alt="/user background image"
           />
         )}
         <div className={styles.userProfileContainer}>
@@ -82,7 +89,7 @@ function UserProfile() {
             />
           ) : (
             <img
-              className={styles.userProfileImg}
+              className={styles.updatedUserProfileImg}
               src={userLogInObj.profile_picture}
               alt="user profile image"
             />

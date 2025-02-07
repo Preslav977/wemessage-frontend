@@ -55,6 +55,13 @@
   border-radius: 50%;
 }
 
+.updatedUserProfileImage {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  /* outline: 2px solid black; */
+}
+
 hr {
   margin-top: 1em;
 }
@@ -91,4 +98,10 @@ hr {
 .submitBtn {
   padding: 0.4em 0.7em;
   text-transform: capitalize;
+}
+
+.error {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: crimson;
 }

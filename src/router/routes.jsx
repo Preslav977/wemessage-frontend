@@ -19,8 +19,8 @@ const routes = [
         path: "/profile/:id",
         element: (
           <MainGridInterface
-            mainGridSectionContent={<ManageUserProfile />}
-            secondaryGridSectionContent={<UserProfile />}
+            leftGridComponent={<ManageUserProfile />}
+            rightGridComponent={<UserProfile />}
           ></MainGridInterface>
         ),
       },
@@ -28,8 +28,8 @@ const routes = [
         path: "/profile/edit/:id",
         element: (
           <MainGridInterface
-            mainGridSectionContent={<ManageUserProfile />}
-            secondaryGridSectionContent={<EditUserProfile />}
+            leftGridComponent={<ManageUserProfile />}
+            rightGridComponent={<EditUserProfile />}
           ></MainGridInterface>
         ),
       },
@@ -37,8 +37,8 @@ const routes = [
         path: "/profile/change_passwords/:id",
         element: (
           <MainGridInterface
-            mainGridSectionContent={<ManageUserProfile />}
-            secondaryGridSectionContent={<ChangeUserProfilePasswords />}
+            leftGridComponent={<ManageUserProfile />}
+            rightGridComponent={<ChangeUserProfilePasswords />}
           ></MainGridInterface>
         ),
       },
