@@ -1,19 +1,27 @@
 import styles from "./ManageUserProfile.module.css";
+import { Link } from "react-router-dom";
+
+import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
+import { useContext } from "react";
 
 function ManageUserProfile() {
+  const [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
+
   return (
     <>
       <h2>Manage Profile</h2>
       <nav>
         <ul className={styles.ulFlexedLiContainer}>
           <li className={styles.liFlexedContent}>
-            <a href="">Profile</a>
+            <Link to={`/profile/${userLogInObj.id}`}>Profile</Link>
           </li>
           <li className={styles.liFlexedContent}>
-            <a href="">Edit Profile</a>
+            <Link to={`/profile/edit/${userLogInObj.id}`}>Edit Profile</Link>
           </li>
           <li className={styles.liFlexedContent}>
-            <a href="">Change Password</a>
+            <Link to={`/profile/change_passwords/${userLogInObj.id}`}>
+              Change Password
+            </Link>
           </li>
         </ul>
       </nav>

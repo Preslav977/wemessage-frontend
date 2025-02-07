@@ -88,9 +88,9 @@ function LogInForm() {
 
       setUserLogInObj(userLoggedInInformation);
 
-      // setTimeout(() => {
-      //   navigate("/signup");
-      // }, 3000);
+      setTimeout(() => {
+        navigate(`/profile/${userLogInObj.id}`);
+      }, 3000);
 
       setPopUpModalState(false);
 
@@ -150,6 +150,10 @@ function LogInForm() {
       };
 
       setUserLogInObj(userLoggedInInformation);
+
+      setTimeout(() => {
+        navigate(`/profile/${userLogInObj.id}`);
+      }, 3000);
 
       setPopUpModalState(false);
     } catch (err) {

@@ -33,7 +33,7 @@ function App() {
 
   const [profilePicture, setProfilePicture] = useState("");
 
-  const [backgroundPicture, setBackgroundPicture] = useState("");
+  const [backgroundPicture, setBackgroundPicture] = useState();
 
   const [userSignUpObj, setUserSignUpObj] = useState({
     first_name: "",
