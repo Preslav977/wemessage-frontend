@@ -169,7 +169,7 @@ function LogInForm() {
         <div className={styles.formContainerHeader}>
           <img
             className={styles.formHeaderImage}
-            src="wemessage.jpg"
+            src="/wemessage.jpg"
             alt="wemessage"
           />
           <p className={styles.formHeaderName}>Wemessage</p>
@@ -245,7 +245,7 @@ function LogInForm() {
           <div className={styles.formRightSideFlexedContainer}>
             <img
               className={styles.formRightSideFlexedImage}
-              src="wemessage.jpg"
+              src="/wemessage.jpg"
               alt="wemessage"
             />
           </div>
