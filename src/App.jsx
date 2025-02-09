@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import {
   FirstNameContext,
@@ -16,6 +16,9 @@ import {
   UserLogInObjectContext,
   UserLoggedInContext,
 } from "./contexts/UserLoggedInContext";
+
+import { PopUpModalContext } from "./contexts/PopUpModalContext";
+
 import { Outlet } from "react-router-dom";
 
 function App() {
@@ -50,49 +53,55 @@ function App() {
 
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
+  const [popUpModal, setPopUpModal] = useState(null);
+
   return (
     <>
-      <UserLogInObjectContext.Provider
-        value={[userLogInObj, setUserLoginInObj]}
-      >
-        <UserLoggedInContext.Provider
-          value={[isUserLoggedIn, setIsUserLoggedIn]}
+      <PopUpModalContext.Provider value={[popUpModal, setPopUpModal]}>
+        <UserLogInObjectContext.Provider
+          value={[userLogInObj, setUserLoginInObj]}
         >
-          <UserSignUpObjectContext.Provider
-            value={{ userSignUpObj, setUserSignUpObj }}
+          <UserLoggedInContext.Provider
+            value={[isUserLoggedIn, setIsUserLoggedIn]}
           >
-            <BackgroundPictureContext.Provider
-              value={{ backgroundPicture, setBackgroundPicture }}
+            <UserSignUpObjectContext.Provider
+              value={{ userSignUpObj, setUserSignUpObj }}
             >
-              <ProfilePictureContext.Provider
-                value={{ profilePicture, setProfilePicture }}
+              <BackgroundPictureContext.Provider
+                value={{ backgroundPicture, setBackgroundPicture }}
               >
-                <BioContext.Provider value={{ bio, setBio }}>
-                  <ConfirmPasswordContext.Provider
-                    value={{ confirmPassword, setConfirmPassword }}
-                  >
-                    <PasswordContext.Provider value={{ password, setPassword }}>
-                      <UserNameContext.Provider
-                        value={{ username, setUsername }}
+                <ProfilePictureContext.Provider
+                  value={{ profilePicture, setProfilePicture }}
+                >
+                  <BioContext.Provider value={{ bio, setBio }}>
+                    <ConfirmPasswordContext.Provider
+                      value={{ confirmPassword, setConfirmPassword }}
+                    >
+                      <PasswordContext.Provider
+                        value={{ password, setPassword }}
                       >
-                        <LastNameContext.Provider
-                          value={{ lastName, setLastName }}
+                        <UserNameContext.Provider
+                          value={{ username, setUsername }}
                         >
-                          <FirstNameContext.Provider
-                            value={{ firstName, setFirstName }}
+                          <LastNameContext.Provider
+                            value={{ lastName, setLastName }}
                           >
-                            <Outlet />
-                          </FirstNameContext.Provider>
-                        </LastNameContext.Provider>
-                      </UserNameContext.Provider>
-                    </PasswordContext.Provider>
-                  </ConfirmPasswordContext.Provider>
-                </BioContext.Provider>
-              </ProfilePictureContext.Provider>
-            </BackgroundPictureContext.Provider>
-          </UserSignUpObjectContext.Provider>
-        </UserLoggedInContext.Provider>
-      </UserLogInObjectContext.Provider>
+                            <FirstNameContext.Provider
+                              value={{ firstName, setFirstName }}
+                            >
+                              <Outlet />
+                            </FirstNameContext.Provider>
+                          </LastNameContext.Provider>
+                        </UserNameContext.Provider>
+                      </PasswordContext.Provider>
+                    </ConfirmPasswordContext.Provider>
+                  </BioContext.Provider>
+                </ProfilePictureContext.Provider>
+              </BackgroundPictureContext.Provider>
+            </UserSignUpObjectContext.Provider>
+          </UserLoggedInContext.Provider>
+        </UserLogInObjectContext.Provider>
+      </PopUpModalContext.Provider>
     </>
   );
 }

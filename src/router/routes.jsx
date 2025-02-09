@@ -7,6 +7,7 @@ import ManageUserProfile from "../components/ManageUserProfile";
 import UserProfile from "../components/UserProfile";
 import EditUserProfile from "../components/EditUserProfile";
 import ChangeUserProfilePasswords from "../components/ChangeUserProfilePasswords";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 const routes = [
   {

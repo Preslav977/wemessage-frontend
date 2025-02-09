@@ -5,6 +5,7 @@ function PopUpModal({
   popUpModalBackgroundColor,
   popUpModalContentColor,
   popUpModalOutlineColor,
+  popUpModalContentHeader,
   popUpModalContentText,
 }) {
   return (
@@ -18,6 +19,7 @@ function PopUpModal({
       }}
     >
       <div className={styles.popUpModalContent}>
+        <p>{popUpModalContentHeader}</p>
         <p>{popUpModalContentText}</p>
       </div>
     </div>
@@ -28,6 +30,7 @@ PopUpModal.propTypes = {
   popUpModalBackgroundColor: PropTypes.string,
   popUpModalContentColor: PropTypes.string,
   popUpModalOutlineColor: PropTypes.string,
+  popUpModalContentHeader: PropTypes.string,
   popUpModalContentText: PropTypes.string,
 };
 

@@ -2,14 +2,20 @@ import styles from "./UserProfile.module.css";
 
 import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
 import { BackgroundPictureContext } from "../contexts/UserRegistrationContext";
+import { PopUpModalContext } from "../contexts/PopUpModalContext";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import PopUpModal from "./PopUpModal";
 
 function UserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
   const { backgroundPicture, setBackgroundPicture } = useContext(
     BackgroundPictureContext,
   );
+
+  const [popUpModal, setPopUpModal] = useContext(PopUpModalContext);
+
+  const [state, setState] = useState(false);
 
   async function changeBackgroundImage(e) {
     e.preventDefault();
@@ -37,9 +43,13 @@ function UserProfile() {
         },
       );
 
-      const result = await response.json();
+      console.log(response);
 
-      console.log(result);
+      if (response === 403) {
+        setState(false);
+      }
+
+      const result = await response.json();
 
       const fetchLoggedInUserInformation = await fetch(
         "http://localhost:5000/users",
@@ -51,6 +61,12 @@ function UserProfile() {
         },
       );
 
+      console.log(fetchLoggedInUserInformation.status);
+
+      // if (fetchLoggedInUserInformation.status === 200 && popUpModal) {
+      //   setPopUpModal(false);
+      // }
+
       userLogInObj = await fetchLoggedInUserInformation.json();
 
       const userLoggedInInformation = {
@@ -59,6 +75,8 @@ function UserProfile() {
       };
 
       setUserLogInObj(userLoggedInInformation);
+
+      // setPopUpModal(false);
     } catch (err) {
       console.log(err);
     }
@@ -70,14 +88,14 @@ function UserProfile() {
         {userLogInObj.background_picture === "" ? (
           <img
             className={styles.userBgImg}
-            src="user-default-bg-image.jpg"
+            src="/user-default-bg-image.jpg"
             alt="user background image"
           />
         ) : (
           <img
             className={styles.userBgImg}
             src={userLogInObj.background_picture}
-            alt="/user background image"
+            alt="user background image"
           />
         )}
         <div className={styles.userProfileContainer}>
@@ -143,6 +161,17 @@ function UserProfile() {
           </Link>
         </li>
       </div>
+      {/* {!state && (
+        <PopUpModal
+          popUpModalBackgroundColor={"white"}
+          popUpModalContentColor={"black"}
+          popUpModalBorderColor={"white"}
+          popUpModalContentHeader={"Cover photo has been updated"}
+          popUpModalContentText={
+            "Your cover photo has been updated successfully"
+          }
+        />
+      )} */}
     </>
   );
 }

@@ -16,6 +16,8 @@ import {
   UserLoggedInContext,
 } from "../contexts/UserLoggedInContext";
 
+import { PopUpModalContext } from "../contexts/PopUpModalContext";
+
 import PopUpModal from "./PopUpModal";
 
 function LogInForm() {
@@ -31,7 +33,7 @@ function LogInForm() {
 
   const [loading, setLoading] = useState(false);
 
-  const [popUpModalState, setPopUpModalState] = useState(null);
+  const [popUpModal, setPopUpModal] = useContext(PopUpModalContext);
 
   const navigate = useNavigate();
 
@@ -56,7 +58,7 @@ function LogInForm() {
       if (response.status === 401) {
         setError("Wrong username or password");
 
-        setPopUpModalState(true);
+        setPopUpModal(true);
       }
 
       const result = await response.json();
@@ -92,7 +94,7 @@ function LogInForm() {
         navigate(`/profile/${userLogInObj.id}`);
       }, 3000);
 
-      setPopUpModalState(false);
+      setPopUpModal(false);
 
       console.log(result);
     } catch (err) {
@@ -103,12 +105,12 @@ function LogInForm() {
   async function handleGuestLogin(e) {
     e.preventDefault();
 
-    const guestUsername = "peci";
+    const guestUsername = "preslaw1";
     const guestPassword = "12345678Bg@";
 
-    setUsername(guestUsername);
+    // setUsername(guestUsername);
 
-    setPassword(guestPassword);
+    // setPassword(guestPassword);
 
     try {
       const response = await fetch("http://localhost:5000/users/login_guest", {
@@ -155,7 +157,7 @@ function LogInForm() {
         navigate(`/profile/${userLogInObj.id}`);
       }, 3000);
 
-      setPopUpModalState(false);
+      setPopUpModal(false);
     } catch (err) {
       console.log(err);
     }
@@ -249,7 +251,7 @@ function LogInForm() {
           </div>
         </div>
       </div>
-      {popUpModalState ? (
+      {popUpModal ? (
         <PopUpModal
           popUpModalBackgroundColor={"crimson"}
           popUpModalContentColor={"white"}

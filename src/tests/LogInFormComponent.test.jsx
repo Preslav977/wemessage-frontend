@@ -1,14 +1,4 @@
-import {
-  findByTestId,
-  findByText,
-  getByRole,
-  getByTestId,
-  getByText,
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import routes from "../router/routes";
 import userEvent from "@testing-library/user-event";

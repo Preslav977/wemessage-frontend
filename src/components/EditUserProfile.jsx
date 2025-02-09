@@ -22,8 +22,6 @@ function EditUserProfile() {
 
   const { username, setUsername } = useContext(UserNameContext);
 
-  console.log(firstName, username);
-
   const { bio, setBio } = useContext(BioContext);
 
   const [firstNameError, setFirstNameError] = useState("");
@@ -64,8 +62,6 @@ function EditUserProfile() {
 
       const result = await response.json();
 
-      console.log(result);
-
       const fetchLoggedInUserInformation = await fetch(
         "http://localhost:5000/users",
         {
@@ -95,14 +91,14 @@ function EditUserProfile() {
     const FormDataUserObject = new FormData(e.target);
     const firstName = FormDataUserObject.get("first_name");
     const lastName = FormDataUserObject.get("last_name");
-    const username = FormDataUserObject.get("username");
+    const userName = FormDataUserObject.get("username");
     const bio = FormDataUserObject.get("bio");
 
     const updateLoggedInObject = {
       ...userLogInObj,
       firstName: firstName,
       lastName: lastName,
-      username: username,
+      userName: userName,
       bio: bio,
     };
 
@@ -120,7 +116,7 @@ function EditUserProfile() {
           body: JSON.stringify({
             first_name: firstName,
             last_name: lastName,
-            username: username,
+            username: userName,
             bio: bio,
           }),
         },
@@ -297,9 +293,12 @@ function EditUserProfile() {
               id="bio"
               required
             ></textarea>
-            {bio.length > 150 && (
-              <span className={styles.error}>{bioError}</span>
+            {bio.length < 150 && (
+              <span className={styles.error}>
+                Bio must not be more than 150 characters
+              </span>
             )}
+            {bioError && <span className={styles.error}>{bioError}</span>}
           </div>
         </div>
         <div className={styles.submitBtnContainer}>

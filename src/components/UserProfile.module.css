@@ -2,11 +2,12 @@
   max-width: inherit;
   /* padding: 0.8rem; */
   position: relative;
+  outline: 2px solid black;
 }
 
 .userBgImg {
-  min-width: 100%;
-  object-fit: cover;
+  width: 100%;
+  /* object-fit: cover; */
   height: 16rem;
 }
 
@@ -15,7 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  outline: 2px solid black;
+  /* outline: 2px solid black; */
   width: 125px;
   height: 125px;
   border-radius: 50%;
