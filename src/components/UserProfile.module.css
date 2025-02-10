@@ -2,12 +2,13 @@
   max-width: inherit;
   /* padding: 0.8rem; */
   position: relative;
-  outline: 2px solid black;
+  /* outline: 2px solid black; */
+  /* border-radius: 10px; */
 }
 
 .userBgImg {
   width: 100%;
-  /* object-fit: cover; */
+  object-fit: cover;
   height: 16rem;
 }
 
@@ -20,8 +21,8 @@
   width: 125px;
   height: 125px;
   border-radius: 50%;
-  bottom: -5px;
-  left: 30px;
+  bottom: -10px;
+  left: 20px;
   background-color: gray;
 }
 
@@ -96,6 +97,10 @@
   align-items: center;
   padding: 0.8rem;
   margin-top: 0.5em;
+}
+
+.usersBioParagraph {
+  margin-top: 1rem;
 }
 
 .editProfileAnchor {

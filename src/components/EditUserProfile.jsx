@@ -288,7 +288,7 @@ function EditUserProfile() {
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               maxLength={150}
-              rows={8}
+              rows={12}
               name="bio"
               id="bio"
               required

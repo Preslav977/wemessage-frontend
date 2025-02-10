@@ -2,7 +2,6 @@ import styles from "./UserProfile.module.css";
 
 import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
 import { BackgroundPictureContext } from "../contexts/UserRegistrationContext";
-import { PopUpModalContext } from "../contexts/PopUpModalContext";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import PopUpModal from "./PopUpModal";
@@ -13,9 +12,7 @@ function UserProfile() {
     BackgroundPictureContext,
   );
 
-  const [popUpModal, setPopUpModal] = useContext(PopUpModalContext);
-
-  const [state, setState] = useState(false);
+  const [showModalOnSuccess, setShowModalOnSuccess] = useState(false);
 
   async function changeBackgroundImage(e) {
     e.preventDefault();
@@ -43,13 +40,13 @@ function UserProfile() {
         },
       );
 
-      console.log(response);
+      if (response.status === 200) {
+        setShowModalOnSuccess(true);
 
-      if (response === 403) {
-        setState(false);
+        setTimeout(() => {
+          setShowModalOnSuccess(false);
+        }, 3000);
       }
-
-      const result = await response.json();
 
       const fetchLoggedInUserInformation = await fetch(
         "http://localhost:5000/users",
@@ -61,12 +58,6 @@ function UserProfile() {
         },
       );
 
-      console.log(fetchLoggedInUserInformation.status);
-
-      // if (fetchLoggedInUserInformation.status === 200 && popUpModal) {
-      //   setPopUpModal(false);
-      // }
-
       userLogInObj = await fetchLoggedInUserInformation.json();
 
       const userLoggedInInformation = {
@@ -75,8 +66,6 @@ function UserProfile() {
       };
 
       setUserLogInObj(userLoggedInInformation);
-
-      // setPopUpModal(false);
     } catch (err) {
       console.log(err);
     }
@@ -154,14 +143,18 @@ function UserProfile() {
             {userLogInObj.first_name} {userLogInObj.last_name}
           </p>
           <p>@{userLogInObj.username}</p>
+          <p className={styles.usersBioParagraph}>{userLogInObj.bio}</p>
         </div>
         <li>
-          <Link className={styles.editProfileAnchor} to="/profile/edit/4">
+          <Link
+            className={styles.editProfileAnchor}
+            to={`/profile/edit/${userLogInObj.id}`}
+          >
             Edit Profile
           </Link>
         </li>
       </div>
-      {/* {!state && (
+      {showModalOnSuccess && (
         <PopUpModal
           popUpModalBackgroundColor={"white"}
           popUpModalContentColor={"black"}
@@ -171,7 +164,7 @@ function UserProfile() {
             "Your cover photo has been updated successfully"
           }
         />
-      )} */}
+      )}
     </>
   );
 }

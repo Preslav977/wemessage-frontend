@@ -85,6 +85,10 @@ hr {
   width: 100%;
 }
 
+.formGroupContent input {
+  padding: 0.2rem 0;
+}
+
 .formTextareaGroup textarea {
   resize: none;
 }
