@@ -4,7 +4,7 @@ import routes from "../router/routes";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 
-describe("should render SignUpFormComponent", () => {
+describe("should render SignUpForm", () => {
   it("should render the content of this component", () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/signup"],

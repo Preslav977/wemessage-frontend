@@ -10,6 +10,7 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
           <ul className={styles.ulLinkContainer}>
             <li className={styles.liFlexedImgAnchorContainer}>
               <Link
+                data-testid="global_chat"
                 className={styles.anchorFlexedImgContainer}
                 to="/global/:id"
               >
@@ -22,7 +23,11 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
               </Link>
             </li>
             <li className={styles.liFlexedImgAnchorContainer}>
-              <Link className={styles.anchorFlexedImgContainer} to="/chats">
+              <Link
+                data-testid="chats"
+                className={styles.anchorFlexedImgContainer}
+                to="/chats"
+              >
                 <img
                   className={styles.mainNavigationSvg}
                   src="/chats.svg"
@@ -32,7 +37,11 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
               </Link>
             </li>
             <li className={styles.liFlexedImgAnchorContainer}>
-              <Link className={styles.anchorFlexedImgContainer} to="/groups">
+              <Link
+                data-testid="groups"
+                className={styles.anchorFlexedImgContainer}
+                to="/groups"
+              >
                 <img
                   className={styles.mainNavigationSvg}
                   src="/groups.svg"
@@ -44,7 +53,11 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
           </ul>
           <ul>
             <li className={styles.liFlexedImgAnchorContainer}>
-              <Link className={styles.anchorFlexedImgContainer} to="/profile/4">
+              <Link
+                data-testid="profile"
+                className={styles.anchorFlexedImgContainer}
+                to="/profile/4"
+              >
                 <img
                   className={styles.mainNavigationSvg}
                   src="/profile.svg"
@@ -54,7 +67,11 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
               </Link>
             </li>
             <li className={styles.liFlexedImgAnchorContainer}>
-              <Link className={styles.anchorFlexedImgContainer} to="/logout">
+              <Link
+                data-testid="logout"
+                className={styles.anchorFlexedImgContainer}
+                to="/logout"
+              >
                 <img
                   className={styles.mainNavigationSvg}
                   src="/logout.svg"

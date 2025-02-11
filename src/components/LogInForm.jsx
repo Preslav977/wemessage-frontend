@@ -87,9 +87,9 @@ function LogInForm() {
 
       setUserLogInObj(userLoggedInInformation);
 
-      setTimeout(() => {
-        navigate(`/profile/${userLogInObj.id}`);
-      }, 3000);
+      // setTimeout(() => {
+      navigate(`/profile/${userLogInObj.id}`);
+      // }, 3000);
 
       setPopUpModal(false);
 

@@ -13,13 +13,23 @@ function ManageUserProfile() {
       <nav>
         <ul className={styles.ulFlexedLiContainer}>
           <li className={styles.liFlexedContent}>
-            <Link to={`/profile/${userLogInObj.id}`}>Profile</Link>
+            <Link data-testid="profile" to={`/profile/${userLogInObj.id}`}>
+              Profile
+            </Link>
           </li>
           <li className={styles.liFlexedContent}>
-            <Link to={`/profile/edit/${userLogInObj.id}`}>Edit Profile</Link>
+            <Link
+              data-testid="edit_profile"
+              to={`/profile/edit/${userLogInObj.id}`}
+            >
+              Edit Profile
+            </Link>
           </li>
           <li className={styles.liFlexedContent}>
-            <Link to={`/profile/change_passwords/${userLogInObj.id}`}>
+            <Link
+              data-testid="change_password"
+              to={`/profile/change_passwords/${userLogInObj.id}`}
+            >
               Change Password
             </Link>
           </li>

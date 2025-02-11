@@ -218,8 +218,7 @@ function EditUserProfile() {
           <div className={styles.formGroupContent}>
             <div className={styles.formInputGroup}>
               <label htmlFor="first_name">
-                First name:
-                <span className={styles.error}>*</span>
+                First name: <span className={styles.error}>*</span>
               </label>
               <input
                 value={firstName}

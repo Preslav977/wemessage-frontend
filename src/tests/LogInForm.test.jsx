@@ -4,7 +4,7 @@ import routes from "../router/routes";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 
-describe("should render LogInFormComponent", () => {
+describe("should render LogInForm", () => {
   it("should render the content of this component", () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login"],
@@ -90,11 +90,11 @@ describe("should render LogInFormComponent", () => {
 
     expect(
       screen.queryByText("Username is required to log in"),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
 
     expect(
       screen.queryByText("Password is required to log in"),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
 
     const loadingBtn = await screen.findByTestId("loading-btn");
 

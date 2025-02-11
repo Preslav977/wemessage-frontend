@@ -127,11 +127,13 @@ function UserProfile() {
         </div>
         {userLogInObj.online_presence === "ONLINE" ? (
           <div
+            data-testid="user_presence"
             className={styles.userPresenceStatus}
             style={{ backgroundColor: "lightgreen" }}
           ></div>
         ) : (
           <div
+            data-testid="user_presence"
             className={styles.userPresenceStatus}
             style={{ backgroundColor: "lightgray" }}
           ></div>
