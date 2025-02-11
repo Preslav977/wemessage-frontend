@@ -115,7 +115,7 @@ function SignUpForm() {
         <div className={styles.formContainerHeader}>
           <img
             className={styles.formHeaderImage}
-            src="wemessage_logo.jpg"
+            src="/wemessage_logo.jpg"
             alt="wemessage"
           />
           <p className={styles.formHeaderName}>Wemessage</p>
@@ -249,7 +249,7 @@ function SignUpForm() {
           <div className={styles.formRightSideFlexedContainer}>
             <img
               className={styles.formRightSideFlexedImage}
-              src="wemessage_logo.jpg"
+              src="/wemessage_logo.jpg"
               alt="wemessage"
             />
           </div>

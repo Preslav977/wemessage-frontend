@@ -9,6 +9,8 @@ import {
 } from "../contexts/UserRegistrationContext";
 import { useContext, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 function EditUserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
@@ -31,6 +33,8 @@ function EditUserProfile() {
   const [usernameError, setUsernameError] = useState("");
 
   const [bioError, setBioError] = useState("");
+
+  const navigate = useNavigate();
 
   async function changeProfileImage(e) {
     e.preventDefault();
@@ -127,6 +131,8 @@ function EditUserProfile() {
         setLastName("");
         setUsername("");
         setBio("");
+
+        navigate(`/profile/${userLogInObj.id}`);
       } else {
         const result = await response.json();
 

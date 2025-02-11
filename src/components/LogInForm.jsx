@@ -52,7 +52,10 @@ function LogInForm() {
         }),
       });
 
-      if (response.status === 401) {
+      if (response.status === 200) {
+        setUsername("");
+        setPassword("");
+      } else if (response.status === 401) {
         setError("Wrong username or password");
 
         setPopUpModal(true);
@@ -150,9 +153,9 @@ function LogInForm() {
 
       setUserLogInObj(userLoggedInInformation);
 
-      setTimeout(() => {
-        navigate(`/profile/${userLogInObj.id}`);
-      }, 3000);
+      // setTimeout(() => {
+      navigate(`/profile/${userLogInObj.id}`);
+      // }, 3000);
 
       setPopUpModal(false);
     } catch (err) {
@@ -166,7 +169,7 @@ function LogInForm() {
         <div className={styles.formContainerHeader}>
           <img
             className={styles.formHeaderImage}
-            src="wemessage_logo.jpg"
+            src="/wemessage_logo.jpg"
             alt="wemessage"
           />
           <p className={styles.formHeaderName}>Wemessage</p>
@@ -221,7 +224,7 @@ function LogInForm() {
                   Loading...{" "}
                   <img
                     className="loading"
-                    src="loading_spinner.svg"
+                    src="/loading_spinner.svg"
                     alt="loading spinner"
                   />
                 </button>
@@ -242,7 +245,7 @@ function LogInForm() {
           <div className={styles.formRightSideFlexedContainer}>
             <img
               className={styles.formRightSideFlexedImage}
-              src="wemessage_logo.jpg"
+              src="/wemessage_logo.jpg"
               alt="wemessage"
             />
           </div>
