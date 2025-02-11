@@ -39,7 +39,7 @@ function EditUserProfile() {
 
     const formDataObj = formData.get("file");
 
-    console.log(formDataObj);
+    // console.log(formDataObj);
 
     const updateProfilePictureObj = {
       ...profilePicture,
@@ -170,13 +170,16 @@ function EditUserProfile() {
     <div className={styles.sectionWrapper}>
       <div className={styles.changeProfilePictureContainer}>
         <h3>Profile Picture</h3>
-        <form onSubmit={changeProfileImage}>
+        <form
+          className={styles.formChangeProfilePicture}
+          onSubmit={changeProfileImage}
+        >
           <label className={styles.editUserProfileLabel}>
             Edit
             <img
               className={styles.editUserProfileImage}
-              src="/edit-profile.svg"
-              alt=""
+              src="/edit_profile.svg"
+              alt="update user profile picture"
             />
             <input
               className={styles.editInputProfileImage}
@@ -185,7 +188,11 @@ function EditUserProfile() {
               id="file"
             />
           </label>
-          <button type="submit">Send</button>
+          <div className={styles.submitProfilePictureContainer}>
+            <button className={styles.submitProfilePicture} type="submit">
+              Send
+            </button>
+          </div>
         </form>
       </div>
       <div className={styles.userProfileContainer}>
@@ -193,14 +200,14 @@ function EditUserProfile() {
           {userLogInObj.profile_picture === "" ? (
             <img
               className={styles.userProfileImage}
-              src="/default-profile-image.svg"
-              alt="user profile image"
+              src="/default_users_pfp.svg"
+              alt="user profile picture"
             />
           ) : (
             <img
               className={styles.updatedUserProfileImage}
               src={userLogInObj.profile_picture}
-              alt="user profile image"
+              alt="user profile picture"
             />
           )}
         </div>

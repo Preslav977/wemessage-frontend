@@ -1,7 +1,7 @@
 import { useContext } from "react";
-
 import { UserLoggedInContext } from "../contexts/UserLoggedInContext";
 import LogInForm from "./LogInForm";
+import PropTypes from "prop-types";
 
 const ProtectedRoute = ({ children }) => {
   const [isUserLoggedIn, setIsUserLoggedIn] = useContext(UserLoggedInContext);
@@ -11,6 +11,10 @@ const ProtectedRoute = ({ children }) => {
   } else {
     return children;
   }
+};
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.object,
 };
 
 export default ProtectedRoute;

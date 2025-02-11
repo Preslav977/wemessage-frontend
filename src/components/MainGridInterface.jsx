@@ -1,4 +1,6 @@
 import styles from "./MainGridInterface.module.css";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 function MainGridInterface({ leftGridComponent, rightGridComponent }) {
   return (
@@ -7,46 +9,59 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
         <nav className={styles.mainNavigation}>
           <ul className={styles.ulLinkContainer}>
             <li className={styles.liFlexedImgAnchorContainer}>
-              <img
-                className={styles.mainNavigationSvg}
-                src="/global-chat.svg"
-                alt="global chat"
-              />
-              <a href="/global/:id">Global</a>
+              <Link
+                className={styles.anchorFlexedImgContainer}
+                to="/global/:id"
+              >
+                <img
+                  className={styles.mainNavigationSvg}
+                  src="/global_chat.svg"
+                  alt="global chat"
+                />
+                Global
+              </Link>
             </li>
             <li className={styles.liFlexedImgAnchorContainer}>
-              <img
-                className={styles.mainNavigationSvg}
-                src="/chats.svg"
-                alt="chats (conversations)"
-              />
-              <a href="/chats">Chats</a>
+              <Link className={styles.anchorFlexedImgContainer} to="/chats">
+                <img
+                  className={styles.mainNavigationSvg}
+                  src="/chats.svg"
+                  alt="chats (conversations)"
+                />
+                Chats
+              </Link>
             </li>
             <li className={styles.liFlexedImgAnchorContainer}>
-              <img
-                className={styles.mainNavigationSvg}
-                src="/groups.svg"
-                alt="groups"
-              />
-              <a href="/groups">Groups</a>
+              <Link className={styles.anchorFlexedImgContainer} to="/groups">
+                <img
+                  className={styles.mainNavigationSvg}
+                  src="/groups.svg"
+                  alt="groups"
+                />
+                Groups
+              </Link>
             </li>
           </ul>
           <ul>
             <li className={styles.liFlexedImgAnchorContainer}>
-              <img
-                className={styles.mainNavigationSvg}
-                src="/profile.svg"
-                alt="profile"
-              />
-              <a href="/profile/4">Profile</a>
+              <Link className={styles.anchorFlexedImgContainer} to="/profile/4">
+                <img
+                  className={styles.mainNavigationSvg}
+                  src="/profile.svg"
+                  alt="profile"
+                />
+                Profile
+              </Link>
             </li>
             <li className={styles.liFlexedImgAnchorContainer}>
-              <img
-                className={styles.mainNavigationSvg}
-                src="/logout.svg"
-                alt="logout"
-              />
-              <a href="/logout">Logout</a>
+              <Link className={styles.anchorFlexedImgContainer} to="/logout">
+                <img
+                  className={styles.mainNavigationSvg}
+                  src="/logout.svg"
+                  alt="logout"
+                />
+                Logout
+              </Link>
             </li>
           </ul>
         </nav>
@@ -58,5 +73,10 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
     </main>
   );
 }
+
+MainGridInterface.propTypes = {
+  leftGridComponent: PropTypes.object,
+  rightGridComponent: PropTypes.object,
+};
 
 export default MainGridInterface;

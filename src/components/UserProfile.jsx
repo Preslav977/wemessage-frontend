@@ -77,21 +77,21 @@ function UserProfile() {
         {userLogInObj.background_picture === "" ? (
           <img
             className={styles.userBgImg}
-            src="/user-default-bg-image.jpg"
-            alt="user background image"
+            src="default_users_bg_picture.jpg"
+            alt="default user background picture"
           />
         ) : (
           <img
             className={styles.userBgImg}
             src={userLogInObj.background_picture}
-            alt="user background image"
+            alt="user background picture"
           />
         )}
         <div className={styles.userProfileContainer}>
           {userLogInObj.profile_picture === "" ? (
             <img
               className={styles.userProfileImg}
-              src="/default-profile-image.svg"
+              src="/default_pfp.svg"
               alt="user profile image"
             />
           ) : (
@@ -121,8 +121,8 @@ function UserProfile() {
           </form>
           <img
             className={styles.changeBgImg}
-            src="/edit-profile-image.svg"
-            alt="change user background image"
+            src="/update_pfp.svg"
+            alt="update background image"
           />
         </div>
         {userLogInObj.online_presence === "ONLINE" ? (

@@ -37,9 +37,6 @@ function LogInForm() {
 
   const navigate = useNavigate();
 
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
   async function handleLogin(e) {
     e.preventDefault();
 
@@ -96,7 +93,7 @@ function LogInForm() {
 
       setPopUpModal(false);
 
-      console.log(result);
+      // console.log(result);
     } catch (err) {
       console.log(err);
     }
@@ -169,7 +166,7 @@ function LogInForm() {
         <div className={styles.formContainerHeader}>
           <img
             className={styles.formHeaderImage}
-            src="/wemessage.jpg"
+            src="wemessage_logo.jpg"
             alt="wemessage"
           />
           <p className={styles.formHeaderName}>Wemessage</p>
@@ -224,7 +221,7 @@ function LogInForm() {
                   Loading...{" "}
                   <img
                     className="loading"
-                    src="loader.svg"
+                    src="loading_spinner.svg"
                     alt="loading spinner"
                   />
                 </button>
@@ -245,7 +242,7 @@ function LogInForm() {
           <div className={styles.formRightSideFlexedContainer}>
             <img
               className={styles.formRightSideFlexedImage}
-              src="/wemessage.jpg"
+              src="wemessage_logo.jpg"
               alt="wemessage"
             />
           </div>
