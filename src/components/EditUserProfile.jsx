@@ -144,7 +144,7 @@ function EditUserProfile() {
           } else if (err.msg === "Username is already taken") {
             setUsernameError(err.msg);
           } else {
-            setBioError(err.smg === "Bio must not be more than 150 characters");
+            setBioError(err.msg === "Bio must not be more than 150 characters");
           }
         });
       }
@@ -234,6 +234,7 @@ function EditUserProfile() {
                 type="text"
                 name="first_name"
                 id="first_name"
+                role="first_name"
                 required
               />
               {firstName.length < 1 && (
@@ -257,6 +258,7 @@ function EditUserProfile() {
                 type="text"
                 name="last_name"
                 id="last_name"
+                role="last_name"
                 required
               />
               {lastName.length < 1 && (
@@ -280,6 +282,7 @@ function EditUserProfile() {
                 type="text"
                 name="username"
                 id="username"
+                role="username"
                 required
               />
               {username.length < 1 && (
@@ -303,6 +306,7 @@ function EditUserProfile() {
               rows={12}
               name="bio"
               id="bio"
+              role="bio"
               required
             ></textarea>
             {bio.length < 150 && (
