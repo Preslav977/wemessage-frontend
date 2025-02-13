@@ -1,17 +1,16 @@
 import { http, HttpResponse } from "msw";
 
-export const loginPostHandler = [
-  http.post("http://localhost:5000/users/login", (req, res, ctx) => {
+export const userLoginHandler = [
+  http.post("http://localhost:5000/users/login", () => {
     return HttpResponse.json(
       {
-        // id: 4,
         username: "preslaw",
         password: "12345678Bg",
       },
       { status: 401 },
     );
   }),
-  // http.get("http://localhost:5000/users", (req, res, ctx) => {
+  // http.get("http://localhost:5000/users", () => {
   //   return HttpResponse.json({
   //     id: 4,
   //     first_name: "preslaw",

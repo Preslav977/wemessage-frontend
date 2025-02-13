@@ -192,89 +192,127 @@ describe("should render MainGridInterface", () => {
   // });
 
   it("should log in navigate to EditUserProfile and render the errors", async () => {
-    // const router = createMemoryRouter(routes, {
-    //   initialEntries: ["/login", "/profile/4", "/profile/edit/4"],
-    //   initialIndex: 0,
-    // });
-    // act(() => {
-    //   render(<RouterProvider router={router} />);
-    // });
-    // const user = userEvent.setup();
-    // await user.type(screen.getByRole("username"), "preslaw");
-    // expect(screen.getByRole("username")).toHaveValue("preslaw");
-    // await user.type(screen.getByRole("password"), "12345678Bg@");
-    // expect(screen.getByRole("password")).toHaveValue("12345678Bg@");
-    // const submitBtn = screen.queryAllByRole("button");
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/4", "/profile/edit/4"],
+      initialIndex: 0,
+    });
+    act(() => {
+      render(<RouterProvider router={router} />);
+    });
+    const user = userEvent.setup();
+
+    await user.type(screen.getByRole("username"), "preslaw");
+
+    expect(screen.getByRole("username")).toHaveValue("preslaw");
+
+    await user.type(screen.getByRole("password"), "12345678Bg@");
+
+    expect(screen.getByRole("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+    screen.debug();
+
+    await user.click(submitBtn[1]);
+
+    const loadingBtn = await screen.findByTestId("loading-btn");
+
+    expect(loadingBtn).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    expect(screen.queryAllByText("Edit Profile")[1].textContent).toMatch(
+      /edit profile/i,
+    );
+
+    const manageUserProfileEditProfile = screen.queryAllByText("Edit Profile");
+
+    await user.click(manageUserProfileEditProfile[1]);
     // screen.debug();
-    // await user.click(submitBtn[1]);
-    // const loadingBtn = await screen.findByTestId("loading-btn");
-    // expect(loadingBtn).toBeInTheDocument();
-    // await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-    // expect(screen.queryAllByText("Edit Profile")[1].textContent).toMatch(
-    //   /edit profile/i,
-    // );
-    // const manageUserProfileEditProfile = screen.queryAllByText("Edit Profile");
-    // await user.click(manageUserProfileEditProfile[1]);
-    // // screen.debug();
-    // expect(screen.queryByText("Global").textContent).toMatch(/global/i);
-    // expect(screen.queryByText("Chats").textContent).toMatch(/chats/i);
-    // expect(screen.queryByText("Groups").textContent).toMatch(/groups/i);
-    // expect(screen.queryAllByText("Profile")[0].textContent).toMatch(/profile/i);
-    // expect(screen.queryByText("Logout").textContent).toMatch(/logout/i);
-    // expect(screen.queryByText("Manage Profile").textContent).toMatch(
-    //   /manage profile/i,
-    // );
-    // expect(screen.queryAllByText("Profile")[1].textContent).toMatch(/profile/i);
-    // expect(screen.queryByText("Edit Profile").textContent).toMatch(
-    //   /edit profile/i,
-    // );
-    // expect(screen.queryByText("Change Password").textContent).toMatch(
-    //   /change password/i,
-    // );
-    // expect(screen.queryByText("Profile Picture").textContent).toMatch(
-    //   /profile picture/i,
-    // );
-    // expect(screen.queryByText("Edit").textContent).toMatch(/edit/i);
-    // expect(
-    //   screen.queryAllByRole("button", { name: "Send" })[0],
-    // ).toBeInTheDocument();
-    // expect(screen.queryByText("First name:").textContent).toMatch(
-    //   /first name:/i,
-    // );
-    // await user.type(screen.getByRole("first_name"), "preslaw");
-    // expect(screen.getByRole("first_name")).toHaveValue("preslaw");
+    expect(screen.queryByText("Global").textContent).toMatch(/global/i);
+
+    expect(screen.queryByText("Chats").textContent).toMatch(/chats/i);
+
+    expect(screen.queryByText("Groups").textContent).toMatch(/groups/i);
+
+    expect(screen.queryAllByText("Profile")[0].textContent).toMatch(/profile/i);
+
+    expect(screen.queryByText("Logout").textContent).toMatch(/logout/i);
+
+    expect(screen.queryByText("Manage Profile").textContent).toMatch(
+      /manage profile/i,
+    );
+
+    expect(screen.queryAllByText("Profile")[1].textContent).toMatch(/profile/i);
+
+    expect(screen.queryByText("Edit Profile").textContent).toMatch(
+      /edit profile/i,
+    );
+
+    expect(screen.queryByText("Change Password").textContent).toMatch(
+      /change password/i,
+    );
+
+    expect(screen.queryByText("Profile Picture").textContent).toMatch(
+      /profile picture/i,
+    );
+
+    expect(screen.queryByText("Edit").textContent).toMatch(/edit/i);
+
+    expect(
+      screen.queryAllByRole("button", { name: "Send" })[0],
+    ).toBeInTheDocument();
+
+    expect(screen.queryByText("First name:").textContent).toMatch(
+      /first name:/i,
+    );
+
+    await user.type(screen.getByTestId("first_name"), "preslaw");
+
+    expect(screen.getByTestId("first_name")).toHaveValue("preslaw");
+
     // expect(
     //   screen.queryByText("First name must be between 1 and 30 characters")
     //     .textContent,
     // ).toMatch(/first name must be between 1 and 30 characters/i);
-    // expect(screen.queryByText("Last name:").textContent).toMatch(/last name:/i);
-    // await user.type(screen.getByRole("last_name"), "preslaw");
-    // expect(screen.getByRole("last_name")).toHaveValue("preslaw");
+
+    expect(screen.queryByText("Last name:").textContent).toMatch(/last name:/i);
+
+    await user.type(screen.getByTestId("last_name"), "preslaw");
+
+    expect(screen.getByTestId("last_name")).toHaveValue("preslaw");
+
     // expect(
     //   screen.queryByText("Last name must be between 1 and 30 characters")
     //     .textContent,
     // ).toMatch(/last name must be between 1 and 30 characters/i);
-    // expect(screen.queryByText("Username:").textContent).toMatch(/username:/i);
-    // await user.type(screen.getByRole("username"), "preslaw");
-    // expect(screen.getByRole("username")).toHaveValue("preslaw");
+
+    expect(screen.queryByText("Username:").textContent).toMatch(/username:/i);
+
+    await user.type(screen.getByTestId("username"), "preslaw");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+
     // expect(
     //   screen.queryByText("Username must be between 1 and 30 characters")
     //     .textContent,
     // ).toMatch(/username must be between 1 and 30 characters/i);
-    // expect(screen.queryByText("Bio:").textContent).toMatch(/bio:/i);
-    // await user.type(screen.getByRole("bio"), "hello");
-    // expect(screen.getByRole("bio")).toHaveValue("hello");
+
+    expect(screen.queryByText("Bio:").textContent).toMatch(/bio:/i);
+
+    await user.type(screen.getByTestId("bio"), "hello");
+
+    expect(screen.getByTestId("bio")).toHaveValue("hello");
+
     // expect(
     //   screen.queryByText("Bio must not be more than 150 characters")
     //     .textContent,
     // ).toMatch(/bio must not be more than 150 characters/i);
-    // const saveChangesBtn = screen.queryAllByRole("button");
+
+    const saveChangesBtn = screen.queryAllByRole("button");
     // console.log(saveChangesBtn);
-    // await act(async () => {
-    // await waitFor(async () => {
-    // await user.click(saveChangesBtn[1]);
-    // });
-    // });
-    // screen.debug();
+
+    await user.click(saveChangesBtn[1]);
+
+    screen.debug();
   });
 });
