@@ -56,13 +56,13 @@ describe("should render LogInForm", () => {
 
     const user = userEvent.setup();
 
-    await user.type(screen.getByRole("username"), "preslaw");
+    await user.type(screen.getByTestId("username"), "preslaw");
 
-    expect(screen.getByRole("username")).toHaveValue("preslaw");
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
 
-    await user.type(screen.getByRole("password"), "12345678Bg@");
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
 
-    expect(screen.getByRole("password")).toHaveValue("12345678Bg@");
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
 
     expect(
       screen.queryByText("Username is required to log in"),
@@ -126,25 +126,17 @@ describe("should render LogInForm", () => {
       initialEntries: ["/login"],
     });
 
-    successUserLoginServer.listen();
-
-    successUserLoginServer.resetHandlers();
-
-    successUserLoginServer.close();
-
-    successUserLoginServer.use(...successUserLoginHandler);
-
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
 
-    await user.type(screen.getByRole("username"), "preslaw");
+    await user.type(screen.getByTestId("username"), "preslaw");
 
-    expect(screen.getByRole("username")).toHaveValue("preslaw");
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
 
-    await user.type(screen.getByRole("password"), "12345678Bg@");
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
 
-    expect(screen.getByRole("password")).toHaveValue("12345678Bg@");
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
 
     expect(
       screen.queryByText("Username is required to log in"),
@@ -161,6 +153,14 @@ describe("should render LogInForm", () => {
     const submitBtn = screen.queryAllByRole("button");
 
     await user.click(submitBtn[0]);
+
+    successUserLoginServer.listen();
+
+    successUserLoginServer.resetHandlers();
+
+    successUserLoginServer.close();
+
+    successUserLoginServer.use(...successUserLoginHandler);
 
     const loadingBtn = await screen.findByTestId("loading-btn");
 
@@ -189,13 +189,13 @@ describe("should render LogInForm", () => {
 
     const user = userEvent.setup();
 
-    await user.type(screen.getByRole("username"), "preslaw");
+    await user.type(screen.getByTestId("username"), "preslaw");
 
-    expect(screen.getByRole("username")).toHaveValue("preslaw");
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
 
-    await user.type(screen.getByRole("password"), "12345678Bg");
+    await user.type(screen.getByTestId("password"), "12345678Bg");
 
-    expect(screen.getByRole("password")).toHaveValue("12345678Bg");
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg");
 
     expect(
       screen.queryByText("Username is required to log in"),

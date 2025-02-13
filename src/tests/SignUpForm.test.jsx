@@ -111,33 +111,33 @@ describe("should render SignUpForm", () => {
 
     const user = userEvent.setup();
 
-    await user.type(screen.getByRole("first_name"), "preslaw");
+    await user.type(screen.getByTestId("first_name"), "preslaw");
 
-    expect(screen.getByRole("first_name")).toHaveValue("preslaw");
+    expect(screen.getByTestId("first_name")).toHaveValue("preslaw");
 
     expect(
       screen.queryByText("First name must be between 1 and 30 characters"),
     ).not.toBeInTheDocument();
 
-    await user.type(screen.getByRole("last_name"), "preslaw");
+    await user.type(screen.getByTestId("last_name"), "preslaw");
 
-    expect(screen.getByRole("last_name")).toHaveValue("preslaw");
+    expect(screen.getByTestId("last_name")).toHaveValue("preslaw");
 
     expect(
       screen.queryByText("Last name must be between 1 and 30 characters"),
     ).not.toBeInTheDocument();
 
-    await user.type(screen.getByRole("username"), "preslaw");
+    await user.type(screen.getByTestId("username"), "preslaw");
 
-    expect(screen.getByRole("username")).toHaveValue("preslaw");
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
 
     expect(
       screen.queryByText("Username must be between 1 and 30 characters"),
     ).not.toBeInTheDocument();
 
-    await user.type(screen.getByRole("password"), "12345678Bg@");
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
 
-    expect(screen.getByRole("password")).toHaveValue("12345678Bg@");
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
 
     expect(
       screen.queryByText(
@@ -145,9 +145,9 @@ describe("should render SignUpForm", () => {
       ),
     ).not.toBeInTheDocument();
 
-    await user.type(screen.getByRole("confirm_password"), "12345678Bg@");
+    await user.type(screen.getByTestId("confirm_password"), "12345678Bg@");
 
-    expect(screen.getByRole("confirm_password")).toHaveValue("12345678Bg@");
+    expect(screen.getByTestId("confirm_password")).toHaveValue("12345678Bg@");
 
     expect(screen.queryByText("Password must match")).not.toBeInTheDocument();
   });

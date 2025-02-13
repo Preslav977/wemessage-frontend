@@ -187,7 +187,7 @@ function LogInForm() {
                 maxLength={30}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                role="username"
+                data-testid="username"
                 required
               />
               {error && <span className={styles.error}>{error}</span>}
@@ -206,7 +206,7 @@ function LogInForm() {
                 minLength={8}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                role="password"
+                data-testid="password"
                 required
               />
               {password.length < 1 && (
