@@ -1,4 +1,4 @@
-import { http, HttpResponse } from "msw";
+import { http } from "msw";
 
 export const failedToSignUpHandler = [
   http.post("http://localhost:5000/users/signup", (req, res, ctx) => {

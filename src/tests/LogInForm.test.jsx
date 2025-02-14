@@ -3,12 +3,12 @@ import { describe, expect, it } from "vitest";
 import routes from "../router/routes";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { userLoginServer } from "./mocks/userLoginServer";
-import { userLoginHandler } from "./mocks/userLoginHandler";
-import { guestLoginServer } from "./mocks/guestLoginServer";
-import { guestLoginHandler } from "./mocks/guestLoginHandler";
-import { successUserLoginHandler } from "./mocks/successUserLoginHandler";
-import { successUserLoginServer } from "./mocks/successUserLoginServer";
+import { successUserLoginHandler } from "./mocks/logInMocks/successUserLoginHandler";
+import { successUserLoginServer } from "./mocks/logInMocks/successUserLoginServer";
+import { guestLoginHandler } from "./mocks/logInMocks/guestLoginHandler";
+import { guestLoginServer } from "./mocks/logInMocks/guestLoginServer";
+import { failedUserLoginHandler } from "./mocks/logInMocks/failedUserLoginHandler";
+import { failedUserLoginServer } from "./mocks/logInMocks/failedUserLoginServer";
 
 describe("should render LogInForm", () => {
   it("should render the content of this component", () => {
@@ -84,14 +84,6 @@ describe("should render LogInForm", () => {
 
     render(<RouterProvider router={router} />);
 
-    guestLoginServer.listen();
-
-    guestLoginServer.resetHandlers();
-
-    guestLoginServer.close();
-
-    guestLoginServer.use(...guestLoginHandler);
-
     const user = userEvent.setup();
 
     expect(screen.queryAllByRole("button")[0], { name: "Guest Login" });
@@ -101,6 +93,14 @@ describe("should render LogInForm", () => {
     const guestLogInBtn = screen.queryAllByRole("button");
 
     await user.click(guestLogInBtn[0]);
+
+    guestLoginServer.listen();
+
+    guestLoginServer.resetHandlers();
+
+    guestLoginServer.close();
+
+    guestLoginServer.use(...guestLoginHandler);
 
     expect(
       screen.queryByText("Username is required to log in"),
@@ -179,14 +179,6 @@ describe("should render LogInForm", () => {
     });
     render(<RouterProvider router={router} />);
 
-    userLoginServer.listen();
-
-    userLoginServer.resetHandlers();
-
-    userLoginServer.close();
-
-    userLoginServer.use(...userLoginHandler);
-
     const user = userEvent.setup();
 
     await user.type(screen.getByTestId("username"), "preslaw");
@@ -212,6 +204,14 @@ describe("should render LogInForm", () => {
 
     await user.click(submitBtn[1]);
 
+    failedUserLoginServer.listen();
+
+    failedUserLoginServer.resetHandlers();
+
+    failedUserLoginServer.close();
+
+    failedUserLoginServer.use(...failedUserLoginHandler);
+
     screen.debug();
 
     // await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
@@ -219,6 +219,12 @@ describe("should render LogInForm", () => {
     const modal = await screen.findByTestId("modal");
 
     expect(modal).toBeInTheDocument();
+
+    const unauthorizedErr = await screen.findByText(
+      "Wrong username or password",
+    );
+
+    expect(unauthorizedErr).toBeInTheDocument();
   });
 
   it("should redirect and render to sign up form when anchor link clicked", async () => {

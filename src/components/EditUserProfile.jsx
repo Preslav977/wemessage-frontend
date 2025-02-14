@@ -98,17 +98,17 @@ function EditUserProfile() {
     const userName = FormDataUserObject.get("username");
     const bio = FormDataUserObject.get("bio");
 
-    // const updateLoggedInObject = {
-    //   ...userLogInObj,
-    //   first_name: firstName,
-    //   last_name: lastName,
-    //   username: userName,
-    //   bio: bio,
-    // };
+    const updateLoggedInObject = {
+      ...userLogInObj,
+      first_name: firstName,
+      last_name: lastName,
+      username: userName,
+      bio: bio,
+    };
 
     // console.log(updateLoggedInObject);
 
-    // setUserLogInObj(updateLoggedInObject);
+    setUserLogInObj(updateLoggedInObject);
 
     // console.log(userLogInObj);
 
@@ -318,10 +318,9 @@ function EditUserProfile() {
             ></textarea>
             {bio.length < 1 && (
               <span className={styles.error}>
-                Bio must be between 1 and 150 characters{" "}
+                Bio must be between 1 and 150 characters
               </span>
             )}
-            {/* {bioError && <span className={styles.error}>{bioError}</span>} */}
           </div>
         </div>
         <div className={styles.submitBtnContainer}>

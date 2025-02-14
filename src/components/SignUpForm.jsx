@@ -37,8 +37,6 @@ function SignUpForm() {
 
   const [firstNameError, setFirstNameError] = useState("");
 
-  console.log(firstNameError);
-
   const [lastNameError, setLastNameError] = useState("");
 
   const [usernameError, setUsernameError] = useState("");
@@ -54,8 +52,6 @@ function SignUpForm() {
     const username = FormDataUserObject.get("username");
     const password = FormDataUserObject.get("password");
     const confirmPassword = FormDataUserObject.get("confirm_password");
-
-    console.log(FormDataUserObject);
 
     const signUpAndCreateUser = {
       ...userSignUpObj,
@@ -83,26 +79,18 @@ function SignUpForm() {
         }),
       });
 
-      console.log(userSignUpObj);
-
-      console.log(response);
-
       if (response.status === 200) {
         setFirstName("");
         setLastName("");
         setUsername("");
         setPassword("");
         setConfirmPassword("");
-      }
 
-      if (response.status === 400) {
+        navigate("/login");
+      } else if (response.status === 400) {
         const errors = await response.json();
 
-        console.log(errors);
-
         errors.map((err) => {
-          console.log(err);
-
           if (err.msg === "First name is already taken") {
             setFirstNameError(err.msg);
           } else if (err.msg === "Last name is already taken") {
@@ -112,19 +100,6 @@ function SignUpForm() {
           }
         });
       }
-
-      // result.map((err) => {
-      //   if (err.msg === "First name is already taken") {
-      //     setFirstNameError("First name is already taken");
-      //     console.log(firstNameError);
-      //   } else if (err.msg === "Last name is already taken") {
-      //     setLastNameError(err.msg);
-      //   } else {
-      //     setUsernameError(err.msg);
-      //   }
-      // });
-
-      // console.log(result);
     } catch (err) {
       console.log(err);
     }

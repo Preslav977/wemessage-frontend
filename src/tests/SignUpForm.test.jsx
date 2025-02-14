@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import routes from "../router/routes";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { failedToSignUpServer } from "./mocks/failedToSignUpSever";
-import { failedToSignUpHandler } from "./mocks/failedToSignUpHandler";
+import { failedToSignUpServer } from "./mocks/signUpMocks/failedToSignUpSever";
+import { failedToSignUpHandler } from "./mocks/signUpMocks/failedToSignUpHandler";
 
 describe("should render SignUpForm", () => {
   it("should render the content of this component", () => {
