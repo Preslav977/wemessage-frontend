@@ -98,15 +98,19 @@ function EditUserProfile() {
     const userName = FormDataUserObject.get("username");
     const bio = FormDataUserObject.get("bio");
 
-    const updateLoggedInObject = {
-      ...userLogInObj,
-      firstName: firstName,
-      lastName: lastName,
-      userName: userName,
-      bio: bio,
-    };
+    // const updateLoggedInObject = {
+    //   ...userLogInObj,
+    //   first_name: firstName,
+    //   last_name: lastName,
+    //   username: userName,
+    //   bio: bio,
+    // };
 
-    setUserLogInObj(updateLoggedInObject);
+    // console.log(updateLoggedInObject);
+
+    // setUserLogInObj(updateLoggedInObject);
+
+    // console.log(userLogInObj);
 
     try {
       const response = await fetch(
@@ -135,6 +139,8 @@ function EditUserProfile() {
         navigate(`/profile/${userLogInObj.id}`);
       } else {
         const result = await response.json();
+
+        // console.log(result);
 
         result.map((err) => {
           if (err.msg === "First name is already taken") {
@@ -302,6 +308,7 @@ function EditUserProfile() {
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
+              minLength={1}
               maxLength={150}
               rows={12}
               name="bio"
@@ -309,12 +316,12 @@ function EditUserProfile() {
               data-testid="bio"
               required
             ></textarea>
-            {bio.length < 150 && (
+            {bio.length < 1 && (
               <span className={styles.error}>
-                Bio must not be more than 150 characters
+                Bio must be between 1 and 150 characters{" "}
               </span>
             )}
-            {bioError && <span className={styles.error}>{bioError}</span>}
+            {/* {bioError && <span className={styles.error}>{bioError}</span>} */}
           </div>
         </div>
         <div className={styles.submitBtnContainer}>
