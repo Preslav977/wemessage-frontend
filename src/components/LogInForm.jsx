@@ -148,7 +148,7 @@ function LogInForm() {
 
       const userLoggedInInformation = {
         ...userLogInObj,
-        userLogInObj,
+        // userLogInObj,
       };
 
       setUserLogInObj(userLoggedInInformation);

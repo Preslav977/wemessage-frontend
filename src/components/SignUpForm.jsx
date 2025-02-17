@@ -6,6 +6,8 @@ import { useContext, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
+import { passwordRegex } from "../utility/passwordRegex";
+
 import {
   FirstNameContext,
   LastNameContext,
@@ -14,9 +16,6 @@ import {
   ConfirmPasswordContext,
   UserSignUpObjectContext,
 } from "../contexts/UserRegistrationContext";
-
-const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 function SignUpForm() {
   const { firstName, setFirstName } = useContext(FirstNameContext);

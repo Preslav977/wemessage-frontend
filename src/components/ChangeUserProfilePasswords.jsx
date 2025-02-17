@@ -3,15 +3,20 @@ import styles from "./ChangeUserProfilePasswords.module.css";
 import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
 import { PasswordContext } from "../contexts/UserRegistrationContext";
 import { useState, useContext } from "react";
+import { passwordRegex } from "../utility/passwordRegex";
 
 function ChangeUserProfilePasswords() {
   const [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
+  console.log(userLogInObj);
+
   const [oldPassword, setOldPassword] = useState("");
+
+  const { password, setPassword } = useContext(PasswordContext);
 
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const { password, setPassword } = useContext(PasswordContext);
+  const [oldPasswordErr, setOldPasswordErr] = useState("");
 
   async function userUserPasswords(e) {
     e.preventDefault();
@@ -25,6 +30,13 @@ function ChangeUserProfilePasswords() {
     const confirmPassword = formData.get("confirm_password");
 
     console.log(formData);
+
+    const updateUserLoggedInObject = {
+      ...userLogInObj,
+      password: password,
+    };
+
+    setUserLogInObj(updateUserLoggedInObject);
 
     try {
       const response = await fetch(
@@ -60,28 +72,40 @@ function ChangeUserProfilePasswords() {
       <div className={styles.formGroup}>
         <label htmlFor="old_password">Enter old password:</label>
         <input
+          type="password"
+          minLength={8}
           value={oldPassword}
           onChange={(e) => setOldPassword(e.target.value)}
-          type="password"
           name="old_password"
           id="old_password"
         />
         <label htmlFor="password">Enter new password:</label>
         <input
+          type="password"
+          minLength={8}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          type="password"
           name="password"
           id="password"
         />
+        {!password.match(passwordRegex) && (
+          <span className={styles.error}>
+            Password must be 8 characters long, and contain one lower, one
+            uppercase and one special character
+          </span>
+        )}
         <label htmlFor="confirm_password">Confirm new password:</label>
         <input
+          type="password"
+          minLength={8}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          type="password"
           name="confirm_password"
           id="confirm_password"
         />
+        {password !== confirmPassword && (
+          <span className={styles.error}>Passwords must match</span>
+        )}
       </div>
     </form>
   );
