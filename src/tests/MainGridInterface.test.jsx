@@ -9,6 +9,8 @@ import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { failedEditProfileServer } from "./mocks/editProfileMocks/failedEditProfileServer";
 import { failedEditProfileHandler } from "./mocks/editProfileMocks/failedEditProfileHandler";
+import { successEditProfileHandler } from "./mocks/editProfileMocks/successEditProfileHandler";
+import { successEditProfileServer } from "./mocks/editProfileMocks/successEditProfileServer";
 
 describe("should render MainGridInterface", () => {
   it("should render Login form then navigate to UserProfile", async () => {
@@ -314,6 +316,131 @@ describe("should render MainGridInterface", () => {
     const usernameErr = await screen.findByText("Username is already taken");
 
     expect(usernameErr).toBeInTheDocument();
+
+    screen.debug();
+  });
+
+  it("should navigate to EditProfile update the user information and render it", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/4", "/profile/edit/5"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw1");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw1");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    // screen.debug();
+
+    const loadingBtn = await screen.findByTestId("loading-btn");
+
+    expect(loadingBtn).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    expect(screen.queryAllByText("Edit Profile")[1].textContent).toMatch(
+      /edit profile/i,
+    );
+
+    const manageUserProfileEditProfile = screen.queryAllByText("Edit Profile");
+
+    await user.click(manageUserProfileEditProfile[1]);
+
+    expect(screen.queryByText("Global").textContent).toMatch(/global/i);
+
+    expect(screen.queryByText("Chats").textContent).toMatch(/chats/i);
+
+    expect(screen.queryByText("Groups").textContent).toMatch(/groups/i);
+
+    expect(screen.queryAllByText("Profile")[0].textContent).toMatch(/profile/i);
+
+    expect(screen.queryByText("Logout").textContent).toMatch(/logout/i);
+
+    expect(screen.queryByText("Manage Profile").textContent).toMatch(
+      /manage profile/i,
+    );
+
+    expect(screen.queryAllByText("Profile")[1].textContent).toMatch(/profile/i);
+
+    expect(screen.queryByText("Edit Profile").textContent).toMatch(
+      /edit profile/i,
+    );
+
+    expect(screen.queryByText("Change Password").textContent).toMatch(
+      /change password/i,
+    );
+
+    expect(screen.queryByText("Profile Picture").textContent).toMatch(
+      /profile picture/i,
+    );
+
+    expect(screen.queryByText("Edit").textContent).toMatch(/edit/i);
+
+    expect(
+      screen.queryAllByRole("button", { name: "Send" })[0],
+    ).toBeInTheDocument();
+
+    expect(screen.queryByText("First name:").textContent).toMatch(
+      /first name:/i,
+    );
+
+    await user.type(screen.getByTestId("first_name"), "preslaw-edited");
+
+    expect(screen.getByTestId("first_name")).toHaveValue("preslaw-edited");
+
+    expect(screen.queryByText("Last name:").textContent).toMatch(/last name:/i);
+
+    await user.type(screen.getByTestId("last_name"), "preslaw-edited");
+
+    expect(screen.getByTestId("last_name")).toHaveValue("preslaw-edited");
+
+    expect(screen.queryByText("Username:").textContent).toMatch(/username:/i);
+
+    await user.type(screen.getByTestId("username"), "preslaw-edited");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw-edited");
+
+    expect(screen.queryByText("Bio:").textContent).toMatch(/bio:/i);
+
+    await user.type(screen.getByTestId("bio"), "bio-edited");
+
+    expect(screen.getByTestId("bio")).toHaveValue("bio-edited");
+
+    const saveChangesBtn = screen.queryByRole("button", {
+      name: "save changes",
+    });
+
+    await user.click(saveChangesBtn);
+
+    successEditProfileServer.listen();
+
+    successEditProfileServer.resetHandlers();
+
+    successEditProfileServer.close();
+
+    successEditProfileServer.use(...successEditProfileHandler);
+
+    const firstNameAndLastName = await screen.findByText(
+      "preslaw-edited preslaw-edited",
+    );
+
+    expect(firstNameAndLastName).toBeInTheDocument();
+
+    const username = await screen.findByText("@preslaw-edited");
+
+    expect(username).toBeInTheDocument();
 
     screen.debug();
   });
