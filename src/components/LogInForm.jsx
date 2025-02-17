@@ -85,7 +85,7 @@ function LogInForm() {
 
       const userLoggedInInformation = {
         ...userLogInObj,
-        userLogInObj,
+        // userLogInObj,
       };
 
       setUserLogInObj(userLoggedInInformation);
@@ -105,12 +105,12 @@ function LogInForm() {
   async function handleGuestLogin(e) {
     e.preventDefault();
 
-    const guestUsername = "preslaw-edited";
-    const guestPassword = "12345678Bg@";
+    const guestUsername = "preslaw1";
+    const guestPassword = "12345678Bg@@";
 
-    // setUsername(guestUsername);
+    setUsername(guestUsername);
 
-    // setPassword(guestPassword);
+    setPassword(guestPassword);
 
     try {
       const response = await fetch("http://localhost:5000/users/login_guest", {
@@ -123,6 +123,11 @@ function LogInForm() {
           password: guestPassword,
         }),
       });
+
+      if (response.status === 200) {
+        setUsername("");
+        setPassword("");
+      }
 
       const result = await response.json();
 

@@ -11,8 +11,12 @@ import { useContext, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
+import { useRef } from "react";
+
 function EditUserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
+
+  // console.log(userLogInObj);
 
   const { profilePicture, setProfilePicture } = useContext(
     ProfilePictureContext,
@@ -35,6 +39,8 @@ function EditUserProfile() {
   const [bioError, setBioError] = useState("");
 
   const navigate = useNavigate();
+
+  const sendBtnRef = useRef(null);
 
   async function changeProfileImage(e) {
     e.preventDefault();
@@ -78,12 +84,20 @@ function EditUserProfile() {
 
       userLogInObj = await fetchLoggedInUserInformation.json();
 
+      // console.log(userLogInObj);
+
       const userLoggedInInformation = {
         ...userLogInObj,
-        userLogInObj,
+        // userLogInObj,
       };
 
       setUserLogInObj(userLoggedInInformation);
+
+      if (sendBtnRef.current.style.display === "block") {
+        sendBtnRef.current.style.display = "none";
+      }
+
+      // console.log(userLogInObj);
     } catch (err) {
       console.log(err);
     }
@@ -109,8 +123,6 @@ function EditUserProfile() {
     // console.log(updateLoggedInObject);
 
     setUserLogInObj(updateLoggedInObject);
-
-    // console.log(userLogInObj);
 
     try {
       const response = await fetch(
@@ -169,12 +181,18 @@ function EditUserProfile() {
 
       const userLoggedInInformation = {
         ...userLogInObj,
-        userLogInObj,
+        // userLogInObj,
       };
 
       setUserLogInObj(userLoggedInInformation);
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  function showSendBtn() {
+    if (sendBtnRef.current.style.display === "none") {
+      sendBtnRef.current.style.display = "block";
     }
   }
 
@@ -194,6 +212,7 @@ function EditUserProfile() {
               alt="update user profile picture"
             />
             <input
+              onClick={showSendBtn}
               className={styles.editInputProfileImage}
               type="file"
               name="file"
@@ -201,7 +220,14 @@ function EditUserProfile() {
             />
           </label>
           <div className={styles.submitProfilePictureContainer}>
-            <button className={styles.submitProfilePicture} type="submit">
+            <button
+              style={{
+                display: "none",
+              }}
+              ref={sendBtnRef}
+              className={styles.submitProfilePicture}
+              type="submit"
+            >
               Send
             </button>
           </div>

@@ -6,9 +6,9 @@ import { useState, useContext } from "react";
 import { passwordRegex } from "../utility/passwordRegex";
 
 function ChangeUserProfilePasswords() {
-  const [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
+  let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
-  console.log(userLogInObj);
+  // console.log(userLogInObj);
 
   const [oldPassword, setOldPassword] = useState("");
 
@@ -56,7 +56,32 @@ function ChangeUserProfilePasswords() {
       );
       const result = await response.json();
 
-      console.log(result);
+      if (result.message === "Old password doesn't match.") {
+        setOldPasswordErr(result.message);
+      }
+
+      setOldPassword("");
+      setPassword("");
+      setConfirmPassword("");
+
+      const fetchLoggedInUserInformation = await fetch(
+        "http://localhost:5000/users",
+        {
+          mode: "cors",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        },
+      );
+
+      userLogInObj = await fetchLoggedInUserInformation.json();
+
+      const userLoggedInInformation = {
+        ...userLogInObj,
+        // userLogInObj,
+      };
+
+      setUserLogInObj(userLoggedInInformation);
     } catch (err) {
       console.log(err);
     }
@@ -70,39 +95,48 @@ function ChangeUserProfilePasswords() {
       </header>
       <hr />
       <div className={styles.formGroup}>
-        <label htmlFor="old_password">Enter old password:</label>
-        <input
-          type="password"
-          minLength={8}
-          value={oldPassword}
-          onChange={(e) => setOldPassword(e.target.value)}
-          name="old_password"
-          id="old_password"
-        />
-        <label htmlFor="password">Enter new password:</label>
-        <input
-          type="password"
-          minLength={8}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          name="password"
-          id="password"
-        />
+        <div className={styles.formGroupContent}>
+          <label htmlFor="old_password">Enter old password:</label>
+          <input
+            type="password"
+            minLength={8}
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+            name="old_password"
+            id="old_password"
+          />
+        </div>
+        {oldPasswordErr && (
+          <span className={styles.error}>{oldPasswordErr}</span>
+        )}
+        <div className={styles.formGroupContent}>
+          <label htmlFor="password">Enter new password:</label>
+          <input
+            type="password"
+            minLength={8}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            id="password"
+          />
+        </div>
         {!password.match(passwordRegex) && (
           <span className={styles.error}>
             Password must be 8 characters long, and contain one lower, one
             uppercase and one special character
           </span>
         )}
-        <label htmlFor="confirm_password">Confirm new password:</label>
-        <input
-          type="password"
-          minLength={8}
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          name="confirm_password"
-          id="confirm_password"
-        />
+        <div className={styles.formGroupContent}>
+          <label htmlFor="confirm_password">Confirm new password:</label>
+          <input
+            type="password"
+            minLength={8}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            name="confirm_password"
+            id="confirm_password"
+          />
+        </div>
         {password !== confirmPassword && (
           <span className={styles.error}>Passwords must match</span>
         )}

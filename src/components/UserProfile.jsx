@@ -5,6 +5,7 @@ import { BackgroundPictureContext } from "../contexts/UserRegistrationContext";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import PopUpModal from "./PopUpModal";
+import { useRef } from "react";
 
 function UserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
@@ -13,6 +14,8 @@ function UserProfile() {
   );
 
   const [showModalOnSuccess, setShowModalOnSuccess] = useState(false);
+
+  const saveBtnRef = useRef(null);
 
   async function changeBackgroundImage(e) {
     e.preventDefault();
@@ -62,12 +65,22 @@ function UserProfile() {
 
       const userLoggedInInformation = {
         ...userLogInObj,
-        userLogInObj,
+        // userLogInObj,
       };
 
       setUserLogInObj(userLoggedInInformation);
+
+      if (saveBtnRef.current.style.display === "block") {
+        saveBtnRef.current.style.display = "none";
+      }
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  function showSaveBtn() {
+    if (saveBtnRef.current.style.display === "none") {
+      saveBtnRef.current.style.display = "block";
     }
   }
 
@@ -110,12 +123,20 @@ function UserProfile() {
           >
             <label htmlFor="file"></label>
             <input
+              onClick={showSaveBtn}
               className={styles.changeBgImgInput}
               type="file"
               name="file"
               id="file"
             />
-            <button className={styles.changeBgImgBtn} type="submit">
+            <button
+              style={{
+                display: "none",
+              }}
+              className={styles.changeBgImgBtn}
+              type="submit"
+              ref={saveBtnRef}
+            >
               Save
             </button>
           </form>
