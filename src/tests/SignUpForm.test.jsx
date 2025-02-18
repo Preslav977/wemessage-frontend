@@ -3,8 +3,11 @@ import { describe, expect, it } from "vitest";
 import routes from "../router/routes";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { handlers as signUpHandler } from "./mocks/handlers/signUpHandler";
-import { server as signUpServer } from "./mocks/servers/signUpServer";
+import { handlers as signUpHandler400 } from "./mocks/handlers/signUpHandler400";
+import { server as signUpServer400 } from "./mocks/servers/signUpServer400";
+import { handlers as signUpHandler200 } from "./mocks/handlers/signUpHandler200";
+import { server as signUpServer200 } from "./mocks/servers/signUpServer200";
+import { beforeAll, afterEach, afterAll } from "vitest";
 
 describe("should render SignUpForm", () => {
   it("should render the content of this component", () => {
@@ -197,7 +200,7 @@ describe("should render SignUpForm", () => {
     expect(screen.queryAllByRole("button")[1], { name: "Submit" });
   });
 
-  it("should render span errors if the first, last name and username are taken", async () => {
+  it("should register and render the user information", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/signup"],
     });
@@ -210,9 +213,9 @@ describe("should render SignUpForm", () => {
       /first name:/i,
     );
 
-    await user.type(screen.getByTestId("first_name"), "preslaw");
+    await user.type(screen.getByTestId("first_name"), "test_user");
 
-    expect(screen.getByTestId("first_name").value).toBe("preslaw");
+    expect(screen.getByTestId("first_name").value).toBe("test_user");
 
     expect(
       screen.queryByText("First name must be between 1 and 30 characters"),
@@ -220,9 +223,9 @@ describe("should render SignUpForm", () => {
 
     expect(screen.queryByText("Last name:").textContent).toMatch(/last name:/i);
 
-    await user.type(screen.getByTestId("last_name"), "preslaw");
+    await user.type(screen.getByTestId("last_name"), "test_user");
 
-    expect(screen.getByTestId("last_name")).toHaveValue("preslaw");
+    expect(screen.getByTestId("last_name")).toHaveValue("test_user");
 
     expect(
       screen.queryByText("Last name must be between 1 and 30 characters"),
@@ -230,9 +233,9 @@ describe("should render SignUpForm", () => {
 
     expect(screen.queryByText("Username:").textContent).toMatch(/username:/i);
 
-    await user.type(screen.getByTestId("username"), "preslaw");
+    await user.type(screen.getByTestId("username"), "test_user");
 
-    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+    expect(screen.getByTestId("username")).toHaveValue("test_user");
 
     expect(
       screen.queryByText("Username must be between 1 and 30 characters"),
@@ -262,7 +265,95 @@ describe("should render SignUpForm", () => {
 
     await user.click(signUpBtn);
 
-    signUpServer.use(...signUpHandler);
+    beforeAll(() => signUpServer200.listen());
+
+    afterEach(() => signUpServer200.resetHandlers());
+
+    afterAll(() => signUpServer200.close());
+
+    signUpServer200.use(...signUpHandler200);
+
+    screen.debug();
+
+    // const firstName = await screen.findByText("test_user");
+
+    // expect(firstName).toBeInTheDocument();
+
+    // const lastName = await screen.findByText("test_user");
+
+    // expect(lastName).toBeInTheDocument();
+
+    // const username = await screen.findByText("test_user");
+
+    // expect(username).toBeInTheDocument();
+  });
+
+  it("should render span errors if the first, last name and username are taken", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/signup"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    expect(screen.queryByText("First name:").textContent).toMatch(
+      /first name:/i,
+    );
+
+    await user.type(screen.getByTestId("first_name"), "test_user");
+
+    expect(screen.getByTestId("first_name").value).toBe("test_user");
+
+    expect(
+      screen.queryByText("First name must be between 1 and 30 characters"),
+    ).not.toBeInTheDocument();
+
+    expect(screen.queryByText("Last name:").textContent).toMatch(/last name:/i);
+
+    await user.type(screen.getByTestId("last_name"), "test_user");
+
+    expect(screen.getByTestId("last_name")).toHaveValue("test_user");
+
+    expect(
+      screen.queryByText("Last name must be between 1 and 30 characters"),
+    ).not.toBeInTheDocument();
+
+    expect(screen.queryByText("Username:").textContent).toMatch(/username:/i);
+
+    await user.type(screen.getByTestId("username"), "test_user");
+
+    expect(screen.getByTestId("username")).toHaveValue("test_user");
+
+    expect(
+      screen.queryByText("Username must be between 1 and 30 characters"),
+    ).not.toBeInTheDocument();
+
+    expect(screen.queryByText("Password:").textContent).toMatch(/password:/i);
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    expect(
+      screen.queryByText(
+        "Password must be 8 characters long, and contain one lower, one uppercase and one special character",
+      ),
+    ).not.toBeInTheDocument();
+
+    expect(screen.queryByText("Confirm Password:").textContent).toMatch(
+      /confirm password:/i,
+    );
+
+    await user.type(screen.getByTestId("confirm_password"), "12345678Bg@");
+
+    expect(screen.getByTestId("confirm_password")).toHaveValue("12345678Bg@");
+
+    const signUpBtn = screen.queryByRole("button", { name: "Submit" });
+
+    await user.click(signUpBtn);
+
+    signUpServer400.use(...signUpHandler400);
 
     const firstNameErr = await screen.findByText("First name is already taken");
 
@@ -275,9 +366,5 @@ describe("should render SignUpForm", () => {
     const usernameErr = await screen.findByText("Username is already taken");
 
     expect(usernameErr).toBeInTheDocument();
-
-    // screen.debug();
-
-    // screen.debug();
   });
 });

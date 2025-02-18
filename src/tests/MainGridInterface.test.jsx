@@ -317,7 +317,7 @@ describe("should render MainGridInterface", () => {
 
     expect(usernameErr).toBeInTheDocument();
 
-    screen.debug();
+    // screen.debug();
   });
 
   it("should navigate to EditProfile update the user information and render it", async () => {
@@ -440,6 +440,6 @@ describe("should render MainGridInterface", () => {
 
     expect(username).toBeInTheDocument();
 
-    screen.debug();
+    // screen.debug();
   });
 });

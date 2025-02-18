@@ -85,7 +85,7 @@ function SignUpForm() {
         setPassword("");
         setConfirmPassword("");
 
-        navigate("/login");
+        // navigate("/login");
       } else if (response.status === 400) {
         const errors = await response.json();
 

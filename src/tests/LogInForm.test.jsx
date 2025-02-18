@@ -212,7 +212,7 @@ describe("should render LogInForm", () => {
 
     failedUserLoginServer.use(...failedUserLoginHandler);
 
-    screen.debug();
+    // screen.debug();
 
     // await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
 
