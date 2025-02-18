@@ -242,7 +242,7 @@ function EditUserProfile() {
           {userLogInObj.profile_picture === "" ? (
             <img
               className={styles.userProfileImage}
-              src="/default_users_pfp.svg"
+              src="/default_pfp.svg"
               alt="user profile picture"
             />
           ) : (

@@ -94,7 +94,7 @@ function UserProfile() {
         {userLogInObj.background_picture === "" ? (
           <img
             className={styles.userBgImg}
-            src="default_users_bg_picture.jpg"
+            src="/default_users_bg_picture.jpg"
             alt="default user background picture"
           />
         ) : (

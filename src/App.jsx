@@ -21,8 +21,6 @@ import { PopUpModalContext } from "./contexts/PopUpModalContext";
 
 import { Outlet } from "react-router-dom";
 
-import { useNavigate } from "react-router-dom";
-
 function App() {
   const [firstName, setFirstName] = useState("");
 

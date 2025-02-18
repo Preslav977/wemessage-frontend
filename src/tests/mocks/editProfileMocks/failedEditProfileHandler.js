@@ -4,13 +4,13 @@ export const failedEditProfileHandler = [
   http.post("http://localhost/users/login", () => {
     return HttpResponse.json(
       {
-        username: "preslaw",
+        username: "test",
         password: "12345678Bg@",
       },
       { status: 200 },
     );
   }),
-  http.put("http://localhost/users/profile/edit/4", (req, res, ctx) => {
+  http.put("http://localhost/users/profile/edit/9", (req, res, ctx) => {
     return res.json(
       ctx.status(400),
 

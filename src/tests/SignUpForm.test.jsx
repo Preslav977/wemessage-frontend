@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import routes from "../router/routes";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { failedToSignUpServer } from "./mocks/signUpMocks/failedToSignUpSever";
-import { failedToSignUpHandler } from "./mocks/signUpMocks/failedToSignUpHandler";
+import { handlers as signUpHandler } from "./mocks/handlers/signUpHandler";
+import { server as signUpServer } from "./mocks/servers/signUpServer";
 
 describe("should render SignUpForm", () => {
   it("should render the content of this component", () => {
@@ -262,13 +262,7 @@ describe("should render SignUpForm", () => {
 
     await user.click(signUpBtn);
 
-    failedToSignUpServer.listen();
-
-    failedToSignUpServer.resetHandlers();
-
-    failedToSignUpServer.close();
-
-    failedToSignUpServer.use(...failedToSignUpHandler);
+    signUpServer.use(...signUpHandler);
 
     const firstNameErr = await screen.findByText("First name is already taken");
 

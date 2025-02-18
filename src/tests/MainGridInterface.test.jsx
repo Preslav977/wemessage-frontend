@@ -15,7 +15,7 @@ import { successEditProfileServer } from "./mocks/editProfileMocks/successEditPr
 describe("should render MainGridInterface", () => {
   it("should render Login form then navigate to UserProfile", async () => {
     const router = createMemoryRouter(routes, {
-      initialEntries: ["/login", "/profile/4"],
+      initialEntries: ["/login", "/profile/9"],
       initialIndex: 0,
     });
 
@@ -23,9 +23,9 @@ describe("should render MainGridInterface", () => {
 
     const user = userEvent.setup();
 
-    await user.type(screen.getByTestId("username"), "preslaw");
+    await user.type(screen.getByTestId("username"), "test");
 
-    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+    expect(screen.getByTestId("username")).toHaveValue("test");
 
     await user.type(screen.getByTestId("password"), "12345678Bg@");
 
@@ -195,7 +195,7 @@ describe("should render MainGridInterface", () => {
 
   it("should log in navigate to EditUserProfile and render the errors", async () => {
     const router = createMemoryRouter(routes, {
-      initialEntries: ["/login", "/profile/4", "/profile/edit/4"],
+      initialEntries: ["/login", "/profile/4", "/profile/edit/9"],
       initialIndex: 0,
     });
 
@@ -203,9 +203,9 @@ describe("should render MainGridInterface", () => {
 
     const user = userEvent.setup();
 
-    await user.type(screen.getByTestId("username"), "preslaw");
+    await user.type(screen.getByTestId("username"), "test");
 
-    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+    expect(screen.getByTestId("username")).toHaveValue("test");
 
     await user.type(screen.getByTestId("password"), "12345678Bg@");
 
@@ -322,7 +322,7 @@ describe("should render MainGridInterface", () => {
 
   it("should navigate to EditProfile update the user information and render it", async () => {
     const router = createMemoryRouter(routes, {
-      initialEntries: ["/login", "/profile/4", "/profile/edit/4"],
+      initialEntries: ["/login", "/profile/9", "/profile/edit/9"],
       initialIndex: 0,
     });
 
@@ -330,9 +330,9 @@ describe("should render MainGridInterface", () => {
 
     const user = userEvent.setup();
 
-    await user.type(screen.getByTestId("username"), "preslaw");
+    await user.type(screen.getByTestId("username"), "test");
 
-    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+    expect(screen.getByTestId("username")).toHaveValue("test");
 
     await user.type(screen.getByTestId("password"), "12345678Bg@");
 
@@ -396,21 +396,21 @@ describe("should render MainGridInterface", () => {
       /first name:/i,
     );
 
-    await user.type(screen.getByTestId("first_name"), "preslawp");
+    await user.type(screen.getByTestId("first_name"), "testt");
 
-    expect(screen.getByTestId("first_name")).toHaveValue("preslawp");
+    expect(screen.getByTestId("first_name")).toHaveValue("testt");
 
     expect(screen.queryByText("Last name:").textContent).toMatch(/last name:/i);
 
-    await user.type(screen.getByTestId("last_name"), "preslawp");
+    await user.type(screen.getByTestId("last_name"), "testt");
 
-    expect(screen.getByTestId("last_name")).toHaveValue("preslawp");
+    expect(screen.getByTestId("last_name")).toHaveValue("testt");
 
     expect(screen.queryByText("Username:").textContent).toMatch(/username:/i);
 
-    await user.type(screen.getByTestId("username"), "preslawp");
+    await user.type(screen.getByTestId("username"), "testt");
 
-    expect(screen.getByTestId("username")).toHaveValue("preslawp");
+    expect(screen.getByTestId("username")).toHaveValue("testt");
 
     expect(screen.queryByText("Bio:").textContent).toMatch(/bio:/i);
 
@@ -432,11 +432,11 @@ describe("should render MainGridInterface", () => {
 
     successEditProfileServer.use(...successEditProfileHandler);
 
-    const firstNameAndLastName = await screen.findByText("preslawp preslawp");
+    const firstNameAndLastName = await screen.findByText("testt testt");
 
     expect(firstNameAndLastName).toBeInTheDocument();
 
-    const username = await screen.findByText("@preslawp");
+    const username = await screen.findByText("@testt");
 
     expect(username).toBeInTheDocument();
 
