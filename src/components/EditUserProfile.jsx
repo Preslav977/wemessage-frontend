@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 
 import { useRef } from "react";
 
+import { PopUpModalContext } from "../contexts/PopUpModalContext";
+
 function EditUserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
@@ -37,6 +39,8 @@ function EditUserProfile() {
   const [usernameError, setUsernameError] = useState("");
 
   const [bioError, setBioError] = useState("");
+
+  const [popUpModal, setPopUpModal] = useContext(PopUpModalContext);
 
   const navigate = useNavigate();
 
@@ -69,8 +73,6 @@ function EditUserProfile() {
           body: formData,
         },
       );
-
-      const result = await response.json();
 
       const fetchLoggedInUserInformation = await fetch(
         "http://localhost:5000/users",
@@ -147,6 +149,8 @@ function EditUserProfile() {
         setLastName("");
         setUsername("");
         setBio("");
+
+        setPopUpModal(true);
 
         navigate(`/profile/${userLogInObj.id}`);
       } else {

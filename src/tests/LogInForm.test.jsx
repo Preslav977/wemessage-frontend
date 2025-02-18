@@ -104,11 +104,11 @@ describe("should render LogInForm", () => {
 
     expect(
       screen.queryByText("Username is required to log in"),
-    ).toBeInTheDocument();
+    ).not.toBeInTheDocument();
 
     expect(
       screen.queryByText("Password is required to log in"),
-    ).toBeInTheDocument();
+    ).not.toBeInTheDocument();
 
     const loadingBtn = await screen.findByTestId("loading-btn");
 

@@ -4,6 +4,9 @@ import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
 import { PasswordContext } from "../contexts/UserRegistrationContext";
 import { useState, useContext } from "react";
 import { passwordRegex } from "../utility/passwordRegex";
+import { PopUpModalContext } from "../contexts/PopUpModalContext";
+import { useNavigate } from "react-router-dom";
+import PopUpModal from "./PopUpModal";
 
 function ChangeUserProfilePasswords() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
@@ -18,6 +21,10 @@ function ChangeUserProfilePasswords() {
 
   const [oldPasswordErr, setOldPasswordErr] = useState("");
 
+  const [popUpModal, setPopUpModal] = useContext(PopUpModalContext);
+
+  const navigate = useNavigate();
+
   async function userUserPasswords(e) {
     e.preventDefault();
 
@@ -28,8 +35,6 @@ function ChangeUserProfilePasswords() {
     const newPassword = formData.get("password");
 
     const confirmPassword = formData.get("confirm_password");
-
-    console.log(formData);
 
     const updateUserLoggedInObject = {
       ...userLogInObj,
@@ -54,6 +59,11 @@ function ChangeUserProfilePasswords() {
           }),
         },
       );
+
+      if (response.status === 403) {
+        navigate("/login");
+      }
+
       const result = await response.json();
 
       if (result.message === "Old password doesn't match.") {
@@ -63,6 +73,12 @@ function ChangeUserProfilePasswords() {
       setOldPassword("");
       setPassword("");
       setConfirmPassword("");
+
+      setPopUpModal(true);
+
+      setTimeout(() => {
+        setPopUpModal(false);
+      }, 3000);
 
       const fetchLoggedInUserInformation = await fetch(
         "http://localhost:5000/users",
@@ -141,6 +157,15 @@ function ChangeUserProfilePasswords() {
           <span className={styles.error}>Passwords must match</span>
         )}
       </div>
+      {popUpModal && (
+        <PopUpModal
+          popUpModalBackgroundColor={"white"}
+          popUpModalContentColor={"black"}
+          popUpModalBorderColor={"white"}
+          popUpModalContentHeader={"Profile updated"}
+          popUpModalContentText={"Your passwords has been updated successfully"}
+        />
+      )}
     </form>
   );
 }

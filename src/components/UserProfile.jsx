@@ -6,6 +6,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import PopUpModal from "./PopUpModal";
 import { useRef } from "react";
+import { PopUpModalContext } from "../contexts/PopUpModalContext";
 
 function UserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
@@ -14,6 +15,8 @@ function UserProfile() {
   );
 
   const [showModalOnSuccess, setShowModalOnSuccess] = useState(false);
+
+  const [popUpModal, setPopUpModal] = useContext(PopUpModalContext);
 
   const saveBtnRef = useRef(null);
 
@@ -48,6 +51,7 @@ function UserProfile() {
 
         setTimeout(() => {
           setShowModalOnSuccess(false);
+          setPopUpModal(false);
         }, 3000);
       }
 
@@ -177,12 +181,21 @@ function UserProfile() {
           </Link>
         </li>
       </div>
+      {popUpModal && (
+        <PopUpModal
+          popUpModalBackgroundColor={"white"}
+          popUpModalContentColor={"black"}
+          popUpModalBorderColor={"white"}
+          popUpModalContentHeader={"Profile updated"}
+          popUpModalContentText={"Your profile has been updated successfully"}
+        />
+      )}
       {showModalOnSuccess && (
         <PopUpModal
           popUpModalBackgroundColor={"white"}
           popUpModalContentColor={"black"}
           popUpModalBorderColor={"white"}
-          popUpModalContentHeader={"Cover photo has been updated"}
+          popUpModalContentHeader={"Cover photo"}
           popUpModalContentText={
             "Your cover photo has been updated successfully"
           }
