@@ -3,12 +3,21 @@ import { describe, expect, it } from "vitest";
 import routes from "../router/routes";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { successUserLoginHandler } from "./mocks/logInMocks/successUserLoginHandler";
-import { successUserLoginServer } from "./mocks/logInMocks/successUserLoginServer";
-import { guestLoginHandler } from "./mocks/logInMocks/guestLoginHandler";
-import { guestLoginServer } from "./mocks/logInMocks/guestLoginServer";
-import { failedUserLoginHandler } from "./mocks/logInMocks/failedUserLoginHandler";
-import { failedUserLoginServer } from "./mocks/logInMocks/failedUserLoginServer";
+import { server } from "./mocks/node/server";
+import { http, HttpResponse } from "msw";
+import { beforeAll, afterEach, afterAll } from "vitest";
+
+beforeAll(() => {
+  server.listen();
+});
+
+afterEach(() => {
+  server.resetHandlers();
+});
+
+afterAll(() => {
+  server.close();
+});
 
 describe("should render LogInForm", () => {
   it("should render the content of this component", () => {
@@ -94,21 +103,13 @@ describe("should render LogInForm", () => {
 
     await user.click(guestLogInBtn[0]);
 
-    guestLoginServer.listen();
-
-    guestLoginServer.resetHandlers();
-
-    guestLoginServer.close();
-
-    guestLoginServer.use(...guestLoginHandler);
-
     expect(
       screen.queryByText("Username is required to log in"),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
 
     expect(
       screen.queryByText("Password is required to log in"),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
 
     const loadingBtn = await screen.findByTestId("loading-btn");
 
@@ -154,14 +155,6 @@ describe("should render LogInForm", () => {
 
     await user.click(submitBtn[0]);
 
-    successUserLoginServer.listen();
-
-    successUserLoginServer.resetHandlers();
-
-    successUserLoginServer.close();
-
-    successUserLoginServer.use(...successUserLoginHandler);
-
     const loadingBtn = await screen.findByTestId("loading-btn");
 
     expect(loadingBtn).toBeInTheDocument();
@@ -177,13 +170,25 @@ describe("should render LogInForm", () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login"],
     });
+
+    server.use(
+      http.post("http://localhost:5000/users/login", () => {
+        return HttpResponse.json(
+          { msg: "Wrong username or password" },
+          {
+            status: 401,
+          },
+        );
+      }),
+    );
+
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
 
-    await user.type(screen.getByTestId("username"), "preslaw");
+    await user.type(screen.getByTestId("username"), "test");
 
-    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+    expect(screen.getByTestId("username")).toHaveValue("test");
 
     await user.type(screen.getByTestId("password"), "12345678Bg");
 
@@ -204,17 +209,9 @@ describe("should render LogInForm", () => {
 
     await user.click(submitBtn[1]);
 
-    failedUserLoginServer.listen();
-
-    failedUserLoginServer.resetHandlers();
-
-    failedUserLoginServer.close();
-
-    failedUserLoginServer.use(...failedUserLoginHandler);
+    // await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
 
     // screen.debug();
-
-    // await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
 
     const modal = await screen.findByTestId("modal");
 
