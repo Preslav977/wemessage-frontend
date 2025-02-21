@@ -120,6 +120,7 @@ function ChangeUserProfilePasswords() {
             onChange={(e) => setOldPassword(e.target.value)}
             name="old_password"
             id="old_password"
+            data-testid="old_password"
           />
         </div>
         {oldPasswordErr && (
@@ -134,6 +135,7 @@ function ChangeUserProfilePasswords() {
             onChange={(e) => setPassword(e.target.value)}
             name="password"
             id="password"
+            data-testid="password"
           />
         </div>
         {!password.match(passwordRegex) && (
@@ -151,6 +153,7 @@ function ChangeUserProfilePasswords() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             name="confirm_password"
             id="confirm_password"
+            data-testid="confirm_password"
           />
         </div>
         {password !== confirmPassword && (

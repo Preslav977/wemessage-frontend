@@ -51,4 +51,16 @@ export const handlers = [
       { status: 200 },
     );
   }),
+
+  http.put("http://localhost:5000/users/profile/change_passwords/4", () => {
+    return HttpResponse.json(
+      {
+        id: 4,
+        old_password: "12345678Bg@@",
+        password: "12345678Bg@@",
+        confirm_password: "12345678Bg@@",
+      },
+      { status: 200 },
+    );
+  }),
 ];

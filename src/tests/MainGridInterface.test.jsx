@@ -610,4 +610,117 @@ describe("should render MainGridInterface", () => {
       /confirm new password:/i,
     );
   });
+
+  it("should navigate to ChangeUserProfilePasswords and change the passwords", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/4", "/profile/change_passwords/4"],
+      initialIndex: 0,
+    });
+
+    server.use(
+      http.get("http://localhost:5000/users", () => {
+        return HttpResponse.json(
+          {
+            id: 4,
+            first_name: "preslaw123",
+            last_name: "preslaw123",
+            username: "preslaw123",
+            password: "12345678Bg@",
+            confirm_password: "12345678Bg@",
+            bio: "bio123",
+          },
+          { status: 200 },
+        );
+      }),
+    );
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw123");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw123");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    // screen.debug();
+
+    const changeUserProfilePasswords =
+      await screen.findByText("Change Password");
+
+    await user.click(changeUserProfilePasswords);
+
+    // screen.debug();
+
+    expect(screen.queryByText("Global").textContent).toMatch(/global/i);
+
+    expect(screen.queryByText("Chats").textContent).toMatch(/chats/i);
+
+    expect(screen.queryByText("Groups").textContent).toMatch(/groups/i);
+
+    expect(screen.queryAllByText("Profile")[0].textContent).toMatch(/profile/i);
+
+    expect(screen.queryByText("Logout").textContent).toMatch(/logout/i);
+
+    expect(screen.queryByText("Manage Profile").textContent).toMatch(
+      /manage profile/i,
+    );
+
+    expect(screen.queryAllByText("Profile")[1].textContent).toMatch(/profile/i);
+
+    expect(screen.queryByText("Edit Profile").textContent).toMatch(
+      /edit profile/i,
+    );
+
+    expect(screen.queryByText("Change Password").textContent).toMatch(
+      /change password/i,
+    );
+
+    expect(screen.queryByRole("button", { name: "Save" })).toBeInTheDocument();
+
+    expect(screen.queryByText("Enter old password:").textContent).toMatch(
+      /enter old password:/i,
+    );
+
+    expect(screen.queryByText("Enter new password:").textContent).toMatch(
+      /enter new password:/i,
+    );
+
+    expect(screen.queryByText("Confirm new password:").textContent).toMatch(
+      /confirm new password:/i,
+    );
+
+    await user.type(screen.getByTestId("old_password"), "12345678Bg@");
+
+    expect(screen.getByTestId("old_password")).toHaveValue("12345678Bg@");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@@");
+
+    await user.type(screen.getByTestId("confirm_password"), "12345678Bg@@");
+
+    expect(screen.getByTestId("confirm_password")).toHaveValue("12345678Bg@@");
+
+    expect(
+      screen.queryByText(
+        "Password must be 8 characters long, and contain one lower, one uppercase and one special character",
+      ),
+    ).not.toBeInTheDocument();
+
+    await user.click(screen.queryByRole("button", { name: "Save" }));
+
+    expect(screen.queryByText("Profile updated")).toBeInTheDocument();
+
+    expect(
+      screen.queryByText("Your passwords has been updated successfully"),
+    ).toBeInTheDocument();
+  });
 });
