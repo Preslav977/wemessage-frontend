@@ -44,6 +44,8 @@ export const handlers = [
         first_name: "preslaw123",
         last_name: "preslaw123",
         username: "preslaw123",
+        password: "12345678Bg@@",
+        confirm_password: "12345678Bg@@",
         bio: "bio123",
       },
       { status: 200 },

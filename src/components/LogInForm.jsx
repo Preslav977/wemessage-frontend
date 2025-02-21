@@ -230,7 +230,7 @@ function LogInForm() {
                   <img
                     className="loading"
                     src="/loading_spinner.svg"
-                    alt="loading spinner"
+                    alt="Loading..."
                   />
                 </button>
               ) : (
