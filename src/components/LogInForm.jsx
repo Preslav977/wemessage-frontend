@@ -105,7 +105,7 @@ function LogInForm() {
   async function handleGuestLogin(e) {
     e.preventDefault();
 
-    const guestUsername = "test";
+    const guestUsername = "preslaw1";
     const guestPassword = "12345678Bg@";
 
     setUsername(guestUsername);

@@ -356,8 +356,6 @@ describe("should render SignUpForm", () => {
 
     await user.click(signUpBtn);
 
-    // screen.debug();
-
     const firstNameErr = await screen.findByText("First name is already taken");
 
     expect(firstNameErr).toBeInTheDocument();
