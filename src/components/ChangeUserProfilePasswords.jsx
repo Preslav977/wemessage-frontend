@@ -64,21 +64,21 @@ function ChangeUserProfilePasswords() {
         navigate("/login");
       }
 
-      const result = await response.json();
+      if (response.status === 400) {
+        const result = await response.json();
 
-      if (result.message === "Old password doesn't match.") {
-        setOldPasswordErr(result.message);
+        setOldPasswordErr("Old password doesn't match.");
+      } else {
+        setOldPassword("");
+        setPassword("");
+        setConfirmPassword("");
+
+        setPopUpModal(true);
+
+        setTimeout(() => {
+          setPopUpModal(false);
+        }, 3000);
       }
-
-      setOldPassword("");
-      setPassword("");
-      setConfirmPassword("");
-
-      setPopUpModal(true);
-
-      setTimeout(() => {
-        setPopUpModal(false);
-      }, 3000);
 
       const fetchLoggedInUserInformation = await fetch(
         "http://localhost:5000/users",
@@ -121,6 +121,7 @@ function ChangeUserProfilePasswords() {
             name="old_password"
             id="old_password"
             data-testid="old_password"
+            required
           />
         </div>
         {oldPasswordErr && (
@@ -136,6 +137,7 @@ function ChangeUserProfilePasswords() {
             name="password"
             id="password"
             data-testid="password"
+            required
           />
         </div>
         {!password.match(passwordRegex) && (
@@ -154,6 +156,7 @@ function ChangeUserProfilePasswords() {
             name="confirm_password"
             id="confirm_password"
             data-testid="confirm_password"
+            required
           />
         </div>
         {password !== confirmPassword && (
