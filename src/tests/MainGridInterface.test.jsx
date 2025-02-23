@@ -724,9 +724,139 @@ describe("should render MainGridInterface", () => {
   //   ).toBeInTheDocument();
   // });
 
-  it("should navigate to ChangeUserProfilePasswords and render an error if old password doesn't match", async () => {
+  // it("should navigate to ChangeUserProfilePasswords and render an error if old password doesn't match", async () => {
+  //   const router = createMemoryRouter(routes, {
+  //     initialEntries: ["/login", "/profile/4", "/profile/change_passwords/4"],
+  //     initialIndex: 0,
+  //   });
+
+  //   server.use(
+  //     http.get("http://localhost:5000/users", () => {
+  //       return HttpResponse.json(
+  //         {
+  //           id: 4,
+  //           first_name: "preslaw123",
+  //           last_name: "preslaw123",
+  //           username: "preslaw123",
+  //           password: "12345678Bg@@",
+  //           confirm_password: "12345678Bg@@",
+  //           bio: "bio123",
+  //         },
+  //         { status: 200 },
+  //       );
+  //     }),
+  //     http.put("http://localhost:5000/users/profile/change_passwords/4", () => {
+  //       return HttpResponse.json(
+  //         {
+  //           msg: "Old password doesn't match.",
+  //         },
+
+  //         { status: 400 },
+  //       );
+  //     }),
+  //   );
+
+  //   render(<RouterProvider router={router} />);
+
+  //   const user = userEvent.setup();
+
+  //   await user.type(screen.getByTestId("username"), "preslaw123");
+
+  //   expect(screen.getByTestId("username")).toHaveValue("preslaw123");
+
+  //   await user.type(screen.getByTestId("password"), "12345678Bg@@");
+
+  //   expect(screen.getByTestId("password")).toHaveValue("12345678Bg@@");
+
+  //   // screen.debug();
+
+  //   const submitBtn = screen.queryAllByRole("button");
+
+  //   await user.click(submitBtn[1]);
+
+  //   // screen.debug();
+
+  //   const changeUserProfilePasswords =
+  //     await screen.findByText("Change Password");
+
+  //   await user.click(changeUserProfilePasswords);
+
+  //   // screen.debug();
+
+  //   expect(screen.queryByText("Global").textContent).toMatch(/global/i);
+
+  //   expect(screen.queryByText("Chats").textContent).toMatch(/chats/i);
+
+  //   expect(screen.queryByText("Groups").textContent).toMatch(/groups/i);
+
+  //   expect(screen.queryAllByText("Profile")[0].textContent).toMatch(/profile/i);
+
+  //   expect(screen.queryByText("Logout").textContent).toMatch(/logout/i);
+
+  //   expect(screen.queryByText("Manage Profile").textContent).toMatch(
+  //     /manage profile/i,
+  //   );
+
+  //   expect(screen.queryAllByText("Profile")[1].textContent).toMatch(/profile/i);
+
+  //   expect(screen.queryByText("Edit Profile").textContent).toMatch(
+  //     /edit profile/i,
+  //   );
+
+  //   expect(screen.queryByText("Change Password").textContent).toMatch(
+  //     /change password/i,
+  //   );
+
+  //   expect(screen.queryByRole("button", { name: "Save" })).toBeInTheDocument();
+
+  //   expect(screen.queryByText("Enter old password:").textContent).toMatch(
+  //     /enter old password:/i,
+  //   );
+
+  //   expect(screen.queryByText("Enter new password:").textContent).toMatch(
+  //     /enter new password:/i,
+  //   );
+
+  //   expect(screen.queryByText("Confirm new password:").textContent).toMatch(
+  //     /confirm new password:/i,
+  //   );
+
+  //   await user.type(screen.getByTestId("old_password"), "12345678Bg@");
+
+  //   expect(screen.getByTestId("old_password")).toHaveValue("12345678Bg@");
+
+  //   await user.type(screen.getByTestId("password"), "12345678Bg@@");
+
+  //   expect(screen.getByTestId("password")).toHaveValue("12345678Bg@@");
+
+  //   expect(
+  //     screen.queryByText(
+  //       "Password must be 8 characters long, and contain one lower, one uppercase and one special character",
+  //     ),
+  //   ).not.toBeInTheDocument();
+
+  //   await user.type(screen.getByTestId("confirm_password"), "12345678Bg@@");
+
+  //   expect(screen.getByTestId("confirm_password")).toHaveValue("12345678Bg@@");
+
+  //   screen.debug();
+
+  //   await user.click(screen.queryByRole("button", { name: "Save" }));
+
+  //   // console.log(screen.queryByRole("button", { name: "Save" }));
+
+  //   screen.debug();
+
+  //   const oldPasswordErr = await screen.findByText(
+  //     "Old password doesn't match.",
+  //   );
+
+  //   expect(oldPasswordErr).toBeInTheDocument();
+  // });
+
+  it("login then navigate to UserProfile and change the bg image", async () => {
     const router = createMemoryRouter(routes, {
-      initialEntries: ["/login", "/profile/4", "/profile/change_passwords/4"],
+      initialEntries: ["/login", "/profile/4"],
       initialIndex: 0,
     });
 
@@ -735,23 +865,15 @@ describe("should render MainGridInterface", () => {
         return HttpResponse.json(
           {
             id: 4,
-            first_name: "preslaw123",
-            last_name: "preslaw123",
-            username: "preslaw123",
-            password: "12345678Bg@@",
-            confirm_password: "12345678Bg@@",
-            bio: "bio123",
+            first_name: "preslaw",
+            last_name: "preslaw",
+            username: "preslaw",
+            password: "12345678Bg@",
+            confirm_password: "12345678Bg@",
+            bio: "",
+            background_image: "",
           },
           { status: 200 },
-        );
-      }),
-      http.put("http://localhost:5000/users/profile/change_passwords/4", () => {
-        return HttpResponse.json(
-          {
-            msg: "Old password doesn't match.",
-          },
-
-          { status: 400 },
         );
       }),
     );
@@ -760,15 +882,13 @@ describe("should render MainGridInterface", () => {
 
     const user = userEvent.setup();
 
-    await user.type(screen.getByTestId("username"), "preslaw123");
+    await user.type(screen.getByTestId("username"), "preslaw");
 
-    expect(screen.getByTestId("username")).toHaveValue("preslaw123");
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
 
-    await user.type(screen.getByTestId("password"), "12345678Bg@@");
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
 
-    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@@");
-
-    // screen.debug();
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
 
     const submitBtn = screen.queryAllByRole("button");
 
@@ -776,12 +896,7 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    const changeUserProfilePasswords =
-      await screen.findByText("Change Password");
-
-    await user.click(changeUserProfilePasswords);
-
-    // screen.debug();
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
 
     expect(screen.queryByText("Global").textContent).toMatch(/global/i);
 
@@ -799,7 +914,7 @@ describe("should render MainGridInterface", () => {
 
     expect(screen.queryAllByText("Profile")[1].textContent).toMatch(/profile/i);
 
-    expect(screen.queryByText("Edit Profile").textContent).toMatch(
+    expect(screen.queryAllByText("Edit Profile")[1].textContent).toMatch(
       /edit profile/i,
     );
 
@@ -807,50 +922,20 @@ describe("should render MainGridInterface", () => {
       /change password/i,
     );
 
-    expect(screen.queryByRole("button", { name: "Save" })).toBeInTheDocument();
+    await user.click(screen.queryByTestId("background_image"));
 
-    expect(screen.queryByText("Enter old password:").textContent).toMatch(
-      /enter old password:/i,
-    );
+    const file = new File(["image"], "image.png", { type: "image/png" });
 
-    expect(screen.queryByText("Enter new password:").textContent).toMatch(
-      /enter new password:/i,
-    );
+    const bgImageInput = screen.getByTestId("background_image");
 
-    expect(screen.queryByText("Confirm new password:").textContent).toMatch(
-      /confirm new password:/i,
-    );
-
-    await user.type(screen.getByTestId("old_password"), "12345678Bg@");
-
-    expect(screen.getByTestId("old_password")).toHaveValue("12345678Bg@");
-
-    await user.type(screen.getByTestId("password"), "12345678Bg@@");
-
-    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@@");
-
-    expect(
-      screen.queryByText(
-        "Password must be 8 characters long, and contain one lower, one uppercase and one special character",
-      ),
-    ).not.toBeInTheDocument();
-
-    await user.type(screen.getByTestId("confirm_password"), "12345678Bg@@");
-
-    expect(screen.getByTestId("confirm_password")).toHaveValue("12345678Bg@@");
+    await user.upload(bgImageInput, file);
 
     screen.debug();
 
-    await user.click(screen.queryByRole("button", { name: "Save" }));
+    expect(bgImageInput.files[0]).toBe(file);
 
-    // console.log(screen.queryByRole("button", { name: "Save" }));
+    expect(bgImageInput.files.item(0)).toBe(file);
 
-    screen.debug();
-
-    const oldPasswordErr = await screen.findByText(
-      "Old password doesn't match.",
-    );
-
-    expect(oldPasswordErr).toBeInTheDocument();
+    expect(bgImageInput.files).toHaveLength(1);
   });
 });

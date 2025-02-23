@@ -63,4 +63,19 @@ export const handlers = [
       { status: 200 },
     );
   }),
+
+  http.put("http://localhost:5000/users/profile/background_image/4", () => {
+    const form = new FormData();
+
+    const bgImageFile = new File(["image"], "image.png", { type: "image/png" });
+
+    form.set("file", bgImageFile, "image/png");
+
+    console.log(form);
+
+    fetch("http://localhost:5000/users/profile/background_image/4", {
+      method: "PUT",
+      body: form,
+    });
+  }),
 ];

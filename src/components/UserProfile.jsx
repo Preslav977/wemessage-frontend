@@ -132,6 +132,7 @@ function UserProfile() {
               type="file"
               name="file"
               id="file"
+              data-testid="background_image"
             />
             <button
               style={{
