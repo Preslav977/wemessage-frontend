@@ -38,8 +38,6 @@ function EditUserProfile() {
 
   const [usernameError, setUsernameError] = useState("");
 
-  const [bioError, setBioError] = useState("");
-
   const [popUpModal, setPopUpModal] = useContext(PopUpModalContext);
 
   const navigate = useNavigate();
@@ -165,8 +163,6 @@ function EditUserProfile() {
             setLastNameError(err.msg);
           } else if (err.msg === "Username is already taken") {
             setUsernameError(err.msg);
-          } else {
-            setBioError(err.msg === "Bio must not be more than 150 characters");
           }
         });
       }

@@ -9,8 +9,9 @@ import EditUserProfile from "../components/EditUserProfile";
 import ChangeUserProfilePasswords from "../components/ChangeUserProfilePasswords";
 import ProtectedRoute from "../components/ProtectedRoute";
 import ErrorPage from "../components/ErrorPage";
-
 import ProtectApp from "../components/ProtectApp";
+import ChatsAndGroupsComponent from "../components/ChatsAndGroupsComponent";
+import ChatsWrapper from "../components/ChatsWrapper";
 
 const routes = [
   {
@@ -53,6 +54,17 @@ const routes = [
             <MainGridInterface
               leftGridComponent={<ManageUserProfile />}
               rightGridComponent={<ChangeUserProfilePasswords />}
+            ></MainGridInterface>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/chats",
+        element: (
+          <ProtectedRoute>
+            <MainGridInterface
+              leftGridComponent={<ChatsWrapper />}
+              rightGridComponent={""}
             ></MainGridInterface>
           </ProtectedRoute>
         ),

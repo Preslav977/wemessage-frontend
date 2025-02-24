@@ -1,0 +1,10 @@
+.flexedChatsAndGroupsHeader {
+  display: flex;
+  align-items: center;
+}
+
+.toggleChatsAndGroupsSvg {
+  width: 40px;
+  background-color: black;
+  border-radius: 50%;
+}
