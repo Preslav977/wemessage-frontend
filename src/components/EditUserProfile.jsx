@@ -221,6 +221,7 @@ function EditUserProfile() {
               type="file"
               name="file"
               id="file"
+              data-testid="profile_image"
             />
           </label>
           <div className={styles.submitProfilePictureContainer}>
