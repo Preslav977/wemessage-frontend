@@ -10,8 +10,11 @@ const useUsersURL = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/users", {
+    fetch("http://localhost:5000/users/all", {
       mode: "cors",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
     })
       .then((response) => {
         if (response.status >= 400) {
