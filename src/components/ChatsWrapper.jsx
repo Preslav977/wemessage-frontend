@@ -2,15 +2,16 @@ import { useState } from "react";
 import ChatsAndGroupsComponent from "./ChatsAndGroupsComponent";
 
 function ChatsWrapper() {
-  const [state, setState] = useState(false);
+  const [toggleBetweenChatAndUsers, setToggleBetweenChatAndUsers] =
+    useState(false);
 
   function toggle() {
-    setState(!state);
+    setToggleBetweenChatAndUsers(!toggleBetweenChatAndUsers);
   }
 
   return (
     <div>
-      {state ? (
+      {!toggleBetweenChatAndUsers ? (
         <ChatsAndGroupsComponent
           headerName={"Chats"}
           chatsAndGroupContent={"Currently you have no conversations"}
