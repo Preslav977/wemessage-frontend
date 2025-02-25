@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import { ChatsContext } from "../../../contexts/ChatsContext";
+import { UserContext } from "../../../contexts/UsersContext";
 import { useEffect } from "react";
 
 const useUsersURL = () => {
-  const [chats, setChats] = useContext(ChatsContext);
+  const [users, setUsers] = useContext(UserContext);
 
   const [error, setError] = useState(null);
 
@@ -19,12 +19,12 @@ const useUsersURL = () => {
         }
         return response.json();
       })
-      .then((response) => setChats(response))
+      .then((response) => setUsers(response))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [setChats]);
+  }, [setUsers]);
 
-  return { chats, error, loading };
+  return { users, error, loading };
 };
 
 export default useUsersURL;
