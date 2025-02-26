@@ -1,3 +1,12 @@
+.flexedUserNav {
+  display: flex;
+  align-items: center;
+}
+
+.goBackArrowSvg {
+  width: 40px;
+}
+
 .ulFlexedLiContainer {
   display: flex;
   flex-direction: column;

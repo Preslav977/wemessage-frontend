@@ -2,9 +2,12 @@ import styles from "./MainGridInterface.module.css";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { UserLoggedInContext } from "../contexts/UserLoggedInContext";
+import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
 import { useContext } from "react";
 
 function MainGridInterface({ leftGridComponent, rightGridComponent }) {
+  const [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
+
   const [isUserLoggedIn, setIsUserLoggedIn] = useContext(UserLoggedInContext);
 
   function logout() {
@@ -66,7 +69,7 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
               <Link
                 data-testid="profile"
                 className={styles.anchorFlexedImgContainer}
-                to="/profile/4"
+                to={`/profile/${userLogInObj.id}`}
               >
                 <img
                   className={styles.mainNavigationSvg}

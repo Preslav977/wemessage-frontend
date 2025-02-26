@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styles from "./FetchUsers.module.css";
 import useUsersURL from "./custom hooks/useUsersURL";
 
@@ -32,28 +33,30 @@ function FetchUsers({ onClick, onChange }) {
       />
       <ul>
         {users.map((user) => (
-          <li className={styles.flexedUsersLiContainer} key={user.id}>
-            {user.profile_picture === "" ? (
-              <img
-                className={styles.usersImages}
-                src="/default_user_pfp.svg"
-                alt=""
-              />
-            ) : (
-              <img
-                className={styles.usersImages}
-                src={user.profile_picture}
-                alt=""
-              />
-            )}
-            <div>
-              <p>
-                {user.first_name} {user.last_name}
-              </p>
+          <Link to={`/profile/${user.id}`} key={user.id}>
+            <li className={styles.flexedUsersLiContainer}>
+              {user.profile_picture === "" ? (
+                <img
+                  className={styles.usersImages}
+                  src="/default_user_pfp.svg"
+                  alt=""
+                />
+              ) : (
+                <img
+                  className={styles.usersImages}
+                  src={user.profile_picture}
+                  alt=""
+                />
+              )}
+              <div>
+                <p>
+                  {user.first_name} {user.last_name}
+                </p>
 
-              <p>{"@" + user.username}</p>
-            </div>
-          </li>
+                <p>{"@" + user.username}</p>
+              </div>
+            </li>
+          </Link>
         ))}
       </ul>
     </>
