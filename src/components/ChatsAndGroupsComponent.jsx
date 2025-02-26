@@ -1,6 +1,7 @@
 import styles from "./ChatsAndGroupsComponent.module.css";
 import { ChatsContext } from "../contexts/ChatsContext";
 import { useContext, useState } from "react";
+import PropTypes from "prop-types";
 
 function ChatsAndGroupsComponent({
   headerName,
@@ -32,5 +33,11 @@ function ChatsAndGroupsComponent({
     </>
   );
 }
+
+ChatsAndGroupsComponent.propTypes = {
+  headerName: PropTypes.string,
+  chatsAndGroupContent: PropTypes.string,
+  onClick: PropTypes.func,
+};
 
 export default ChatsAndGroupsComponent;

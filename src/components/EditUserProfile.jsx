@@ -18,8 +18,6 @@ import { PopUpModalContext } from "../contexts/PopUpModalContext";
 function EditUserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
-  // console.log(userLogInObj);
-
   const { profilePicture, setProfilePicture } = useContext(
     ProfilePictureContext,
   );
@@ -51,8 +49,6 @@ function EditUserProfile() {
 
     const formDataObj = formData.get("file");
 
-    // console.log(formDataObj);
-
     const updateProfilePictureObj = {
       ...profilePicture,
       formDataObj,
@@ -61,7 +57,7 @@ function EditUserProfile() {
     setProfilePicture(updateProfilePictureObj);
 
     try {
-      const response = await fetch(
+      await fetch(
         `http://localhost:5000/users/profile/image/${userLogInObj.id}`,
         {
           method: "PUT",
@@ -84,11 +80,8 @@ function EditUserProfile() {
 
       userLogInObj = await fetchLoggedInUserInformation.json();
 
-      // console.log(userLogInObj);
-
       const userLoggedInInformation = {
         ...userLogInObj,
-        // userLogInObj,
       };
 
       setUserLogInObj(userLoggedInInformation);
@@ -96,8 +89,6 @@ function EditUserProfile() {
       if (sendBtnRef.current.style.display === "block") {
         sendBtnRef.current.style.display = "none";
       }
-
-      // console.log(userLogInObj);
     } catch (err) {
       console.log(err);
     }
@@ -119,8 +110,6 @@ function EditUserProfile() {
       username: userName,
       bio: bio,
     };
-
-    // console.log(updateLoggedInObject);
 
     setUserLogInObj(updateLoggedInObject);
 
@@ -154,8 +143,6 @@ function EditUserProfile() {
       } else {
         const result = await response.json();
 
-        // console.log(result);
-
         result.map((err) => {
           if (err.msg === "First name is already taken") {
             setFirstNameError(err.msg);
@@ -181,7 +168,6 @@ function EditUserProfile() {
 
       const userLoggedInInformation = {
         ...userLogInObj,
-        // userLogInObj,
       };
 
       setUserLogInObj(userLoggedInInformation);

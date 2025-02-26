@@ -85,18 +85,13 @@ function LogInForm() {
 
       const userLoggedInInformation = {
         ...userLogInObj,
-        // userLogInObj,
       };
 
       setUserLogInObj(userLoggedInInformation);
 
-      // setTimeout(() => {
       navigate(`/profile/${userLogInObj.id}`);
-      // }, 3000);
 
       setPopUpModal(false);
-
-      // console.log(result);
     } catch (err) {
       console.log(err);
     }
@@ -153,14 +148,11 @@ function LogInForm() {
 
       const userLoggedInInformation = {
         ...userLogInObj,
-        // userLogInObj,
       };
 
       setUserLogInObj(userLoggedInInformation);
 
-      // setTimeout(() => {
       navigate(`/profile/${userLogInObj.id}`);
-      // }, 3000);
 
       setPopUpModal(false);
     } catch (err) {

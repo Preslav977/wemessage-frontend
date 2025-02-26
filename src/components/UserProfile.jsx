@@ -23,7 +23,7 @@ function UserProfile() {
 
   const { id } = useParams();
 
-  const { userGetById, loading, error } = useUserURL();
+  const { userGetById } = useUserURL();
 
   async function changeBackgroundImage(e) {
     e.preventDefault();
@@ -74,7 +74,6 @@ function UserProfile() {
 
       const userLoggedInInformation = {
         ...userLogInObj,
-        // userLogInObj,
       };
 
       setUserLogInObj(userLoggedInInformation);

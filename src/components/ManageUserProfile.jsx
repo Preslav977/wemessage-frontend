@@ -23,7 +23,7 @@ function ManageUserProfile() {
           onClick={goBackToChats}
           className={styles.goBackArrowSvg}
           src="/back-arrow.svg"
-          alt=""
+          alt="go to previous page"
         />
         <h2>User Profile</h2>
       </nav>

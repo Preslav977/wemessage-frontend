@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./FetchUsers.module.css";
 import useUsersURL from "./custom hooks/useUsersURL";
+import PropTypes from "prop-types";
 
 function FetchUsers({ onClick, onChange }) {
   const { users, error, loading } = useUsersURL();
@@ -62,5 +63,10 @@ function FetchUsers({ onClick, onChange }) {
     </>
   );
 }
+
+FetchUsers.propTypes = {
+  onClick: PropTypes.func,
+  onChange: PropTypes.func,
+};
 
 export default FetchUsers;
