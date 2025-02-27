@@ -12,8 +12,8 @@ import ChangeUserProfilePasswords from "../components/ChangeUserProfilePasswords
 import ProtectedRoute from "../components/ProtectedRoute";
 import ErrorPage from "../components/ErrorPage";
 import ProtectApp from "../components/ProtectApp";
-import ChatsAndGroupsComponent from "../components/ChatsAndGroupsComponent";
-import ChatsWrapper from "../components/ChatsWrapper";
+import ChatsParentComponent from "../components/ChatsParentComponent";
+import RenderChatOrGroupHeader from "../components/RenderChatOrGroupHeader";
 
 const router = createBrowserRouter([
   {
@@ -65,8 +65,10 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
-              leftGridComponent={<ChatsWrapper />}
-              rightGridComponent={""}
+              leftGridComponent={<ChatsParentComponent />}
+              rightGridComponent={
+                <RenderChatOrGroupHeader showChatOrGroupHeader={"Chats"} />
+              }
             ></MainGridInterface>
           </ProtectedRoute>
         ),

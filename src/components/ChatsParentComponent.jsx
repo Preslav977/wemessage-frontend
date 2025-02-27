@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import ChatsAndGroupsComponent from "./ChatsAndGroupsComponent";
+import RenderChatsOrGroupsComponent from "./RenderChatsOrGroupsComponent";
 import FetchUsers from "./api/FetchUsers";
 import { UserContext } from "../contexts/UsersContext";
 
-function ChatsWrapper() {
+function ChatsParentComponent() {
   const [users, setUsers] = useContext(UserContext);
 
   const [toggleBetweenChatAndUsers, setToggleBetweenChatAndUsers] =
@@ -24,18 +24,18 @@ function ChatsWrapper() {
       },
     );
 
-    const fetchUser = await fetchUsersBySearching.json();
+    const getFoundUser = await fetchUsersBySearching.json();
 
-    setUsers(fetchUser);
+    setUsers(getFoundUser);
   }
 
   return (
     <div>
       {!toggleBetweenChatAndUsers ? (
-        <ChatsAndGroupsComponent
-          headerName={"Chats"}
-          chatsAndGroupContent={"Currently you have no conversations"}
+        <RenderChatsOrGroupsComponent
+          showChatOrGroupHeader={"Chats"}
           onClick={toggleChatsAndUsers}
+          renderChatOrGroup={false}
         />
       ) : (
         <FetchUsers onClick={toggleChatsAndUsers} onChange={searchForUsers} />
@@ -44,4 +44,4 @@ function ChatsWrapper() {
   );
 }
 
-export default ChatsWrapper;
+export default ChatsParentComponent;
