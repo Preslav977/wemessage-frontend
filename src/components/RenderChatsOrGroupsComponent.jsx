@@ -1,4 +1,4 @@
-import styles from "./RenderChatsOrGroupComponent.module.css";
+import styles from "./RenderChatsOrGroupsComponent.module.css";
 import { ChatsContext } from "../contexts/ChatsContext";
 import { useContext, useState } from "react";
 import PropTypes from "prop-types";
@@ -9,6 +9,8 @@ function RenderChatsOrGroupsComponent({
   renderChatOrGroup,
 }) {
   const [chats, setChats] = useContext(ChatsContext);
+
+  console.log(chats);
 
   return (
     <>

@@ -9,6 +9,7 @@ import { useRef } from "react";
 import { PopUpModalContext } from "../contexts/PopUpModalContext";
 import { useParams } from "react-router-dom";
 import useUserURL from "./api/custom hooks/userUserURL";
+import { ChatsContext } from "../contexts/ChatsContext";
 
 function UserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
@@ -24,6 +25,8 @@ function UserProfile() {
   const { id } = useParams();
 
   const { userGetById } = useUserURL();
+
+  const [chats, setChats] = useContext(ChatsContext);
 
   async function changeBackgroundImage(e) {
     e.preventDefault();
@@ -81,6 +84,25 @@ function UserProfile() {
       if (saveBtnRef.current.style.display === "block") {
         saveBtnRef.current.style.display = "none";
       }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function startConversation(e) {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:5000/chats", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          receiverId: Number(userGetById.id),
+        }),
+      });
     } catch (err) {
       console.log(err);
     }
@@ -146,14 +168,9 @@ function UserProfile() {
             <p>@{userGetById.username}</p>
             <p className={styles.usersBioParagraph}>{userGetById.bio}</p>
           </div>
-          <li>
-            <Link
-              className={styles.editProfileAnchor}
-              to={`/profile/edit/${userGetById.id}`}
-            >
-              Send Message
-            </Link>
-          </li>
+          <form onSubmit={startConversation}>
+            <button type="Submit">Send Message</button>
+          </form>
         </div>
       </>
     );
