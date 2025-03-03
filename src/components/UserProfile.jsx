@@ -8,14 +8,15 @@ import PopUpModal from "./PopUpModal";
 import { useRef } from "react";
 import { PopUpModalContext } from "../contexts/PopUpModalContext";
 import { useParams } from "react-router-dom";
-import useUserURL from "./api/custom hooks/userUserURL";
-import { ChatsContext } from "../contexts/ChatsContext";
+import useUserURL from "./api/custom hooks/useUserURL";
 
 function UserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
+
   const { backgroundPicture, setBackgroundPicture } = useContext(
     BackgroundPictureContext,
   );
+
   const [showModalOnSuccess, setShowModalOnSuccess] = useState(false);
 
   const [popUpModal, setPopUpModal] = useContext(PopUpModalContext);
@@ -25,8 +26,6 @@ function UserProfile() {
   const { id } = useParams();
 
   const { userGetById } = useUserURL();
-
-  const [chats, setChats] = useContext(ChatsContext);
 
   async function changeBackgroundImage(e) {
     e.preventDefault();
@@ -93,7 +92,7 @@ function UserProfile() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/chats", {
+      await fetch("http://localhost:5000/chats", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

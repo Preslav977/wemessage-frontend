@@ -7,7 +7,7 @@ function FetchUsers({ onClick, onChange }) {
   const { users, error, loading } = useUsersURL();
 
   if (loading) {
-    return <img src="" alt="Loading..." />;
+    return <img src="./loading_spinner.svg" alt="Loading..." />;
   }
 
   if (error) {

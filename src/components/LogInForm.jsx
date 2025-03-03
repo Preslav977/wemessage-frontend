@@ -20,6 +20,8 @@ import { PopUpModalContext } from "../contexts/PopUpModalContext";
 
 import PopUpModal from "./PopUpModal";
 
+import { guestUsername, guestPassword } from "../utility/guestUserCredentials";
+
 function LogInForm() {
   const { username, setUsername } = useContext(UserNameContext);
 
@@ -99,9 +101,6 @@ function LogInForm() {
 
   async function handleGuestLogin(e) {
     e.preventDefault();
-
-    const guestUsername = "preslaw1";
-    const guestPassword = "12345678Bg@";
 
     setUsername(guestUsername);
 

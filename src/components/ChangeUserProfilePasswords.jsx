@@ -65,8 +65,6 @@ function ChangeUserProfilePasswords() {
       }
 
       if (response.status === 400) {
-        const result = await response.json();
-
         setOldPasswordErr("Old password doesn't match.");
       } else {
         setOldPassword("");
@@ -94,7 +92,6 @@ function ChangeUserProfilePasswords() {
 
       const userLoggedInInformation = {
         ...userLogInObj,
-        // userLogInObj,
       };
 
       setUserLogInObj(userLoggedInInformation);

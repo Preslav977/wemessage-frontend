@@ -5,11 +5,11 @@ function ErrorPage() {
   const error = useRouteError();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setTimeout(() => {
-      navigate("/login");
-    }, 3000);
-  });
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     navigate("/login");
+  //   }, 3000);
+  // });
 
   return (
     <div>

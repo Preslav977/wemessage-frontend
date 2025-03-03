@@ -9,7 +9,7 @@ function ChatsParentComponent() {
   const [toggleBetweenChatAndUsers, setToggleBetweenChatAndUsers] =
     useState(false);
 
-  function toggleChatsAndUsers() {
+  function toggleChatsOrUsers() {
     setToggleBetweenChatAndUsers(!toggleBetweenChatAndUsers);
   }
 
@@ -34,11 +34,11 @@ function ChatsParentComponent() {
       {!toggleBetweenChatAndUsers ? (
         <RenderChatsOrGroupsComponent
           showChatOrGroupHeader={"Chats"}
-          onClick={toggleChatsAndUsers}
+          onClick={toggleChatsOrUsers}
           renderChatOrGroup={false}
         />
       ) : (
-        <FetchUsers onClick={toggleChatsAndUsers} onChange={searchForUsers} />
+        <FetchUsers onClick={toggleChatsOrUsers} onChange={searchForUsers} />
       )}
     </div>
   );

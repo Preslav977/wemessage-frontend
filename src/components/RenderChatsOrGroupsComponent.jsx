@@ -1,16 +1,22 @@
 import styles from "./RenderChatsOrGroupsComponent.module.css";
-import { ChatsContext } from "../contexts/ChatsContext";
-import { useContext, useState } from "react";
 import PropTypes from "prop-types";
+import useChatsURL from "./api/custom hooks/useChatsURL";
+import { Link } from "react-router-dom";
 
 function RenderChatsOrGroupsComponent({
   showChatOrGroupHeader,
   onClick,
   renderChatOrGroup,
 }) {
-  const [chats, setChats] = useContext(ChatsContext);
+  const { chats, error, loading } = useChatsURL();
 
-  console.log(chats);
+  if (loading) {
+    return <img src="/loading_spinner.svg" alt="Loading..." />;
+  }
+
+  if (error) {
+    return <p>A network error was encountered</p>;
+  }
 
   return (
     <>
@@ -28,14 +34,31 @@ function RenderChatsOrGroupsComponent({
           <p>{"You currently have no chats"}</p>
         ) : (
           <ul>
-            <li></li>
-          </ul>
-        )}
-        {renderChatOrGroup && chats.length === 0 ? (
-          <p>{"You currently have no groups"}</p>
-        ) : (
-          <ul>
-            <li></li>
+            {chats.map((chat) => (
+              <Link to={`/chat/${chat.id}`} key={chat.user.id}>
+                <li className={styles.flexedUsersLiContainer}>
+                  {chat.user.profile_picture === "" ? (
+                    <img
+                      className={styles.usersImages}
+                      src="/default_user_pfp.svg"
+                      alt=""
+                    />
+                  ) : (
+                    <img
+                      className={styles.usersImages}
+                      src={chat.user.profile_picture}
+                      alt=""
+                    />
+                  )}
+                  <div>
+                    <p>
+                      {chat.user.first_name} {chat.user.last_name}
+                    </p>
+                    <p>{"@" + chat.user.username}</p>
+                  </div>
+                </li>
+              </Link>
+            ))}
           </ul>
         )}
       </div>
