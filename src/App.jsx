@@ -20,7 +20,7 @@ import {
 
 import { PopUpModalContext } from "./contexts/PopUpModalContext";
 
-import { ChatsContext } from "./contexts/ChatsContext";
+import { ChatsContext, ChatDetailsContext } from "./contexts/ChatsContext";
 
 import { UserContext } from "./contexts/UsersContext";
 
@@ -62,6 +62,8 @@ function App() {
 
   const [chats, setChats] = useState([]);
 
+  const [chatDetails, setChatDetails] = useState([]);
+
   const [users, setUsers] = useState([]);
 
   const [userGetById, setUserGetById] = useState([]);
@@ -72,53 +74,55 @@ function App() {
         value={[userGetById, setUserGetById]}
       >
         <UserContext.Provider value={[users, setUsers]}>
-          <ChatsContext.Provider value={[chats, setChats]}>
-            <PopUpModalContext.Provider value={[popUpModal, setPopUpModal]}>
-              <UserLogInObjectContext.Provider
-                value={[userLogInObj, setUserLoginInObj]}
-              >
-                <UserLoggedInContext.Provider
-                  value={[isUserLoggedIn, setIsUserLoggedIn]}
+          <ChatDetailsContext.Provider value={[chatDetails, setChatDetails]}>
+            <ChatsContext.Provider value={[chats, setChats]}>
+              <PopUpModalContext.Provider value={[popUpModal, setPopUpModal]}>
+                <UserLogInObjectContext.Provider
+                  value={[userLogInObj, setUserLoginInObj]}
                 >
-                  <UserSignUpObjectContext.Provider
-                    value={{ userSignUpObj, setUserSignUpObj }}
+                  <UserLoggedInContext.Provider
+                    value={[isUserLoggedIn, setIsUserLoggedIn]}
                   >
-                    <BackgroundPictureContext.Provider
-                      value={{ backgroundPicture, setBackgroundPicture }}
+                    <UserSignUpObjectContext.Provider
+                      value={{ userSignUpObj, setUserSignUpObj }}
                     >
-                      <ProfilePictureContext.Provider
-                        value={{ profilePicture, setProfilePicture }}
+                      <BackgroundPictureContext.Provider
+                        value={{ backgroundPicture, setBackgroundPicture }}
                       >
-                        <BioContext.Provider value={{ bio, setBio }}>
-                          <ConfirmPasswordContext.Provider
-                            value={{ confirmPassword, setConfirmPassword }}
-                          >
-                            <PasswordContext.Provider
-                              value={{ password, setPassword }}
+                        <ProfilePictureContext.Provider
+                          value={{ profilePicture, setProfilePicture }}
+                        >
+                          <BioContext.Provider value={{ bio, setBio }}>
+                            <ConfirmPasswordContext.Provider
+                              value={{ confirmPassword, setConfirmPassword }}
                             >
-                              <UserNameContext.Provider
-                                value={{ username, setUsername }}
+                              <PasswordContext.Provider
+                                value={{ password, setPassword }}
                               >
-                                <LastNameContext.Provider
-                                  value={{ lastName, setLastName }}
+                                <UserNameContext.Provider
+                                  value={{ username, setUsername }}
                                 >
-                                  <FirstNameContext.Provider
-                                    value={{ firstName, setFirstName }}
+                                  <LastNameContext.Provider
+                                    value={{ lastName, setLastName }}
                                   >
-                                    <Outlet />
-                                  </FirstNameContext.Provider>
-                                </LastNameContext.Provider>
-                              </UserNameContext.Provider>
-                            </PasswordContext.Provider>
-                          </ConfirmPasswordContext.Provider>
-                        </BioContext.Provider>
-                      </ProfilePictureContext.Provider>
-                    </BackgroundPictureContext.Provider>
-                  </UserSignUpObjectContext.Provider>
-                </UserLoggedInContext.Provider>
-              </UserLogInObjectContext.Provider>
-            </PopUpModalContext.Provider>
-          </ChatsContext.Provider>
+                                    <FirstNameContext.Provider
+                                      value={{ firstName, setFirstName }}
+                                    >
+                                      <Outlet />
+                                    </FirstNameContext.Provider>
+                                  </LastNameContext.Provider>
+                                </UserNameContext.Provider>
+                              </PasswordContext.Provider>
+                            </ConfirmPasswordContext.Provider>
+                          </BioContext.Provider>
+                        </ProfilePictureContext.Provider>
+                      </BackgroundPictureContext.Provider>
+                    </UserSignUpObjectContext.Provider>
+                  </UserLoggedInContext.Provider>
+                </UserLogInObjectContext.Provider>
+              </PopUpModalContext.Provider>
+            </ChatsContext.Provider>
+          </ChatDetailsContext.Provider>
         </UserContext.Provider>
       </UserLoggedInGetByIdContext.Provider>
     </>

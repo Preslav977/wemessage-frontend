@@ -1,3 +1,5 @@
+import { ChatsContext } from "../contexts/ChatsContext";
+
 function RenderChatOrGroupMessagesComponent({ renderChatOrGroupHeader }) {
   return (
     <div>

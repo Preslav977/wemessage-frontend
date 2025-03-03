@@ -12,6 +12,7 @@ import ErrorPage from "../components/ErrorPage";
 import ProtectApp from "../components/ProtectApp";
 import ChatsParentComponent from "../components/ChatsParentComponent";
 import RenderChatOrGroupHeader from "../components/RenderChatOrGroupHeader";
+import MessageChatOrGroupParent from "../components/MessageChatOrGroupParent";
 
 const routes = [
   {
@@ -67,6 +68,17 @@ const routes = [
               rightGridComponent={
                 <RenderChatOrGroupHeader showChatOrGroupHeader={"Chats"} />
               }
+            ></MainGridInterface>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/chat/:id",
+        element: (
+          <ProtectedRoute>
+            <MainGridInterface
+              leftGridComponent={<ChatsParentComponent />}
+              rightGridComponent={<MessageChatOrGroupParent />}
             ></MainGridInterface>
           </ProtectedRoute>
         ),
