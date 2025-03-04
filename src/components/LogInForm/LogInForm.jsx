@@ -9,18 +9,21 @@ import { useNavigate } from "react-router-dom";
 import {
   UserNameContext,
   PasswordContext,
-} from "../contexts/UserRegistrationContext";
+} from "../../contexts/UserRegistrationContext";
 
 import {
   UserLogInObjectContext,
   UserLoggedInContext,
-} from "../contexts/UserLoggedInContext";
+} from "../../contexts/UserLoggedInContext";
 
-import { PopUpModalContext } from "../contexts/PopUpModalContext";
+import { PopUpModalContext } from "../../contexts/PopUpModalContext";
 
-import PopUpModal from "./PopUpModal";
+import PopUpModal from "../PopUpModal/PopUpModal";
 
-import { guestUsername, guestPassword } from "../utility/guestUserCredentials";
+import {
+  guestUsername,
+  guestPassword,
+} from "../../utility/guestUserCredentials";
 
 function LogInForm() {
   const { username, setUsername } = useContext(UserNameContext);

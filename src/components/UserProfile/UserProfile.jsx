@@ -1,14 +1,14 @@
 import styles from "./UserProfile.module.css";
 
-import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
-import { BackgroundPictureContext } from "../contexts/UserRegistrationContext";
+import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
+import { BackgroundPictureContext } from "../../contexts/UserRegistrationContext";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import PopUpModal from "./PopUpModal";
+import PopUpModal from "../PopUpModal/PopUpModal";
 import { useRef } from "react";
-import { PopUpModalContext } from "../contexts/PopUpModalContext";
+import { PopUpModalContext } from "../../contexts/PopUpModalContext";
 import { useParams } from "react-router-dom";
-import useUserURL from "./api/custom hooks/useUserURL";
+import useFetchSingleUserURL from "../api/custom hooks/useFetchSingleUserURL";
 
 function UserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
@@ -25,7 +25,7 @@ function UserProfile() {
 
   const { id } = useParams();
 
-  const { userGetById } = useUserURL();
+  const { userGetById } = useFetchSingleUserURL();
 
   async function changeBackgroundImage(e) {
     e.preventDefault();

@@ -1,18 +1,18 @@
 import { useContext, useState, useEffect } from "react";
-import { ChatDetailsContext } from "../../../contexts/ChatsContext";
 import { useParams } from "react-router-dom";
+import { UserLoggedInGetByIdContext } from "../../../contexts/UserLoggedInContext";
 
-const useChatURL = () => {
+const useFetchSingleUserURL = () => {
   const { id } = useParams();
 
-  const [chatDetails, setChatDetails] = useContext(ChatDetailsContext);
+  const [userGetById, setUserGetById] = useContext(UserLoggedInGetByIdContext);
 
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/chats/${id}`, {
+    fetch(`http://localhost:5000/users/${id}`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),
@@ -24,12 +24,12 @@ const useChatURL = () => {
         }
         return response.json();
       })
-      .then((response) => setChatDetails(response))
+      .then((response) => setUserGetById(response))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [id, setChatDetails]);
+  }, [id, setUserGetById]);
 
-  return { chatDetails, error, loading };
+  return { userGetById, error, loading };
 };
 
-export default useChatURL;
+export default useFetchSingleUserURL;

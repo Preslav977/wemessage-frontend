@@ -6,7 +6,7 @@ import { useContext, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { passwordRegex } from "../utility/passwordRegex";
+import { passwordRegex } from "../../utility/passwordRegex";
 
 import {
   FirstNameContext,
@@ -15,7 +15,7 @@ import {
   PasswordContext,
   ConfirmPasswordContext,
   UserSignUpObjectContext,
-} from "../contexts/UserRegistrationContext";
+} from "../../contexts/UserRegistrationContext";
 
 function SignUpForm() {
   const { firstName, setFirstName } = useContext(FirstNameContext);

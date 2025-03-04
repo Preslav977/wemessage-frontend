@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { UserLoggedInContext } from "../contexts/UserLoggedInContext";
-import LogInForm from "./LogInForm";
+import { UserLoggedInContext } from "../../contexts/UserLoggedInContext";
+import LogInForm from "../LogInForm/LogInForm";
 import PropTypes from "prop-types";
 
 const ProtectedRoute = ({ children }) => {

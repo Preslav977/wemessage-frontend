@@ -1,19 +1,19 @@
 import styles from "./EditUserProfile.module.css";
-import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
-import { ProfilePictureContext } from "../contexts/UserRegistrationContext";
+import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
+import { ProfilePictureContext } from "../../contexts/UserRegistrationContext";
 import {
   FirstNameContext,
   LastNameContext,
   UserNameContext,
   BioContext,
-} from "../contexts/UserRegistrationContext";
+} from "../../contexts/UserRegistrationContext";
 import { useContext, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
 import { useRef } from "react";
 
-import { PopUpModalContext } from "../contexts/PopUpModalContext";
+import { PopUpModalContext } from "../../contexts/PopUpModalContext";
 
 function EditUserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);

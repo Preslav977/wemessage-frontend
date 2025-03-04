@@ -2,28 +2,20 @@ import { createBrowserRouter } from "react-router-dom";
 
 import App from "../App";
 
-import SignUpForm from "../components/SignUpForm";
-import LogInForm from "../components/LogInForm";
-import MainGridInterface from "../components/MainGridInterface";
-import ManageUserProfile from "../components/ManageUserProfile";
-import UserProfile from "../components/UserProfile";
-import EditUserProfile from "../components/EditUserProfile";
-import ChangeUserProfilePasswords from "../components/ChangeUserProfilePasswords";
-import ProtectedRoute from "../components/ProtectedRoute";
-import ErrorPage from "../components/ErrorPage";
-import ProtectApp from "../components/ProtectApp";
-import ChatsParentComponent from "../components/ChatsParentComponent";
-import RenderChatOrGroupHeader from "../components/RenderChatOrGroupHeader";
-import MessageChatOrGroupParent from "../components/MessageChatOrGroupParent";
+import SignUpForm from "../components/SignUpForm/SignUpForm";
+import LogInForm from "../components/LogInForm/LogInForm";
+import MainGridInterface from "../components/MainGridInterface/MainGridInterface";
+import ManageUserProfile from "../components/ManageUserProfile/ManageUserProfile";
+import UserProfile from "../components/UserProfile/UserProfile";
+import EditUserProfile from "../components/EditUserProfile/EditUserProfile";
+import UpdateUserPasswords from "../components/UpdateUserPasswords/UpdateUserPasswords";
+import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
+import ErrorPage from "../components/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <ProtectApp>
-        <App />
-      </ProtectApp>
-    ),
+    element: <App />,
     errorElement: <ErrorPage />,
     children: [
       { path: "/login", element: <LogInForm /> },
@@ -56,7 +48,7 @@ const router = createBrowserRouter([
           <ProtectedRoute>
             <MainGridInterface
               leftGridComponent={<ManageUserProfile />}
-              rightGridComponent={<ChangeUserProfilePasswords />}
+              rightGridComponent={<UpdateUserPasswords />}
             ></MainGridInterface>
           </ProtectedRoute>
         ),
@@ -66,10 +58,8 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
-              leftGridComponent={<ChatsParentComponent />}
-              rightGridComponent={
-                <RenderChatOrGroupHeader showChatOrGroupHeader={"Chats"} />
-              }
+              leftGridComponent={""}
+              rightGridComponent={""}
             ></MainGridInterface>
           </ProtectedRoute>
         ),
@@ -79,8 +69,8 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
-              leftGridComponent={<ChatsParentComponent />}
-              rightGridComponent={<MessageChatOrGroupParent />}
+              leftGridComponent={""}
+              rightGridComponent={""}
             ></MainGridInterface>
           </ProtectedRoute>
         ),

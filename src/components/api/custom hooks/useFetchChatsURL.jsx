@@ -1,16 +1,17 @@
-import { useContext, useState } from "react";
-import { UserContext } from "../../../contexts/UsersContext";
-import { useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
+import { ChatsContext } from "../../../contexts/ChatsContext";
 
-const useUsersURL = () => {
-  const [users, setUsers] = useContext(UserContext);
+const useFetchChatsURL = () => {
+  const [chats, setChats] = useContext(ChatsContext);
+
+  console.log(chats);
 
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/users/all", {
+    fetch(`http://localhost:5000/chats`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),
@@ -22,12 +23,12 @@ const useUsersURL = () => {
         }
         return response.json();
       })
-      .then((response) => setUsers(response))
+      .then((response) => setChats(response))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [setUsers]);
+  }, [setChats]);
 
-  return { users, error, loading };
+  return { chats, error, loading };
 };
 
-export default useUsersURL;
+export default useFetchChatsURL;

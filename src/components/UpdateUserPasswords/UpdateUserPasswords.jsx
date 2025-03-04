@@ -1,14 +1,14 @@
-import styles from "./ChangeUserProfilePasswords.module.css";
+import styles from "./UpdateUserPasswords.module.css";
 
-import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
-import { PasswordContext } from "../contexts/UserRegistrationContext";
+import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
+import { PasswordContext } from "../../contexts/UserRegistrationContext";
 import { useState, useContext } from "react";
-import { passwordRegex } from "../utility/passwordRegex";
-import { PopUpModalContext } from "../contexts/PopUpModalContext";
+import { passwordRegex } from "../../utility/passwordRegex";
+import { PopUpModalContext } from "../../contexts/PopUpModalContext";
 import { useNavigate } from "react-router-dom";
-import PopUpModal from "./PopUpModal";
+import PopUpModal from "../PopUpModal/PopUpModal";
 
-function ChangeUserProfilePasswords() {
+function UpdateUserPasswords() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
   // console.log(userLogInObj);
@@ -173,4 +173,4 @@ function ChangeUserProfilePasswords() {
   );
 }
 
-export default ChangeUserProfilePasswords;
+export default UpdateUserPasswords;

@@ -3,7 +3,7 @@ import styles from "./FetchUsers.module.css";
 import useUsersURL from "./custom hooks/useUsersURL";
 import PropTypes from "prop-types";
 
-function FetchUsers({ onClick, onChange }) {
+function FetchAndSearchForUsers({ onClick, onChange }) {
   const { users, error, loading } = useUsersURL();
 
   if (loading) {
@@ -64,9 +64,9 @@ function FetchUsers({ onClick, onChange }) {
   );
 }
 
-FetchUsers.propTypes = {
+FetchAndSearchForUsers.propTypes = {
   onClick: PropTypes.func,
   onChange: PropTypes.func,
 };
 
-export default FetchUsers;
+export default FetchAndSearchForUsers;
