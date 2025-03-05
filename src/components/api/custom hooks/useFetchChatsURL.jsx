@@ -4,8 +4,6 @@ import { ChatsContext } from "../../../contexts/ChatsContext";
 const useFetchChatsURL = () => {
   const [chats, setChats] = useContext(ChatsContext);
 
-  console.log(chats);
-
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);

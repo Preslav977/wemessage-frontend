@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import FetchAndSearchForUsers from "../api/FetchAndSearchForUsers";
 import { UserContext } from "../../contexts/UsersContext";
+import RenderAllChats from "../RenderAllChats/RenderAllChats";
 
 function ToggleBetweenChatsOrSearchForUser() {
   const [users, setUsers] = useContext(UserContext);
@@ -30,18 +31,14 @@ function ToggleBetweenChatsOrSearchForUser() {
 
   return (
     <div>
-      {/* {!toggleBetweenChatAndUsers ? (
-        <RenderChatsOrGroupsComponent
-          showChatOrGroupHeader={"Chats"}
-          onClick={toggleChatsOrUsers}
-          renderChatOrGroup={false}
-        />
+      {!toggleBetweenChatAndUsers ? (
+        <RenderAllChats onClick={toggleChatsOrUsers} />
       ) : (
         <FetchAndSearchForUsers
           onClick={toggleChatsOrUsers}
           onChange={searchForUsers}
         />
-      )} */}
+      )}
     </div>
   );
 }

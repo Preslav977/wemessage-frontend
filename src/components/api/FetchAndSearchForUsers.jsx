@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import styles from "./FetchUsers.module.css";
-import useUsersURL from "./custom hooks/useUsersURL";
+import styles from "./FetchAndSearchForUsers.module.css";
+import useFetchUsersURL from "./custom hooks/useFetchUsersURL";
 import PropTypes from "prop-types";
 
 function FetchAndSearchForUsers({ onClick, onChange }) {
-  const { users, error, loading } = useUsersURL();
+  const { users, error, loading } = useFetchUsersURL();
 
   if (loading) {
     return <img src="./loading_spinner.svg" alt="Loading..." />;

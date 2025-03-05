@@ -11,6 +11,8 @@ import EditUserProfile from "../components/EditUserProfile/EditUserProfile";
 import UpdateUserPasswords from "../components/UpdateUserPasswords/UpdateUserPasswords";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import ErrorPage from "../components/ErrorPage/ErrorPage";
+import ToggleBetweenChatsOrSearchForUser from "../components/ToggleBetweenChatsOrSearchForUser/ToggleBetweenChatsOrSearchForUser";
+import RenderChatDetailsMessages from "../components/RenderChatDetailsMessages";
 
 const router = createBrowserRouter([
   {
@@ -58,19 +60,23 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
-              leftGridComponent={""}
-              rightGridComponent={""}
+              leftGridComponent={<ToggleBetweenChatsOrSearchForUser />}
+              rightGridComponent={
+                <RenderChatDetailsMessages renderChatsOrChatDetails={false} />
+              }
             ></MainGridInterface>
           </ProtectedRoute>
         ),
       },
       {
-        path: "/chat/:id",
+        path: "/chats/:id",
         element: (
           <ProtectedRoute>
             <MainGridInterface
-              leftGridComponent={""}
-              rightGridComponent={""}
+              leftGridComponent={<ToggleBetweenChatsOrSearchForUser />}
+              rightGridComponent={
+                <RenderChatDetailsMessages renderChatsOrChatDetails={true} />
+              }
             ></MainGridInterface>
           </ProtectedRoute>
         ),
