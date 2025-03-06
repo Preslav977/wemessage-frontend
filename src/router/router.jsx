@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, useLoaderData } from "react-router-dom";
 
 import App from "../App";
 
@@ -13,6 +13,7 @@ import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import ErrorPage from "../components/ErrorPage/ErrorPage";
 import ToggleBetweenChatsOrSearchForUser from "../components/ToggleBetweenChatsOrSearchForUser/ToggleBetweenChatsOrSearchForUser";
 import RenderChatDetailsMessages from "../components/RenderChatDetailsMessages";
+import { fetchSendAMessageInChatLoader } from "../components/RenderChatDetailsMessages";
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,7 @@ const router = createBrowserRouter([
             ></MainGridInterface>
           </ProtectedRoute>
         ),
+        action: ({ params }) => fetchSendAMessageInChatLoader(params.id),
       },
     ],
   },

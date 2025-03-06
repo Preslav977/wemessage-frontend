@@ -2,12 +2,44 @@ import styles from "./RenderChatDetailsMessages.module.css";
 import useFetchSingleChatURL from "./api/custom hooks/useFetchSingleChatURL";
 import { Link } from "react-router-dom";
 import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
   const { chatDetails, error, loading } = useFetchSingleChatURL();
 
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
+
+  const [sendAMessage, setSendAMessage] = useState("");
+
+  async function sendMessageInChat(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    const getMessageTextFormData = formData.get("message_text");
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/chats/${chatDetails.id}/message`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            message_text: getMessageTextFormData,
+            id: userLogInObj.id,
+          }),
+        },
+      );
+      const result = await response.json();
+
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   if (loading) {
     return <img src="./loading_spinner.svg" alt="Loading..." />;
@@ -55,19 +87,60 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                     <p>{message.message_text}</p>
                   </div>
                 ) : (
-                  <div className={styles.message1}>
-                    <p>{message.message_text}</p>
-                  </div>
+                  <>
+                    <div className={styles.test}>
+                      {"@" + chatDetails.user.username}
+                    </div>
+                    <div className={styles.message1}>
+                      {chatDetails.user.profile_picture === "" ? (
+                        <img
+                          style={{
+                            width: "40px",
+                          }}
+                          src="/default_users_pfp.jpg"
+                          alt=""
+                        />
+                      ) : (
+                        <img src={chatDetails.user.profile_picture} />
+                      )}
+                      <p>{message.message_text}</p>
+                    </div>
+                  </>
                 )}
               </>
             ))}
           </div>
         )}
-        {/* <hr /> */}
+        <hr />
         <div className={styles.sendMessageInput}>
-          <input type="text" name="" id="" />
-          <input type="file" name="" id="" />
-          <button type="submit">Send</button>
+          <form onSubmit={sendMessageInChat}>
+            <input
+              style={{
+                width: "92%",
+              }}
+              type="text"
+              name="message_text"
+              id="message_text"
+              value={sendAMessage}
+              onChange={(e) => setSendAMessage(e.target.value)}
+            />
+            <input
+              style={{
+                width: "50px",
+              }}
+              type="file"
+              name=""
+              id=""
+            />
+            <button
+              style={{
+                width: "50px",
+              }}
+              type="submit"
+            >
+              Send
+            </button>
+          </form>
         </div>
       </div>
     );
@@ -75,3 +148,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
 }
 
 export default RenderChatDetailsMessages;
+
+export const fetchSendAMessageInChatLoader = async (params) => {
+  const response = await fetch(`http://localhost:5000/chats/${params}/message`);
+  return await response.json();
+};
