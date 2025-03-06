@@ -4,29 +4,52 @@
   overflow: scroll;
 }
 
-.chatDetailsUserContainer {
+.chatFlexedAnchor {
   /* outline: 2px solid red; */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .ulMessageContainer {
-  display: flex;
-  flex-direction: column;
+  /* display: flex; */
+  /* flex-direction: column; */
   gap: 0.5em;
-  /* outline: 2px solid black; */
-  max-width: 25%;
+  outline: 2px solid black;
+  /* max-width: 50%; */
 }
 
 .sendMessage {
-  /* display: flex; */
   max-width: fit-content;
   margin-top: 0.5em;
   margin-left: 0.5em;
   margin-bottom: 0.25rem;
-  outline: 2px solid black;
+  /* outline: 2px solid black; */
   padding: 0.5rem;
   text-align: center;
   word-break: break-word;
   overflow-wrap: anywhere;
   hyphens: auto;
   line-break: anywhere;
+}
+
+.messageContainer {
+  max-height: 85vh;
+  overflow: scroll;
+}
+
+.message {
+  /* outline: 2px solid black; */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  line-break: anywhere;
+  text-align: center;
+}
+
+.message > p {
+  max-width: 22em;
 }
