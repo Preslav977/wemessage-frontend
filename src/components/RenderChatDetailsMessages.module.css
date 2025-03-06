@@ -1,0 +1,32 @@
+.chatDetailsMessageContainer {
+  /* outline: 2px solid black; */
+  max-height: 85vh;
+  overflow: scroll;
+}
+
+.chatDetailsUserContainer {
+  /* outline: 2px solid red; */
+}
+
+.ulMessageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  /* outline: 2px solid black; */
+  max-width: 25%;
+}
+
+.sendMessage {
+  /* display: flex; */
+  max-width: fit-content;
+  margin-top: 0.5em;
+  margin-left: 0.5em;
+  margin-bottom: 0.25rem;
+  outline: 2px solid black;
+  padding: 0.5rem;
+  text-align: center;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  line-break: anywhere;
+}
