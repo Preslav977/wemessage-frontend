@@ -38,17 +38,42 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
       );
       const result = await response.json();
 
-      console.log(result);
-
       const sendMessageObj = {
         ...chatDetails,
         messages: result.messages,
       };
 
-      // console.log(sendMessageObj);
-
-      // console.log(chatDetails);
       setChatDetails(sendMessageObj);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function sendImageInChat(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/chats/${chatDetails.id}/image`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+          body: formData,
+        },
+      );
+
+      const result = await response.json();
+
+      const sendImageObj = {
+        ...chatDetails,
+        messages: result.messages,
+      };
+
+      setChatDetails(sendImageObj);
     } catch (err) {
       console.log(err);
     }
@@ -97,7 +122,16 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
               <>
                 {message.userId === userLogInObj.id ? (
                   <div className={styles.message}>
-                    <p>{message.message_text}</p>
+                    {message.message_text ? (
+                      <p>{message.message_text}</p>
+                    ) : (
+                      <img
+                        style={{
+                          width: "22rem",
+                        }}
+                        src={message.message_imageURL}
+                      />
+                    )}
                   </div>
                 ) : (
                   <>
@@ -126,34 +160,65 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
         )}
         <hr />
         <div className={styles.sendMessageInput}>
-          <form onSubmit={sendMessageInChat}>
-            <input
-              style={{
-                width: "92%",
-              }}
-              type="text"
-              name="message_text"
-              id="message_text"
-              value={sendAMessage}
-              onChange={(e) => setSendAMessage(e.target.value)}
-            />
-            <input
-              style={{
-                width: "50px",
-              }}
-              type="file"
-              name=""
-              id=""
-            />
-            <button
-              style={{
-                width: "50px",
-              }}
-              type="submit"
-            >
-              Send
-            </button>
-          </form>
+          {sendAMessage !== "" ? (
+            <form onSubmit={sendMessageInChat}>
+              <input
+                style={{
+                  width: "92%",
+                }}
+                type="text"
+                name="message_text"
+                id="message_text"
+                value={sendAMessage}
+                onChange={(e) => setSendAMessage(e.target.value)}
+              />
+              <input
+                style={{
+                  width: "50px",
+                }}
+                type="file"
+                name="file"
+                id="file"
+              />
+              <button
+                style={{
+                  width: "50px",
+                }}
+                type="submit"
+              >
+                Send
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={sendImageInChat}>
+              <input
+                style={{
+                  width: "92%",
+                }}
+                type="text"
+                name="message_text"
+                id="message_text"
+                value={sendAMessage}
+                onChange={(e) => setSendAMessage(e.target.value)}
+              />
+              <input
+                style={{
+                  width: "50px",
+                }}
+                type="file"
+                name="file"
+                id="file"
+              />
+              <button
+                style={{
+                  width: "50px",
+                }}
+                type="submit"
+              >
+                Send
+              </button>
+            </form>
+          )}
         </div>
       </div>
     );
