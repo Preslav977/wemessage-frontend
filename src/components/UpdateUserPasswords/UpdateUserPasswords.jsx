@@ -78,20 +78,11 @@ function UpdateUserPasswords() {
         }, 3000);
       }
 
-      const fetchLoggedInUserInformation = await fetch(
-        "http://localhost:5000/users",
-        {
-          mode: "cors",
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        },
-      );
-
-      userLogInObj = await fetchLoggedInUserInformation.json();
+      const result = await response.json();
 
       const userLoggedInInformation = {
         ...userLogInObj,
+        password: result.password,
       };
 
       setUserLogInObj(userLoggedInInformation);

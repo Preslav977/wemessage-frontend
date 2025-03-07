@@ -62,20 +62,13 @@ function UserProfile() {
         }, 3000);
       }
 
-      const fetchLoggedInUserInformation = await fetch(
-        "http://localhost:5000/users",
-        {
-          mode: "cors",
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        },
-      );
+      const result = await response.json();
 
-      userLogInObj = await fetchLoggedInUserInformation.json();
+      console.log(result);
 
       const userLoggedInInformation = {
         ...userLogInObj,
+        background_picture: result.background_picture,
       };
 
       setUserLogInObj(userLoggedInInformation);

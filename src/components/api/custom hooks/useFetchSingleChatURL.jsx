@@ -29,7 +29,7 @@ const useFetchSingleChatURL = () => {
       .finally(() => setLoading(false));
   }, [id, setChatDetails]);
 
-  return { chatDetails, error, loading };
+  return { chatDetails, setChatDetails, error, loading };
 };
 
 export default useFetchSingleChatURL;

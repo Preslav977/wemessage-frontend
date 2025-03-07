@@ -13,8 +13,6 @@ function RenderAllChats({ onClick }) {
     return <p>A network error was encountered</p>;
   }
 
-  console.log(chats);
-
   return (
     <>
       <div className={styles.flexedChatsContainer}>

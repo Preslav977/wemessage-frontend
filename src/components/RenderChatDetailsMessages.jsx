@@ -5,7 +5,10 @@ import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
 import { useContext, useState } from "react";
 
 function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
-  const { chatDetails, error, loading } = useFetchSingleChatURL();
+  const { chatDetails, setChatDetails, error, loading } =
+    useFetchSingleChatURL();
+
+  console.log(chatDetails);
 
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
@@ -36,6 +39,16 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
       const result = await response.json();
 
       console.log(result);
+
+      const sendMessageObj = {
+        ...chatDetails,
+        messages: result.messages,
+      };
+
+      // console.log(sendMessageObj);
+
+      // console.log(chatDetails);
+      setChatDetails(sendMessageObj);
     } catch (err) {
       console.log(err);
     }
@@ -148,8 +161,3 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
 }
 
 export default RenderChatDetailsMessages;
-
-export const fetchSendAMessageInChatLoader = async (params) => {
-  const response = await fetch(`http://localhost:5000/chats/${params}/message`);
-  return await response.json();
-};

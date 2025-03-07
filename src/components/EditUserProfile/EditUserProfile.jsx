@@ -57,7 +57,7 @@ function EditUserProfile() {
     setProfilePicture(updateProfilePictureObj);
 
     try {
-      await fetch(
+      const response = await fetch(
         `http://localhost:5000/users/profile/image/${userLogInObj.id}`,
         {
           method: "PUT",
@@ -68,20 +68,11 @@ function EditUserProfile() {
         },
       );
 
-      const fetchLoggedInUserInformation = await fetch(
-        "http://localhost:5000/users",
-        {
-          mode: "cors",
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        },
-      );
-
-      userLogInObj = await fetchLoggedInUserInformation.json();
+      const result = await response.json();
 
       const userLoggedInInformation = {
         ...userLogInObj,
+        profile_picture: result.profile_picture,
       };
 
       setUserLogInObj(userLoggedInInformation);
@@ -154,20 +145,14 @@ function EditUserProfile() {
         });
       }
 
-      const fetchLoggedInUserInformation = await fetch(
-        "http://localhost:5000/users",
-        {
-          mode: "cors",
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        },
-      );
-
-      userLogInObj = await fetchLoggedInUserInformation.json();
+      const result = await response.json();
 
       const userLoggedInInformation = {
         ...userLogInObj,
+        first_name: result.first_name,
+        last_name: result.last_name,
+        username: result.username,
+        bio: result.bio,
       };
 
       setUserLogInObj(userLoggedInInformation);
