@@ -144,6 +144,45 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
     setEditMessageForm(true);
   }
 
+  async function removeMessageFromChat(message) {
+    console.log(message.id);
+
+    const removeMessage = {
+      ...chatDetails,
+      messages: chatDetails.messages.filter((msg) => msg.id !== message.id),
+    };
+
+    setChatDetails(removeMessage);
+
+    console.log(chatDetails);
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/chats/${chatDetails.id}/message/${message.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+        },
+      );
+
+      const result = await response.json();
+
+      console.log(result);
+
+      const retrieveNewMessagesAfterDeletingAMessage = {
+        ...chatDetails,
+        messages: result.messages,
+      };
+
+      setChatDetails(retrieveNewMessagesAfterDeletingAMessage);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   if (loading) {
     return <img src="./loading_spinner.svg" alt="Loading..." />;
   }
@@ -212,7 +251,14 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                               value={msg}
                               onChange={(e) => setMsg(e.target.value)}
                             />
-                            <button>Cancel</button>
+                            <button
+                              onClick={() => {
+                                setShowDropDownMenuMessage(false);
+                                setEditMessageForm(false);
+                              }}
+                            >
+                              Cancel
+                            </button>
                             <button type="submit">Save</button>
                           </form>
                         ) : (
@@ -230,6 +276,17 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                               }}
                             >
                               Edit
+                            </button>
+                            <button
+                              onClick={() => removeMessageFromChat(message)}
+                              style={{
+                                display:
+                                  message.id === clickedMessage
+                                    ? "block"
+                                    : "none",
+                              }}
+                            >
+                              Delete
                             </button>
                           </div>
                         ) : (
