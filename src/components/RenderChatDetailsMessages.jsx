@@ -3,16 +3,25 @@ import useFetchSingleChatURL from "./api/custom hooks/useFetchSingleChatURL";
 import { Link } from "react-router-dom";
 import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
 import { useContext, useState } from "react";
+import { useRef } from "react";
 
 function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
   const { chatDetails, setChatDetails, error, loading } =
     useFetchSingleChatURL();
 
-  console.log(chatDetails);
-
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
   const [sendAMessage, setSendAMessage] = useState("");
+
+  const [msg, setMsg] = useState();
+
+  const form = useRef(null);
+
+  const [showDropDownMenuMessage, setShowDropDownMenuMessage] = useState(false);
+
+  const [editMessageForm, setEditMessageForm] = useState(false);
+
+  const [clickedMessage, setClickedMessage] = useState();
 
   async function sendMessageInChat(e) {
     e.preventDefault();
@@ -79,6 +88,62 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
     }
   }
 
+  function toggleMessageDropDown(message) {
+    setClickedMessage(message.id);
+    setShowDropDownMenuMessage(true);
+    setMsg(message.message_text);
+
+    if (clickedMessage !== undefined) {
+      setClickedMessage(message.id);
+    }
+  }
+
+  async function showEditMessageForm(e) {
+    e.preventDefault();
+
+    setEditMessageForm(true);
+
+    const formData = new FormData(e.target);
+
+    const getMessageTextFormData = formData.get("message_text");
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/chats/${chatDetails.id}/message/${clickedMessage}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            message_text: getMessageTextFormData,
+            id: userLogInObj.id,
+          }),
+        },
+      );
+
+      const result = await response.json();
+
+      const editAMessage = {
+        ...chatDetails,
+        messages: result.messages,
+      };
+
+      setChatDetails(editAMessage);
+
+      setEditMessageForm(false);
+
+      setShowDropDownMenuMessage(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  function showForm() {
+    setEditMessageForm(true);
+  }
+
   if (loading) {
     return <img src="./loading_spinner.svg" alt="Loading..." />;
   }
@@ -123,7 +188,54 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                 {message.userId === userLogInObj.id ? (
                   <div className={styles.message}>
                     {message.message_text ? (
-                      <p>{message.message_text}</p>
+                      <div className={styles.flexMessage}>
+                        <img
+                          onClick={() => toggleMessageDropDown(message)}
+                          style={{
+                            width: "5px",
+                          }}
+                          src="/three_dots.svg"
+                          alt=""
+                        />
+                        {editMessageForm && message.id === clickedMessage ? (
+                          <form
+                            style={{
+                              display: "block",
+                            }}
+                            ref={form}
+                            onSubmit={showEditMessageForm}
+                          >
+                            <input
+                              type="text"
+                              name="message_text"
+                              id="message_text"
+                              value={msg}
+                              onChange={(e) => setMsg(e.target.value)}
+                            />
+                            <button>Cancel</button>
+                            <button type="submit">Save</button>
+                          </form>
+                        ) : (
+                          <p className={styles.msg}>{message.message_text}</p>
+                        )}
+                        {showDropDownMenuMessage ? (
+                          <div className={styles.buttons}>
+                            <button
+                              onClick={showForm}
+                              style={{
+                                display:
+                                  message.id === clickedMessage
+                                    ? "block"
+                                    : "none",
+                              }}
+                            >
+                              Edit
+                            </button>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
                     ) : (
                       <img
                         style={{
