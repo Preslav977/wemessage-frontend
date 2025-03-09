@@ -26,11 +26,13 @@ function ToggleBetweenChatsOrSearchForUser() {
 
     const getFoundUser = await fetchUsersBySearching.json();
 
-    setUsers(getFoundUser);
+    const copyArray = [...getFoundUser];
+
+    setUsers(copyArray);
   }
 
   return (
-    <div>
+    <>
       {!toggleBetweenChatAndUsers ? (
         <RenderAllChats onClick={toggleChatsOrUsers} />
       ) : (
@@ -39,7 +41,7 @@ function ToggleBetweenChatsOrSearchForUser() {
           onChange={searchForUsers}
         />
       )}
-    </div>
+    </>
   );
 }
 

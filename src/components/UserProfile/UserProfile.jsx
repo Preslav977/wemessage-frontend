@@ -64,8 +64,6 @@ function UserProfile() {
 
       const result = await response.json();
 
-      console.log(result);
-
       const userLoggedInInformation = {
         ...userLogInObj,
         background_picture: result.background_picture,

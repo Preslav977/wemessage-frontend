@@ -11,8 +11,6 @@ import PopUpModal from "../PopUpModal/PopUpModal";
 function UpdateUserPasswords() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
-  // console.log(userLogInObj);
-
   const [oldPassword, setOldPassword] = useState("");
 
   const { password, setPassword } = useContext(PasswordContext);

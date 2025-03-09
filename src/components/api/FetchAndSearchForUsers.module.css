@@ -1,12 +1,14 @@
-.fetchUsersContainer {
+.fetchUsersHeader {
   /* outline: 2px solid black; */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 0.5rem;
 }
 
-.closeAllUsersSvg {
+.closeSearchForUsersSvg {
   width: 30px;
+  cursor: pointer;
 }
 
 .searchForUsersInput {
@@ -14,11 +16,13 @@
   width: 100%;
 }
 
-.flexedUsersLiContainer {
+.flexedNestedLiUsersContainer {
+  margin-top: 0.5rem;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
-.usersImages {
+.userProfilePicture {
   width: 40px;
 }

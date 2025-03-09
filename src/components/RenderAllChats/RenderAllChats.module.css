@@ -1,15 +1,20 @@
-.flexedChatsContainer {
+.flexedChatHeaderContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.flexedUsersLiContainer {
+.flexedNestedLiUserContainer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.usersImages {
+.openSearchForAUserSvg {
+  width: 40px;
+  cursor: pointer;
+}
+
+.usersProfilePicture {
   width: 50px;
 }
