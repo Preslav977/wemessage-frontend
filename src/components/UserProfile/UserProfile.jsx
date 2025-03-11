@@ -90,6 +90,7 @@ function UserProfile() {
           Authorization: localStorage.getItem("token"),
         },
         body: JSON.stringify({
+          senderId: userLogInObj.id,
           receiverId: Number(userGetById.id),
         }),
       });

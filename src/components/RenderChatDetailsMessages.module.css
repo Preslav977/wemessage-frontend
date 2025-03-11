@@ -48,7 +48,7 @@
   hyphens: auto;
   line-break: anywhere;
   text-align: center;
-  margin-top: 1em;
+  margin-top: 1.5em;
   margin-right: 1em;
   margin-bottom: 1em;
 }
@@ -74,6 +74,10 @@
   position: absolute;
   bottom: -35px;
   left: -10px;
+}
+
+.chatReceiverSendingMessagesContainer {
+  margin-top: 1.5em;
 }
 
 .chatDetailsUserUsername {

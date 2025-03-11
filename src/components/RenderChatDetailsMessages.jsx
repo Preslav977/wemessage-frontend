@@ -11,6 +11,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
 
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
+  console.log(chatDetails, userLogInObj.id);
+
   const [sendAMessageState, setSendAMessageState] = useState("");
 
   const [editTheSelectedMessage, setEditTheSelectedMessage] = useState();
@@ -41,7 +43,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
           },
           body: JSON.stringify({
             message_text: getMessageTextFormData,
-            id: userLogInObj.id,
+            senderMessageId: userLogInObj.id,
+            receiverId: chatDetails.receiverChat.id,
           }),
         },
       );
@@ -72,6 +75,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
             Authorization: localStorage.getItem("token"),
           },
           body: formData,
+          senderMessageId: userLogInObj.id,
+          receiverId: chatDetails.receiverChat.id,
         },
       );
 
@@ -122,7 +127,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
           },
           body: JSON.stringify({
             message_text: getMessageTextFormData,
-            id: userLogInObj.id,
+            senderMessageId: userLogInObj.id,
+            receiverMessageId: chatDetails.receiverChat.id,
           }),
         },
       );
@@ -163,6 +169,9 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
             "Content-Type": "application/json",
             Authorization: localStorage.getItem("token"),
           },
+          body: JSON.stringify({
+            senderMessageId: userLogInObj.id,
+          }),
         },
       );
 
@@ -197,7 +206,7 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
             className={styles.chatMessageDetailsFlexedAnchor}
             to={`/profile/${chatDetails.id}`}
           >
-            {chatDetails.user.profile_picture === "" ? (
+            {chatDetails.receiverChat.profile_picture === "" ? (
               <img
                 className={styles.chatDetailsUserProfilePicture}
                 src="/default_users_pfp.jpg"
@@ -206,12 +215,13 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
             ) : (
               <img
                 className={styles.chatDetailsUserProfilePicture}
-                src={chatDetails.user.profile_picture}
+                src={chatDetails.receiverChat.profile_picture}
                 alt="user profile picture"
               />
             )}
             <h6 className={styles.chatMessageDetailsUserFirstAndLastName}>
-              {chatDetails.user.first_name} {chatDetails.user.last_name}
+              {chatDetails.receiverChat.first_name}{" "}
+              {chatDetails.receiverChat.last_name}
             </h6>
           </Link>
         </header>
@@ -226,8 +236,11 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
           <div className={styles.chatDetailsMessagesContainer}>
             {chatDetails.messages.map((message) => (
               <>
-                {message.userId === userLogInObj.id ? (
-                  <ul className={styles.chatDetailsUserMessage}>
+                {message.senderMessageId === userLogInObj.id ? (
+                  <ul
+                    key={message.id}
+                    className={styles.chatDetailsUserMessage}
+                  >
                     {message.message_text ? (
                       <div className={styles.chatDetailsMessageDropDownMenu}>
                         <img
@@ -313,29 +326,33 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                   </ul>
                 ) : (
                   <>
-                    <div className={styles.chatDetailsUserUsername}>
-                      <p>{"@" + chatDetails.user.username}</p>
-                    </div>
-                    <div className={styles.chatDetailsReceiverUserMessages}>
-                      <Link to={`/profile/${chatDetails.user.id}`}>
-                        {chatDetails.user.profile_picture === "" ? (
-                          <img
-                            className={
-                              styles.chatDetailsUserDefaultProfilePicture
-                            }
-                            src="/default_users_pfp.jpg"
-                            alt="default user profile picture"
-                          />
-                        ) : (
-                          <img
-                            src={chatDetails.user.profile_picture}
-                            alt="user profile picture"
-                          />
-                        )}
-                      </Link>
-                      <p className={styles.chatDetailsSendMessage}>
-                        {message.message_text}
-                      </p>
+                    <div
+                      className={styles.chatReceiverSendingMessagesContainer}
+                    >
+                      <div className={styles.chatDetailsUserUsername}>
+                        <p>{"@" + chatDetails.receiverChat.username}</p>
+                      </div>
+                      <div className={styles.chatDetailsReceiverUserMessages}>
+                        <Link to={`/profile/${chatDetails.receiverChat.id}`}>
+                          {chatDetails.receiverChat.profile_picture === "" ? (
+                            <img
+                              className={
+                                styles.chatDetailsUserDefaultProfilePicture
+                              }
+                              src="/default_users_pfp.jpg"
+                              alt="default user profile picture"
+                            />
+                          ) : (
+                            <img
+                              src={chatDetails.receiverChat.profile_picture}
+                              alt="user profile picture"
+                            />
+                          )}
+                        </Link>
+                        <p className={styles.chatDetailsSendMessage}>
+                          {message.message_text}
+                        </p>
+                      </div>
                     </div>
                   </>
                 )}
