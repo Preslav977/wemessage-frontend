@@ -57,6 +57,7 @@
   display: flex;
   gap: 1rem;
   position: relative;
+  justify-content: flex-end;
 }
 
 .chatDetailsMessageDropDownImg {
@@ -93,7 +94,9 @@
 }
 
 .chatDetailsSendImage {
-  max-width: 22rem;
+  max-width: 35%;
+  height: auto;
+  margin-bottom: 1em;
 }
 
 .chatDetailsUserDefaultProfilePicture {

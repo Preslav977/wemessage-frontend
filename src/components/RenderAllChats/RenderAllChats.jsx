@@ -8,6 +8,8 @@ import { useContext } from "react";
 function RenderAllChats({ onClick }) {
   const { chats, error, loading } = useFetchChatsURL();
 
+  // console.log(chats);
+
   const [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
   if (loading) {

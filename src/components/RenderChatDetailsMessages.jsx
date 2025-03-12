@@ -11,8 +11,6 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
 
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
-  console.log(chatDetails, userLogInObj.id);
-
   const [sendAMessageState, setSendAMessageState] = useState("");
 
   const [editTheSelectedMessage, setEditTheSelectedMessage] = useState();
@@ -66,6 +64,10 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
 
     const formData = new FormData(e.target);
 
+    formData.append("senderMessageId", userLogInObj.id);
+
+    formData.append("receiverId", chatDetails.receiverChat.id);
+
     try {
       const response = await fetch(
         `http://localhost:5000/chats/${chatDetails.id}/image`,
@@ -75,8 +77,6 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
             Authorization: localStorage.getItem("token"),
           },
           body: formData,
-          senderMessageId: userLogInObj.id,
-          receiverId: chatDetails.receiverChat.id,
         },
       );
 
@@ -317,11 +317,31 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                         )}
                       </div>
                     ) : (
-                      <img
-                        className={styles.chatDetailsSendImage}
-                        src={message.message_imageURL}
-                        alt="send image in chat"
-                      />
+                      <>
+                        {message.senderMessageId === userLogInObj.id ? (
+                          <div
+                            className={styles.chatDetailsMessageDropDownMenu}
+                          >
+                            <img
+                              className={styles.chatDetailsMessageDropDownImg}
+                              onClick={() => toggleMessageDropDown(message)}
+                              src="/three_dots.svg"
+                              alt="message drop-down menu"
+                            />
+                            <img
+                              className={styles.chatDetailsSendImage}
+                              src={message.message_imageURL}
+                              alt="send image in chat"
+                            />
+                          </div>
+                        ) : (
+                          <img
+                            className={styles.chatDetailsSendImage}
+                            src={message.message_imageURL}
+                            alt="send image in chat"
+                          />
+                        )}
+                      </>
                     )}
                   </ul>
                 ) : (
@@ -349,7 +369,10 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                             />
                           )}
                         </Link>
-                        <p className={styles.chatDetailsSendMessage}>
+                        <p
+                          key={message.id}
+                          className={styles.chatDetailsSendMessage}
+                        >
                           {message.message_text}
                         </p>
                       </div>
@@ -392,10 +415,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
               <input
                 className={styles.chatDetailsSendMessageInput}
                 type="text"
-                name="message_text"
-                id="message_text"
-                value={sendAMessageState}
-                onChange={(e) => setSendAMessageState(e.target.value)}
+                name=""
+                id=""
               />
               <input
                 className={styles.chatDetailsSendImageInput}
