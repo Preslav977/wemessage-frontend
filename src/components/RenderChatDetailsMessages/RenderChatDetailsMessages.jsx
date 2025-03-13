@@ -1,7 +1,7 @@
 import styles from "./RenderChatDetailsMessages.module.css";
-import useFetchSingleChatURL from "./api/custom hooks/useFetchSingleChatURL";
+import useFetchSingleChatURL from "../api/custom hooks/useFetchSingleChatURL";
 import { Link } from "react-router-dom";
-import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
+import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { useContext, useState, useRef } from "react";
 import PropTypes from "prop-types";
 

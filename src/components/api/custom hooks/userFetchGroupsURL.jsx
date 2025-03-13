@@ -1,15 +1,15 @@
 import { useContext, useState, useEffect } from "react";
-import { ChatsContext } from "../../../contexts/ChatsContext";
+import { GroupsContext } from "../../../contexts/GroupsContext";
 
-const useFetchChatsURL = () => {
-  const [chats, setChats] = useContext(ChatsContext);
+const useFetchGroupsUrl = () => {
+  const [groups, setGroups] = useContext(GroupsContext);
 
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/chats", {
+    fetch("http://localhost:5000/groups", {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),
@@ -21,12 +21,12 @@ const useFetchChatsURL = () => {
         }
         return response.json();
       })
-      .then((response) => setChats(response))
+      .then((response) => setGroups(response))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [setChats]);
+  }, [setGroups]);
 
-  return { chats, error, loading };
+  return { groups, error, loading };
 };
 
-export default useFetchChatsURL;
+export default useFetchGroupsUrl;
