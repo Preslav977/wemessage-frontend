@@ -12,6 +12,7 @@ import ErrorPage from "../components/ErrorPage/ErrorPage";
 import ToggleBetweenChatsOrSearchForUser from "../components/ToggleBetweenChatsOrSearchForUser/ToggleBetweenChatsOrSearchForUser";
 import RenderChatDetailsMessages from "../components/RenderChatDetailsMessages/RenderChatDetailsMessages";
 import RenderAllGroups from "../components/RenderAllGroups";
+import RenderGroupDetailsMessages from "../components/RenderGroupDetailsMessages";
 
 const routes = [
   {
@@ -86,7 +87,22 @@ const routes = [
           <ProtectedRoute>
             <MainGridInterface
               leftGridComponent={<RenderAllGroups />}
-              rightGridComponent={""}
+              rightGridComponent={
+                <RenderGroupDetailsMessages renderGroupOrGroupDetails={false} />
+              }
+            ></MainGridInterface>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/groups/:id",
+        element: (
+          <ProtectedRoute>
+            <MainGridInterface
+              leftGridComponent={<RenderAllGroups />}
+              rightGridComponent={
+                <RenderGroupDetailsMessages renderGroupOrGroupDetails={true} />
+              }
             ></MainGridInterface>
           </ProtectedRoute>
         ),

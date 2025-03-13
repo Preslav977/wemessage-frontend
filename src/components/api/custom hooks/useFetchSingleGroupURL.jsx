@@ -1,17 +1,18 @@
 import { useContext, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { GroupsContext } from "../../../contexts/GroupsContext";
 
-const useFetchGroupsURL = () => {
-  const [groups, setGroups] = useContext(GroupsContext);
+const useFetchSingleGroupURL = () => {
+  const { id } = useParams();
 
-  console.log(groups);
+  const [groupDetails, setGroupDetails] = useContext(GroupsContext);
 
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/groups", {
+    fetch(`http://localhost:5000/groups/${id}`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),
@@ -23,12 +24,12 @@ const useFetchGroupsURL = () => {
         }
         return response.json();
       })
-      .then((response) => setGroups(response))
+      .then((response) => setGroupDetails(response))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [setGroups]);
+  }, [id, setGroupDetails]);
 
-  return { groups, error, loading };
+  return { groupDetails, setGroupDetails, error, loading };
 };
 
-export default useFetchGroupsURL;
+export default useFetchSingleGroupURL;
