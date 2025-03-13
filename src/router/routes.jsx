@@ -10,7 +10,8 @@ import UpdateUserPasswords from "../components/UpdateUserPasswords/UpdateUserPas
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import ErrorPage from "../components/ErrorPage/ErrorPage";
 import ToggleBetweenChatsOrSearchForUser from "../components/ToggleBetweenChatsOrSearchForUser/ToggleBetweenChatsOrSearchForUser";
-import RenderChatDetailsMessages from "../components/RenderChatDetailsMessages";
+import RenderChatDetailsMessages from "../components/RenderChatDetailsMessages/RenderChatDetailsMessages";
+import RenderAllGroups from "../components/RenderAllGroups";
 
 const routes = [
   {
@@ -75,6 +76,17 @@ const routes = [
               rightGridComponent={
                 <RenderChatDetailsMessages renderChatsOrChatDetails={true} />
               }
+            ></MainGridInterface>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/groups",
+        element: (
+          <ProtectedRoute>
+            <MainGridInterface
+              leftGridComponent={<RenderAllGroups />}
+              rightGridComponent={""}
             ></MainGridInterface>
           </ProtectedRoute>
         ),

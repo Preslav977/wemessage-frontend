@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { GroupsContext } from "../../../contexts/GroupsContext";
 
-const useFetchGroupsUrl = () => {
+const useFetchGroupsURL = () => {
   const [groups, setGroups] = useContext(GroupsContext);
 
   const [error, setError] = useState(null);
@@ -29,4 +29,4 @@ const useFetchGroupsUrl = () => {
   return { groups, error, loading };
 };
 
-export default useFetchGroupsUrl;
+export default useFetchGroupsURL;
