@@ -6,7 +6,7 @@ function RenderAllGroups() {
   const { groups, error, loading } = useFetchGroupsURL();
 
   if (loading) {
-    return <img src="./loading_spinner.svg" alt="Loading..." />;
+    return <img src="/loading_spinner.svg" alt="Loading..." />;
   }
 
   if (error) {
@@ -23,22 +23,24 @@ function RenderAllGroups() {
         {groups.length === 0 ? (
           <p>{"You currently have no groups"}</p>
         ) : (
-          <ul>
-            {groups.map((group) => (
-              <Link to={`/groups/${group.id}`} key={group.id}>
-                <li className={styles.flexedLiGroupContainer}>
-                  <div className={styles.groupImageContainer}>
-                    <img
-                      className={styles.groupImage}
-                      src={group.group_image}
-                      alt="group image"
-                    />
+          <>
+            <ul>
+              {groups.map((group) => (
+                <Link to={`/groups/${group.id}`} key={group.id}>
+                  <div className={styles.flexedLiGroupContainer}>
+                    <div className={styles.groupImageContainer}>
+                      <img
+                        className={styles.groupImage}
+                        src={group.group_image}
+                        alt="group image"
+                      />
+                    </div>
+                    <li>{group.group_name}</li>
                   </div>
-                  <li>{group.group_name}</li>
-                </li>
-              </Link>
-            ))}
-          </ul>
+                </Link>
+              ))}
+            </ul>
+          </>
         )}
       </>
     </>

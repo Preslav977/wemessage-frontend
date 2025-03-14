@@ -1,29 +1,267 @@
 import styles from "./RenderGroupDetailsMessages.module.css";
-import useFetchSingleGroupURL from "./api/custom hooks/useFetchSingleGroupURL";
 import { Link } from "react-router-dom";
 import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
 import { useContext, useState, useRef } from "react";
-import PropTypes from "prop-types";
+import { useLoaderData } from "react-router-dom";
 
-function RenderGroupDetailsMessages({ renderGroupOrGroupDetails }) {
-  const { groupDetails, error, loading } = useFetchSingleGroupURL();
+function RenderGroupDetailsMessages() {
+  const groupDetails = useLoaderData();
 
-  // console.log(groupDetails);
+  console.log(groupDetails);
 
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
-  if (loading) {
-    return <img src="./loading_spinner.svg" alt="Loading..." />;
-  }
+  const [sendAGroupMessageState, setSendAGroupMessageState] = useState("");
 
-  if (error) {
-    return <p>A network error was encountered</p>;
-  }
+  const [editTheSelectedGroupMessage, setEditTheSelectedGroupMessage] =
+    useState();
 
-  if (!renderGroupOrGroupDetails) {
+  const dropDownFormRef = useRef(null);
+
+  const [showDropDownMenuGroupMessage, setShowDropDownMenuGroupMessage] =
+    useState(false);
+
+  const [showDropDownGroupMessageForm, setShowDropDownGroupMessageForm] =
+    useState(false);
+
+  const [clickedGroupMessage, setClickedGroupMessage] = useState();
+
+  if (groupDetails === undefined) {
     return <h5>Groups</h5>;
-  } else if (renderGroupOrGroupDetails && groupDetails !== null) {
-    console.log(groupDetails);
+  } else {
+    return (
+      <div className={styles.groupMessagesDetailsContainer}>
+        <header className={styles.groupMessageDetailsHeader}>
+          <Link
+            className={styles.groupMessageDetailsFlexedAnchor}
+            to={`/groups/${groupDetails.id}`}
+          >
+            <img
+              className={styles.groupDetailsUserProfilePicture}
+              src={groupDetails.group_image}
+              alt="group image"
+            />
+
+            <h6 className={styles.groupNameMessageDetails}>
+              {groupDetails.group_name}
+            </h6>
+          </Link>
+        </header>
+        <div className={styles.groupMessageDetailsTopHr}>
+          <hr />
+        </div>
+        {groupDetails.messagesGGChat.length === 0 ? (
+          <div className={styles.groupNoMessagesContainer}>
+            <p>Start a conversation, say Hi!</p>
+          </div>
+        ) : (
+          <div className={styles.groupDetailsMessagesContainer}>
+            {groupDetails.messagesGGChat.map((message) => (
+              <>
+                {message.userId === userLogInObj.id ? (
+                  <ul
+                    key={message.id}
+                    className={styles.groupDetailsUserMessage}
+                  >
+                    {message.message_text ? (
+                      <div className={styles.groupDetailsMessageDropDownMenu}>
+                        <img
+                          className={styles.groupDetailsMessageDropDownImg}
+                          // onClick={() => toggleMessageDropDown(message)}
+                          src="/three_dots.svg"
+                          alt="message drop-down menu"
+                        />
+                        {showDropDownGroupMessageForm &&
+                        message.id === clickedGroupMessage ? (
+                          <form
+                            style={{
+                              display: "block",
+                            }}
+                            ref={dropDownFormRef}
+                            // onSubmit={showEditMessageForm}
+                          >
+                            <input
+                              type="text"
+                              name="message_text"
+                              id="message_text"
+                              value={editTheSelectedGroupMessage}
+                              onChange={(e) =>
+                                setEditTheSelectedGroupMessage(e.target.value)
+                              }
+                            />
+                            <button
+                              onClick={() => {
+                                setShowDropDownMenuGroupMessage(false);
+                                setShowDropDownGroupMessageForm(false);
+                              }}
+                            >
+                              Cancel
+                            </button>
+                            <button type="submit">Save</button>
+                          </form>
+                        ) : (
+                          <li className={styles.groupDetailsSendMessage}>
+                            {message.message_text}
+                          </li>
+                        )}
+                        {setShowDropDownMenuGroupMessage ? (
+                          <div
+                            className={styles.groupDetailsDropDownMenuButtons}
+                          >
+                            <button
+                              onClick={() => {
+                                setShowDropDownGroupMessageForm(true);
+                                setShowDropDownMenuGroupMessage(false);
+                              }}
+                              style={{
+                                display:
+                                  message.id === clickedGroupMessage
+                                    ? "block"
+                                    : "none",
+                              }}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              // onClick={() => removeMessageFromChat(message)}
+                              style={{
+                                display:
+                                  message.id === clickedGroupMessage
+                                    ? "block"
+                                    : "none",
+                              }}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    ) : (
+                      <>
+                        {message.userId === userLogInObj.id ? (
+                          <div
+                            className={styles.groupDetailsMessageDropDownMenu}
+                          >
+                            <img
+                              className={styles.groupDetailsMessageDropDownImg}
+                              // onClick={() => toggleMessageDropDown(message)}
+                              src="/three_dots.svg"
+                              alt="message drop-down menu"
+                            />
+                            <img
+                              className={styles.groupDetailsSendImage}
+                              src={message.message_imageURL}
+                              alt="send image in chat"
+                            />
+                          </div>
+                        ) : (
+                          <img
+                            className={styles.groupDetailsSendImage}
+                            src={message.message_imageURL}
+                            alt="send image in chat"
+                          />
+                        )}
+                      </>
+                    )}
+                  </ul>
+                ) : (
+                  <>
+                    {groupDetails.users.map((user) => (
+                      <div
+                        key={user.id}
+                        className={styles.groupReceiverSendingMessagesContainer}
+                      >
+                        <div className={styles.groupDetailsUserUsername}>
+                          <p>{"@" + user.username}</p>
+                        </div>
+                        <div
+                          className={styles.groupDetailsReceiverUserMessages}
+                        >
+                          <Link to={`/profile/${user.id}`}>
+                            {user.profile_picture === "" ? (
+                              <img
+                                className={
+                                  styles.groupDetailsUserDefaultProfilePicture
+                                }
+                                src="/default_users_pfp.jpg"
+                                alt="default user profile picture"
+                              />
+                            ) : (
+                              <img
+                                src={user.profile_picture}
+                                alt="user profile picture"
+                              />
+                            )}
+                          </Link>
+                          <p
+                            key={message.id}
+                            className={styles.groupDetailsSendMessage}
+                          >
+                            {message.message_text}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </>
+            ))}
+          </div>
+        )}
+        <div className={styles.groupMessageDetailsBottomHr}>
+          <hr />
+        </div>
+        <div className={styles.groupDetailsSendMessageOrImageContainer}>
+          {sendAGroupMessageState !== "" ? (
+            <form onSubmit={""}>
+              <input
+                className={styles.groupDetailsSendMessageInput}
+                type="text"
+                name="message_text"
+                id="message_text"
+                value={sendAGroupMessageState}
+                onChange={(e) => setSendAGroupMessageState(e.target.value)}
+              />
+              <input
+                className={styles.groupDetailsSendImageInput}
+                type="file"
+                name="file"
+                id="file"
+              />
+              <button
+                className={styles.groupDetailsSendMessageOrImageButton}
+                type="submit"
+              >
+                Send
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={""}>
+              <input
+                className={styles.groupDetailsSendMessageInput}
+                type="text"
+                name=""
+                id=""
+              />
+              <input
+                className={styles.groupDetailsSendImageInput}
+                type="file"
+                name="file"
+                id="file"
+              />
+              <button
+                className={styles.groupDetailsSendMessageOrImageButton}
+                type="submit"
+              >
+                Send
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+    );
   }
 }
 

@@ -4,8 +4,6 @@ import { GroupsContext } from "../../../contexts/GroupsContext";
 const useFetchGroupsURL = () => {
   const [groups, setGroups] = useContext(GroupsContext);
 
-  console.log(groups);
-
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);
@@ -21,6 +19,7 @@ const useFetchGroupsURL = () => {
         if (response.status >= 400) {
           throw new Error("Server error");
         }
+
         return response.json();
       })
       .then((response) => setGroups(response))
