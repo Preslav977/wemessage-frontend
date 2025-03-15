@@ -16,7 +16,6 @@ import RenderChatDetailsMessages from "../components/RenderChatDetailsMessages/R
 import RenderAllGroups from "../components/RenderAllGroups";
 import RenderGroupDetailsMessages from "../components/RenderGroupDetailsMessages";
 import RenderGroupDetailsMessagesParent from "../components/RenderGroupDetailsMessagesParent";
-import { fetchSingleGroupLoader } from "../components/RenderGroupDetailsMessagesParent";
 
 const router = createBrowserRouter([
   {
@@ -114,7 +113,6 @@ const router = createBrowserRouter([
             ></MainGridInterface>
           </ProtectedRoute>
         ),
-        loader: ({ params }) => fetchSingleGroupLoader(params.id),
       },
     ],
   },

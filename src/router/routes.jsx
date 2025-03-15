@@ -14,7 +14,6 @@ import RenderChatDetailsMessages from "../components/RenderChatDetailsMessages/R
 import RenderAllGroups from "../components/RenderAllGroups";
 import RenderGroupDetailsMessages from "../components/RenderGroupDetailsMessages";
 import RenderGroupDetailsMessagesParent from "../components/RenderGroupDetailsMessagesParent";
-import { fetchSingleGroupLoader } from "../components/RenderGroupDetailsMessagesParent";
 
 const routes = [
   {
@@ -112,7 +111,6 @@ const routes = [
             ></MainGridInterface>
           </ProtectedRoute>
         ),
-        loader: ({ params }) => fetchSingleGroupLoader(params.id),
       },
     ],
   },

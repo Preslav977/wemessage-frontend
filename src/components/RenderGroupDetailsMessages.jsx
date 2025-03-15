@@ -3,9 +3,14 @@ import { Link } from "react-router-dom";
 import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
 import { useContext, useState, useRef } from "react";
 import { useLoaderData } from "react-router-dom";
+import { GroupDetailsContext } from "../contexts/GroupsContext";
+import useFetchGroupsAndGroupsById from "./api/custom hooks/useFetchGroupsAndGroupsById";
+import useFetchSingleGroupURL from "./api/custom hooks/useFetchSingleGroupURL";
+import useFetchGroupsURL from "./api/custom hooks/userFetchGroupsURL";
 
 function RenderGroupDetailsMessages() {
-  const groupDetails = useLoaderData();
+  const { groupDetails, setGroupDetails, loading, error } =
+    useFetchSingleGroupURL();
 
   console.log(groupDetails);
 
@@ -26,7 +31,45 @@ function RenderGroupDetailsMessages() {
 
   const [clickedGroupMessage, setClickedGroupMessage] = useState();
 
-  if (groupDetails === undefined) {
+  if (loading) {
+    return <img src="./loading_spinner.svg" alt="Loading..." />;
+  }
+
+  if (error) {
+    return <p>A network error was encountered</p>;
+  }
+
+  async function sendMessageInGroup(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const getMessageTextFormData = formData.get("message_text");
+    try {
+      const response = await fetch(
+        `http://localhost:5000/groups/${groupDetails.id}/message`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            message_text: getMessageTextFormData,
+            userId: userLogInObj.id,
+          }),
+        },
+      );
+      const result = await response.json();
+      console.log(result);
+      const sendMessageObj = {
+        ...groupDetails,
+        messagesGGChat: result.messagesGGChat,
+      };
+      setGroupDetails(sendMessageObj);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  if (groupDetails === null) {
     return <h5>Groups</h5>;
   } else {
     return (
@@ -41,7 +84,6 @@ function RenderGroupDetailsMessages() {
               src={groupDetails.group_image}
               alt="group image"
             />
-
             <h6 className={styles.groupNameMessageDetails}>
               {groupDetails.group_name}
             </h6>
@@ -214,8 +256,8 @@ function RenderGroupDetailsMessages() {
           <hr />
         </div>
         <div className={styles.groupDetailsSendMessageOrImageContainer}>
-          {sendAGroupMessageState !== "" ? (
-            <form onSubmit={""}>
+          {sendAGroupMessageState === "" ? (
+            <form onSubmit={() => console.log("test")}>
               <input
                 className={styles.groupDetailsSendMessageInput}
                 type="text"
@@ -238,12 +280,14 @@ function RenderGroupDetailsMessages() {
               </button>
             </form>
           ) : (
-            <form onSubmit={""}>
+            <form onSubmit={sendMessageInGroup}>
               <input
                 className={styles.groupDetailsSendMessageInput}
                 type="text"
-                name=""
-                id=""
+                name="message_text"
+                id="message_text"
+                value={sendAGroupMessageState}
+                onChange={(e) => setSendAGroupMessageState(e.target.value)}
               />
               <input
                 className={styles.groupDetailsSendImageInput}

@@ -1,9 +1,19 @@
 import styles from "./RenderAllGroups.module.css";
+import useFetchGroupsAndGroupsById from "./api/custom hooks/useFetchGroupsAndGroupsById";
 import useFetchGroupsURL from "./api/custom hooks/userFetchGroupsURL";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 function RenderAllGroups() {
+  // const { groups } = useFetchGroupsAndGroupsById();
+
+  // console.log(groups);
+
   const { groups, error, loading } = useFetchGroupsURL();
+
+  console.log(groups);
+
+  // const { groups, error, loading } = useFetchGroupsURL();
 
   if (loading) {
     return <img src="/loading_spinner.svg" alt="Loading..." />;
