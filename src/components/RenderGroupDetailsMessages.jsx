@@ -2,19 +2,15 @@ import styles from "./RenderGroupDetailsMessages.module.css";
 import { Link } from "react-router-dom";
 import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
 import { useContext, useState, useRef } from "react";
-import { useLoaderData } from "react-router-dom";
-import { GroupDetailsContext } from "../contexts/GroupsContext";
-import useFetchGroupsAndGroupsById from "./api/custom hooks/useFetchGroupsAndGroupsById";
 import useFetchSingleGroupURL from "./api/custom hooks/useFetchSingleGroupURL";
-import useFetchGroupsURL from "./api/custom hooks/userFetchGroupsURL";
 
 function RenderGroupDetailsMessages() {
   const { groupDetails, setGroupDetails, loading, error } =
     useFetchSingleGroupURL();
 
-  console.log(groupDetails);
-
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
+
+  // console.log(groupDetails.messagesGGChat[0].userId, userLogInObj.id);
 
   const [sendAGroupMessageState, setSendAGroupMessageState] = useState("");
 
@@ -41,8 +37,11 @@ function RenderGroupDetailsMessages() {
 
   async function sendMessageInGroup(e) {
     e.preventDefault();
+
     const formData = new FormData(e.target);
+
     const getMessageTextFormData = formData.get("message_text");
+
     try {
       const response = await fetch(
         `http://localhost:5000/groups/${groupDetails.id}/message`,
@@ -58,17 +57,22 @@ function RenderGroupDetailsMessages() {
           }),
         },
       );
+
       const result = await response.json();
+
       console.log(result);
+
       const sendMessageObj = {
         ...groupDetails,
         messagesGGChat: result.messagesGGChat,
       };
+
       setGroupDetails(sendMessageObj);
     } catch (err) {
       console.log(err);
     }
   }
+
   if (groupDetails === null) {
     return <h5>Groups</h5>;
   } else {
@@ -211,40 +215,50 @@ function RenderGroupDetailsMessages() {
                 ) : (
                   <>
                     {groupDetails.users.map((user) => (
-                      <div
-                        key={user.id}
-                        className={styles.groupReceiverSendingMessagesContainer}
-                      >
-                        <div className={styles.groupDetailsUserUsername}>
-                          <p>{"@" + user.username}</p>
-                        </div>
-                        <div
-                          className={styles.groupDetailsReceiverUserMessages}
-                        >
-                          <Link to={`/profile/${user.id}`}>
-                            {user.profile_picture === "" ? (
-                              <img
-                                className={
-                                  styles.groupDetailsUserDefaultProfilePicture
-                                }
-                                src="/default_users_pfp.jpg"
-                                alt="default user profile picture"
-                              />
-                            ) : (
-                              <img
-                                src={user.profile_picture}
-                                alt="user profile picture"
-                              />
-                            )}
-                          </Link>
-                          <p
-                            key={message.id}
-                            className={styles.groupDetailsSendMessage}
+                      <>
+                        {user.id !== userLogInObj.id ? (
+                          <div
+                            key={user.id}
+                            className={
+                              styles.groupReceiverSendingMessagesContainer
+                            }
                           >
-                            {message.message_text}
-                          </p>
-                        </div>
-                      </div>
+                            <div className={styles.groupDetailsUserUsername}>
+                              <p>{"@" + user.username}</p>
+                            </div>
+                            <div
+                              className={
+                                styles.groupDetailsReceiverUserMessages
+                              }
+                            >
+                              <Link to={`/profile/${user.id}`}>
+                                {user.profile_picture === "" ? (
+                                  <img
+                                    className={
+                                      styles.groupDetailsUserDefaultProfilePicture
+                                    }
+                                    src="/default_users_pfp.jpg"
+                                    alt="default user profile picture"
+                                  />
+                                ) : (
+                                  <img
+                                    src={user.profile_picture}
+                                    alt="user profile picture"
+                                  />
+                                )}
+                              </Link>
+                              <p
+                                key={message.id}
+                                className={styles.groupDetailsSendMessage}
+                              >
+                                {message.message_text}
+                              </p>
+                            </div>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </>
                     ))}
                   </>
                 )}
