@@ -73,6 +73,40 @@ function RenderGroupDetailsMessages() {
     }
   }
 
+  async function sendImageInGroup(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    formData.append("userId", userLogInObj.id);
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/groups/${groupDetails.id}/image`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+          body: formData,
+        },
+      );
+
+      const result = await response.json();
+
+      console.log(result);
+
+      const sendImageObj = {
+        ...groupDetails,
+        messagesGGChat: result.messagesGGChat,
+      };
+
+      setGroupDetails(sendImageObj);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   if (groupDetails === null) {
     return <h5>Groups</h5>;
   } else {
@@ -203,11 +237,13 @@ function RenderGroupDetailsMessages() {
                             />
                           </div>
                         ) : (
-                          <img
-                            className={styles.groupDetailsSendImage}
-                            src={message.message_imageURL}
-                            alt="send image in chat"
-                          />
+                          <>
+                            <img
+                              className={styles.groupDetailsSendImage}
+                              src={message.message_imageURL}
+                              alt="send image in chat"
+                            />
+                          </>
                         )}
                       </>
                     )}
@@ -247,12 +283,20 @@ function RenderGroupDetailsMessages() {
                                   />
                                 )}
                               </Link>
-                              <p
-                                key={message.id}
-                                className={styles.groupDetailsSendMessage}
-                              >
-                                {message.message_text}
-                              </p>
+                              {message.message_text ? (
+                                <p
+                                  key={message.id}
+                                  className={styles.groupDetailsSendMessage}
+                                >
+                                  {message.message_text}
+                                </p>
+                              ) : (
+                                <img
+                                  className={styles.groupDetailsSendImage}
+                                  src={message.message_imageURL}
+                                  alt="send image in chat"
+                                />
+                              )}
                             </div>
                           </div>
                         ) : (
@@ -271,7 +315,7 @@ function RenderGroupDetailsMessages() {
         </div>
         <div className={styles.groupDetailsSendMessageOrImageContainer}>
           {sendAGroupMessageState === "" ? (
-            <form onSubmit={() => console.log("test")}>
+            <form onSubmit={sendImageInGroup}>
               <input
                 className={styles.groupDetailsSendMessageInput}
                 type="text"

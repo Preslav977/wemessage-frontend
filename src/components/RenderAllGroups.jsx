@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function RenderAllGroups() {
   const { groups, error, loading } = useFetchGroupsURL();
 
-  console.log(groups);
+  // console.log(groups);
 
   if (loading) {
     return <img src="/loading_spinner.svg" alt="Loading..." />;
