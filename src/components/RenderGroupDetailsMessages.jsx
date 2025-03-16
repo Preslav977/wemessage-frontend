@@ -78,7 +78,7 @@ function RenderGroupDetailsMessages() {
 
     const formData = new FormData(e.target);
 
-    formData.append("userId", userLogInObj.id);
+    // formData.append("userId", userLogInObj.id);
 
     try {
       const response = await fetch(
@@ -161,6 +161,46 @@ function RenderGroupDetailsMessages() {
       setGroupDetails(editAMessage);
 
       setShowDropDownGroupMessageForm(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function removeMessageFromGroup(message) {
+    const removeMessage = {
+      ...groupDetails,
+      messagesGGChat: groupDetails.messagesGGChat.filter(
+        (msg) => msg.id !== message.id,
+      ),
+    };
+
+    setGroupDetails(removeMessage);
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/groups/${groupDetails.id}/message/${message.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            messageId: clickedGroupMessage,
+            userId: userLogInObj.id,
+            groupId: groupDetails.id,
+          }),
+        },
+      );
+
+      const result = await response.json();
+
+      const retrieveNewMessagesAfterDeletingAMessage = {
+        ...groupDetails,
+        messagesGGChat: result.messagesGGChat,
+      };
+
+      setGroupDetails(retrieveNewMessagesAfterDeletingAMessage);
     } catch (err) {
       console.log(err);
     }
@@ -262,7 +302,7 @@ function RenderGroupDetailsMessages() {
                               Edit
                             </button>
                             <button
-                              // onClick={() => removeMessageFromChat(message)}
+                              onClick={() => removeMessageFromGroup(message)}
                               style={{
                                 display:
                                   message.id === clickedGroupMessage
@@ -280,29 +320,57 @@ function RenderGroupDetailsMessages() {
                     ) : (
                       <>
                         {message.userId === userLogInObj.id ? (
-                          <div
-                            className={styles.groupDetailsMessageDropDownMenu}
-                          >
-                            <img
-                              className={styles.groupDetailsMessageDropDownImg}
-                              // onClick={() => toggleMessageDropDown(message)}
-                              src="/three_dots.svg"
-                              alt="message drop-down menu"
-                            />
-                            <img
-                              className={styles.groupDetailsSendImage}
-                              src={message.message_imageURL}
-                              alt="send image in chat"
-                            />
-                          </div>
-                        ) : (
                           <>
-                            <img
-                              className={styles.groupDetailsSendImage}
-                              src={message.message_imageURL}
-                              alt="send image in chat"
-                            />
+                            <div
+                              className={styles.groupDetailsMessageDropDownMenu}
+                            >
+                              <div
+                                className={
+                                  styles.groupDetailsMessageDropDownButtonWrapper
+                                }
+                              >
+                                <img
+                                  className={
+                                    styles.groupDetailsMessageDropDownImg
+                                  }
+                                  onClick={() => toggleMessageDropDown(message)}
+                                  src="/three_dots.svg"
+                                  alt="message drop-down menu"
+                                />
+                                {showDropDownMenuGroupMessage ? (
+                                  <div className={styles.btn}>
+                                    <button
+                                      onClick={() =>
+                                        removeMessageFromGroup(message)
+                                      }
+                                      style={{
+                                        display:
+                                          message.id === clickedGroupMessage
+                                            ? "block"
+                                            : "none",
+                                      }}
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+
+                              <img
+                                className={styles.groupDetailsSendImage}
+                                src={message.message_imageURL}
+                                alt="send image in chat"
+                              />
+                            </div>
                           </>
+                        ) : (
+                          <img
+                            className={styles.groupDetailsSendImage}
+                            src={message.message_imageURL}
+                            alt="send image in chat"
+                          />
                         )}
                       </>
                     )}
@@ -373,8 +441,8 @@ function RenderGroupDetailsMessages() {
           <hr />
         </div>
         <div className={styles.groupDetailsSendMessageOrImageContainer}>
-          {sendAGroupMessageState === "" ? (
-            <form onSubmit={sendImageInGroup}>
+          {sendAGroupMessageState !== "" ? (
+            <form onSubmit={sendMessageInGroup}>
               <input
                 className={styles.groupDetailsSendMessageInput}
                 type="text"
@@ -383,12 +451,12 @@ function RenderGroupDetailsMessages() {
                 value={sendAGroupMessageState}
                 onChange={(e) => setSendAGroupMessageState(e.target.value)}
               />
-              <input
+              {/* <input
                 className={styles.groupDetailsSendImageInput}
                 type="file"
                 name="file"
                 id="file"
-              />
+              /> */}
               <button
                 className={styles.groupDetailsSendMessageOrImageButton}
                 type="submit"
@@ -397,7 +465,7 @@ function RenderGroupDetailsMessages() {
               </button>
             </form>
           ) : (
-            <form onSubmit={sendMessageInGroup}>
+            <form encType="multipart/form" onSubmit={sendImageInGroup}>
               <input
                 className={styles.groupDetailsSendMessageInput}
                 type="text"
