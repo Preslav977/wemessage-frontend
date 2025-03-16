@@ -107,6 +107,65 @@ function RenderGroupDetailsMessages() {
     }
   }
 
+  function toggleMessageDropDown(message) {
+    setClickedGroupMessage(message.id);
+    setShowDropDownMenuGroupMessage(true);
+    setEditTheSelectedGroupMessage(message.message_text);
+
+    if (clickedGroupMessage !== undefined) {
+      setClickedGroupMessage(message.id);
+    }
+  }
+
+  async function showEditGroupMessageForm(e) {
+    e.preventDefault();
+
+    setShowDropDownMenuGroupMessage(false);
+
+    setShowDropDownGroupMessageForm(true);
+
+    const formData = new FormData(e.target);
+
+    const getMessageTextFormData = formData.get("message_text");
+
+    console.log(getMessageTextFormData);
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/groups/${groupDetails.id}/message/${clickedGroupMessage}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            message_text: getMessageTextFormData,
+            id: clickedGroupMessage,
+            groupId: groupDetails.id,
+          }),
+        },
+      );
+
+      const result = await response.json();
+
+      console.log(result);
+
+      const editAMessage = {
+        ...groupDetails,
+        messagesGGChat: result.messagesGGChat,
+      };
+
+      console.log(groupDetails);
+
+      setGroupDetails(editAMessage);
+
+      setShowDropDownGroupMessageForm(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   if (groupDetails === null) {
     return <h5>Groups</h5>;
   } else {
@@ -147,7 +206,7 @@ function RenderGroupDetailsMessages() {
                       <div className={styles.groupDetailsMessageDropDownMenu}>
                         <img
                           className={styles.groupDetailsMessageDropDownImg}
-                          // onClick={() => toggleMessageDropDown(message)}
+                          onClick={() => toggleMessageDropDown(message)}
                           src="/three_dots.svg"
                           alt="message drop-down menu"
                         />
@@ -158,7 +217,7 @@ function RenderGroupDetailsMessages() {
                               display: "block",
                             }}
                             ref={dropDownFormRef}
-                            // onSubmit={showEditMessageForm}
+                            onSubmit={showEditGroupMessageForm}
                           >
                             <input
                               type="text"
@@ -184,7 +243,7 @@ function RenderGroupDetailsMessages() {
                             {message.message_text}
                           </li>
                         )}
-                        {setShowDropDownMenuGroupMessage ? (
+                        {showDropDownMenuGroupMessage ? (
                           <div
                             className={styles.groupDetailsDropDownMenuButtons}
                           >
