@@ -9,6 +9,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
   const { chatDetails, setChatDetails, error, loading } =
     useFetchSingleChatURL();
 
+  console.log(chatDetails);
+
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
   const [sendAMessageState, setSendAMessageState] = useState("");
@@ -47,6 +49,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
         },
       );
       const result = await response.json();
+
+      console.log(result);
 
       const sendMessageObj = {
         ...chatDetails,
@@ -397,12 +401,12 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                 value={sendAMessageState}
                 onChange={(e) => setSendAMessageState(e.target.value)}
               />
-              <input
+              {/* <input
                 className={styles.chatDetailsSendImageInput}
                 type="file"
                 name="file"
                 id="file"
-              />
+              /> */}
               <button
                 className={styles.chatDetailsSendMessageOrImageButton}
                 type="submit"
@@ -411,13 +415,15 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
               </button>
             </form>
           ) : (
-            <form onSubmit={sendImageInChat}>
-              <input
+            <form encType="multipart/form" onSubmit={sendImageInChat}>
+              {/* <input
                 className={styles.chatDetailsSendMessageInput}
                 type="text"
-                name=""
-                id=""
-              />
+                name="message_text"
+                id="message_text"
+                value={sendAMessageState}
+                onChange={(e) => setSendAMessageState(e.target.value)}
+              /> */}
               <input
                 className={styles.chatDetailsSendImageInput}
                 type="file"

@@ -7,6 +7,8 @@ const useFetchSingleChatURL = () => {
 
   const [chatDetails, setChatDetails] = useContext(ChatDetailsContext);
 
+  console.log(chatDetails);
+
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);

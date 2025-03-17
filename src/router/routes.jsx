@@ -14,6 +14,7 @@ import RenderChatDetailsMessages from "../components/RenderChatDetailsMessages/R
 import RenderAllGroups from "../components/RenderAllGroups";
 import RenderGroupDetailsMessages from "../components/RenderGroupDetailsMessages";
 import RenderGroupDetailsMessagesParent from "../components/RenderGroupDetailsMessagesParent";
+import CreateGroup from "../components/CreateGroup";
 
 const routes = [
   {
@@ -108,6 +109,17 @@ const routes = [
                   <RenderGroupDetailsMessages />
                 </RenderGroupDetailsMessagesParent>
               }
+            ></MainGridInterface>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/groups/create",
+        element: (
+          <ProtectedRoute>
+            <MainGridInterface
+              leftGridComponent={<RenderAllGroups />}
+              rightGridComponent={<CreateGroup />}
             ></MainGridInterface>
           </ProtectedRoute>
         ),

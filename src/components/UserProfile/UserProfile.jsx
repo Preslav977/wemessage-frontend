@@ -9,6 +9,7 @@ import { useRef } from "react";
 import { PopUpModalContext } from "../../contexts/PopUpModalContext";
 import { useParams } from "react-router-dom";
 import useFetchSingleUserURL from "../api/custom hooks/useFetchSingleUserURL";
+import { GroupFriendsContext } from "../../contexts/GroupsContext";
 
 function UserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
@@ -26,6 +27,8 @@ function UserProfile() {
   const { id } = useParams();
 
   const { userGetById } = useFetchSingleUserURL();
+
+  const [groupFriends, setGroupFriends] = useContext(GroupFriendsContext);
 
   async function changeBackgroundImage(e) {
     e.preventDefault();
@@ -83,7 +86,7 @@ function UserProfile() {
     e.preventDefault();
 
     try {
-      await fetch("http://localhost:5000/chats", {
+      const response = await fetch("http://localhost:5000/chats", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -94,6 +97,9 @@ function UserProfile() {
           receiverId: Number(userGetById.id),
         }),
       });
+      const result = await response.json();
+
+      setGroupFriends([...groupFriends, result.receiverChat]);
     } catch (err) {
       console.log(err);
     }

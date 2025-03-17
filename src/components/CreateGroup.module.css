@@ -1,0 +1,49 @@
+.flexedGroupProfileAndChangeBtn {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5em;
+}
+
+.groupPreviewImgContainer {
+  /* outline: 2px solid black; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5em;
+}
+
+.groupPreviewImgFlexedWrapper {
+  outline: 2px solid black;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: gray;
+}
+
+.groupPreviewImg {
+  width: 60px;
+  height: 60px;
+  /* outline: 2px solid black; */
+  border-radius: 50%;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin-top: 0.5em;
+}
+
+.formGroupContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.createGroupButton {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1em;
+}
