@@ -1,11 +1,42 @@
 import styles from "./CreateGroup.module.css";
-import { GroupFriendsContext } from "../contexts/GroupsContext";
-import { useContext } from "react";
 
+import { useRef, useState } from "react";
 function CreateGroup() {
-  const [groupFriends, setGroupFriends] = useContext(GroupFriendsContext);
+  const [groupFriends, setGroupFriends] = useState();
 
-  console.log(groupFriends);
+  const [selectedGroupMember, setSelectedGroupMember] = useState(true);
+
+  const [showSelectedGroupMember, setShowSelectedGroupMember] = useState();
+
+  const selectedGroupUserMemberRef = useRef(null);
+
+  async function searchForGroupFriends(e) {
+    const fetchGroupFriends = await fetch(
+      `http://localhost:5000/groups/search/?query=${e.target.value}`,
+      {
+        mode: "cors",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      },
+    );
+
+    const getGroupMembers = await fetchGroupFriends.json();
+
+    const filterTheLoggedInUser = getGroupMembers.filter((obj) => obj.id !== 2);
+
+    setGroupFriends(filterTheLoggedInUser);
+  }
+
+  function onClick(friend) {
+    setShowSelectedGroupMember(true);
+
+    setSelectedGroupMember(friend);
+
+    if (selectedGroupUserMemberRef.current.style.display === "flex") {
+      selectedGroupUserMemberRef.current.style.display = "none";
+    }
+  }
 
   return (
     <div>
@@ -35,7 +66,77 @@ function CreateGroup() {
           </div>
           <div className={styles.formGroupContent}>
             <label htmlFor="">Select members:</label>
-            <input type="text" name="" id="" />
+            <input
+              type="text"
+              name="user"
+              id="user"
+              onChange={searchForGroupFriends}
+            />
+            {groupFriends !== undefined ? (
+              <ul className={styles.ulDropDownGroupUserMembers}>
+                {groupFriends.map((friend) => (
+                  <li
+                    style={{
+                      display: "flex",
+                    }}
+                    ref={selectedGroupUserMemberRef}
+                    onClick={() => onClick(friend)}
+                    key={friend.id}
+                    className={styles.flexedLiDropDownUsersContainer}
+                  >
+                    {friend.profile_picture === "" ? (
+                      <img
+                        className={styles.dropDownUserMemberImg}
+                        src="/default_user_pfp.svg"
+                        alt="default user profile picture"
+                      />
+                    ) : (
+                      <img
+                        className={styles.userProfilePicture}
+                        src={friend.profile_picture}
+                        alt="user profile picture"
+                      />
+                    )}
+                    <div>
+                      <p>
+                        {friend.first_name} {friend.last_name}
+                      </p>
+
+                      <p>{"@" + friend.username}</p>
+                    </div>
+                  </li>
+                ))}
+                {showSelectedGroupMember ? (
+                  <li className={styles.flexedLiDropDownSelectedUserContainer}>
+                    {selectedGroupMember.profile_picture === "" ? (
+                      <img
+                        className={styles.dropDownUserMemberImg}
+                        src="/default_user_pfp.svg"
+                        alt="default user profile picture"
+                      />
+                    ) : (
+                      <img
+                        className={styles.userProfilePicture}
+                        src={selectedGroupMember.profile_picture}
+                        alt="user profile picture"
+                      />
+                    )}
+                    <div>
+                      <p>
+                        {selectedGroupMember.first_name}{" "}
+                        {selectedGroupMember.last_name}
+                      </p>
+
+                      <p>{"@" + selectedGroupMember.username}</p>
+                    </div>
+                  </li>
+                ) : (
+                  ""
+                )}
+              </ul>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div className={styles.createGroupButton}>

@@ -47,3 +47,28 @@
   justify-content: flex-end;
   margin-top: 1em;
 }
+
+.ulDropDownGroupUserMembers {
+  position: relative;
+  top: -3px;
+}
+
+.flexedLiDropDownUsersContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  background-color: gray;
+  color: white;
+  cursor: pointer;
+}
+
+.dropDownUserMemberImg {
+  width: 40px;
+}
+
+.flexedLiDropDownSelectedUserContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+}
