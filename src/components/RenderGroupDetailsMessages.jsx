@@ -8,9 +8,9 @@ function RenderGroupDetailsMessages() {
   const { groupDetails, setGroupDetails, loading, error } =
     useFetchSingleGroupURL();
 
-  const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
+  console.log(groupDetails);
 
-  // console.log(groupDetails.messagesGGChat[0].userId, userLogInObj.id);
+  const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
   const [sendAGroupMessageState, setSendAGroupMessageState] = useState("");
 
@@ -77,8 +77,6 @@ function RenderGroupDetailsMessages() {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-
-    // formData.append("userId", userLogInObj.id);
 
     try {
       const response = await fetch(
@@ -206,6 +204,38 @@ function RenderGroupDetailsMessages() {
     }
   }
 
+  async function joinGroup(e) {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/groups/${groupDetails.id}/join`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            id: userLogInObj.id,
+          }),
+        },
+      );
+      const result = await response.json();
+
+      console.log(result);
+
+      const joinGroupObj = {
+        ...groupDetails,
+        users: result.users,
+      };
+
+      setGroupDetails(joinGroupObj);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   if (groupDetails === null) {
     return <h5>Groups</h5>;
   } else {
@@ -225,7 +255,14 @@ function RenderGroupDetailsMessages() {
               {groupDetails.group_name}
             </h6>
           </Link>
+          <form onSubmit={joinGroup}>
+            <button type="submit">Join</button>
+          </form>
         </header>
+        <div>
+          <button>Edit</button>
+          <button>Delete</button>
+        </div>
         <div className={styles.groupMessageDetailsTopHr}>
           <hr />
         </div>
