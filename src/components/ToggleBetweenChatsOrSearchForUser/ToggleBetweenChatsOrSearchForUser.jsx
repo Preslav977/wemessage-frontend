@@ -14,21 +14,25 @@ function ToggleBetweenChatsOrSearchForUser() {
   }
 
   async function searchForUsers(e) {
-    const fetchUsersBySearching = await fetch(
-      `http://localhost:5000/users/search/?query=${e.target.value}`,
-      {
-        mode: "cors",
-        headers: {
-          Authorization: localStorage.getItem("token"),
+    try {
+      const fetchUsersBySearching = await fetch(
+        `http://localhost:5000/users/search/?query=${e.target.value}`,
+        {
+          mode: "cors",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
         },
-      },
-    );
+      );
 
-    const getFoundUser = await fetchUsersBySearching.json();
+      const getFoundUser = await fetchUsersBySearching.json();
 
-    const copyArray = [...getFoundUser];
+      const copyArray = [...getFoundUser];
 
-    setUsers(copyArray);
+      setUsers(copyArray);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
