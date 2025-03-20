@@ -264,11 +264,7 @@ function RenderGroupDetailsMessages() {
         },
       );
 
-      console.log(response);
-
       const result = await response.json();
-
-      console.log(result);
 
       const updateGroupNameObj = {
         ...groupDetails,
@@ -276,6 +272,38 @@ function RenderGroupDetailsMessages() {
       };
 
       setGroupDetails(updateGroupNameObj);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function deleteGroup(e) {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/groups/${groupDetails.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            group_creatorId: userLogInObj.id,
+          }),
+        },
+      );
+      const result = await response.json();
+
+      console.log(result);
+
+      const deleteGroupObj = {
+        ...groupDetails,
+        result,
+      };
+
+      setGroupDetails(deleteGroupObj);
     } catch (err) {
       console.log(err);
     }
@@ -320,7 +348,9 @@ function RenderGroupDetailsMessages() {
           <button onClick={() => setShowDropDownMenuGroupName(true)}>
             Edit
           </button>
-          <button>Delete</button>
+          <form onSubmit={deleteGroup}>
+            <button type="submit">Delete</button>
+          </form>
         </div>
         <div className={styles.groupMessageDetailsTopHr}>
           <hr />
