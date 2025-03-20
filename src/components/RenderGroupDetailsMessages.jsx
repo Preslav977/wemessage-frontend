@@ -8,7 +8,7 @@ function RenderGroupDetailsMessages() {
   const { groupDetails, setGroupDetails, loading, error } =
     useFetchSingleGroupURL();
 
-  console.log(groupDetails);
+  // console.log(groupDetails);
 
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
@@ -26,6 +26,9 @@ function RenderGroupDetailsMessages() {
     useState(false);
 
   const [clickedGroupMessage, setClickedGroupMessage] = useState();
+
+  const [showDropDownMenuGroupName, setShowDropDownMenuGroupName] =
+    useState(false);
 
   if (loading) {
     return <img src="./loading_spinner.svg" alt="Loading..." />;
@@ -236,31 +239,87 @@ function RenderGroupDetailsMessages() {
     }
   }
 
+  async function editGroupName(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    console.log(formData);
+
+    const formDataGroupName = formData.get("group_name");
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/groups/${groupDetails.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            group_name: formDataGroupName,
+            group_creatorId: userLogInObj.id,
+          }),
+        },
+      );
+
+      console.log(response);
+
+      const result = await response.json();
+
+      console.log(result);
+
+      const updateGroupNameObj = {
+        ...groupDetails,
+        group_name: result.group_name,
+      };
+
+      setGroupDetails(updateGroupNameObj);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   if (groupDetails === null) {
     return <h5>Groups</h5>;
   } else {
     return (
       <div className={styles.groupMessagesDetailsContainer}>
         <header className={styles.groupMessageDetailsHeader}>
-          <Link
-            className={styles.groupMessageDetailsFlexedAnchor}
-            to={`/groups/${groupDetails.id}`}
-          >
-            <img
-              className={styles.groupDetailsUserProfilePicture}
-              src={groupDetails.group_image}
-              alt="group image"
-            />
-            <h6 className={styles.groupNameMessageDetails}>
-              {groupDetails.group_name}
-            </h6>
-          </Link>
-          <form onSubmit={joinGroup}>
-            <button type="submit">Join</button>
-          </form>
+          {!showDropDownMenuGroupName ? (
+            <Link
+              className={styles.groupMessageDetailsFlexedAnchor}
+              to={`/groups/${groupDetails.id}`}
+            >
+              <img
+                className={styles.groupDetailsUserProfilePicture}
+                src={groupDetails.group_image}
+                alt="group image"
+              />
+              <h6 className={styles.groupNameMessageDetails}>
+                {groupDetails.group_name}
+              </h6>
+            </Link>
+          ) : (
+            <div>
+              <img
+                className={styles.groupDetailsUserProfilePicture}
+                src={groupDetails.group_image}
+                alt="group image"
+              />
+              <form onSubmit={editGroupName}>
+                <label htmlFor="group_name"></label>
+                <input type="text" name="group_name" id="group_name" />
+                <button type="submit">Send</button>
+              </form>
+            </div>
+          )}
         </header>
         <div>
-          <button>Edit</button>
+          <button onClick={() => setShowDropDownMenuGroupName(true)}>
+            Edit
+          </button>
           <button>Delete</button>
         </div>
         <div className={styles.groupMessageDetailsTopHr}>
