@@ -4,12 +4,11 @@ import { Link } from "react-router-dom";
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { useContext, useState, useRef } from "react";
 import PropTypes from "prop-types";
+import { format } from "date-fns";
 
 function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
   const { chatDetails, setChatDetails, error, loading } =
     useFetchSingleChatURL();
-
-  console.log(chatDetails);
 
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
@@ -416,14 +415,14 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
             </form>
           ) : (
             <form encType="multipart/form" onSubmit={sendImageInChat}>
-              {/* <input
+              <input
                 className={styles.chatDetailsSendMessageInput}
                 type="text"
                 name="message_text"
                 id="message_text"
                 value={sendAMessageState}
                 onChange={(e) => setSendAMessageState(e.target.value)}
-              /> */}
+              />
               <input
                 className={styles.chatDetailsSendImageInput}
                 type="file"

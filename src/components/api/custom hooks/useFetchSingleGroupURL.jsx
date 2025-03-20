@@ -12,23 +12,21 @@ const useFetchSingleGroupURL = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      fetch(`http://localhost:5000/groups/${id}`, {
-        mode: "cors",
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
+    fetch(`http://localhost:5000/groups/${id}`, {
+      mode: "cors",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+      .then((response) => {
+        if (response.status >= 400) {
+          throw new Error("Server error");
+        }
+        return response.json();
       })
-        .then((response) => {
-          if (response.status >= 400) {
-            throw new Error("Server error");
-          }
-          return response.json();
-        })
-        .then((response) => setGroupDetails(response))
-        .catch((error) => setError(error))
-        .finally(() => setLoading(false));
-    }, 5000);
+      .then((response) => setGroupDetails(response))
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
   }, [id, setGroupDetails]);
 
   return { groupDetails, setGroupDetails, error, loading };
