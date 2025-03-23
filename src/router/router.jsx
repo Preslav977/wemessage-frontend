@@ -15,14 +15,13 @@ import ToggleBetweenChatsOrSearchForUser from "../components/ToggleBetweenChatsO
 import RenderChatDetailsMessages from "../components/RenderChatDetailsMessages/RenderChatDetailsMessages";
 import RenderAllGroups from "../components/RenderAllGroups";
 import RenderGroupDetailsMessages from "../components/RenderGroupDetailsMessages";
-import RenderGroupDetailsMessagesParent from "../components/RenderGroupDetailsMessagesParent";
 import CreateGroup from "../components/CreateGroup";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    // errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />,
     children: [
       { path: "/login", element: <LogInForm /> },
       { path: "/signup", element: <SignUpForm /> },
@@ -91,11 +90,7 @@ const router = createBrowserRouter([
           <ProtectedRoute>
             <MainGridInterface
               leftGridComponent={<RenderAllGroups />}
-              rightGridComponent={
-                <RenderGroupDetailsMessagesParent>
-                  <RenderGroupDetailsMessages />
-                </RenderGroupDetailsMessagesParent>
-              }
+              rightGridComponent={<RenderGroupDetailsMessages />}
             ></MainGridInterface>
           </ProtectedRoute>
         ),
@@ -106,11 +101,7 @@ const router = createBrowserRouter([
           <ProtectedRoute>
             <MainGridInterface
               leftGridComponent={<RenderAllGroups />}
-              rightGridComponent={
-                <RenderGroupDetailsMessagesParent>
-                  <RenderGroupDetailsMessages />
-                </RenderGroupDetailsMessagesParent>
-              }
+              rightGridComponent={<RenderGroupDetailsMessages />}
             ></MainGridInterface>
           </ProtectedRoute>
         ),

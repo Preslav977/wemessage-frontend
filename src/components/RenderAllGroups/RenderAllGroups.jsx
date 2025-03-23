@@ -1,5 +1,5 @@
 import styles from "./RenderAllGroups.module.css";
-import useFetchGroupsURL from "./api/custom hooks/userFetchGroupsURL";
+import useFetchGroupsURL from "../api/custom hooks/userFetchGroupsURL";
 import { Link } from "react-router-dom";
 
 function RenderAllGroups() {

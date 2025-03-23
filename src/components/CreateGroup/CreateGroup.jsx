@@ -1,7 +1,7 @@
 import styles from "./CreateGroup.module.css";
 import { useContext, useRef, useState } from "react";
-import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
-import { GroupsContext } from "../contexts/GroupsContext";
+import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
+import { GroupsContext } from "../../contexts/GroupsContext";
 import { useNavigate } from "react-router-dom";
 
 function CreateGroup() {

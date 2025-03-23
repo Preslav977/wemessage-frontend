@@ -1,8 +1,8 @@
 import styles from "./RenderGroupDetailsMessages.module.css";
 import { Link } from "react-router-dom";
-import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
+import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { useContext, useState, useRef } from "react";
-import useFetchSingleGroupURL from "./api/custom hooks/useFetchSingleGroupURL";
+import useFetchSingleGroupURL from "../api/custom hooks/useFetchSingleGroupURL";
 import { format } from "date-fns";
 
 function RenderGroupDetailsMessages() {
