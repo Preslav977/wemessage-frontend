@@ -1,0 +1,135 @@
+.globalChatMessagesDetailsContainer {
+  max-height: 93vh;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.globalChatMessageDetailsHeader {
+  position: sticky;
+  top: 0%;
+}
+
+.globalChatMessageDetailsTopHr {
+  width: 72.5%;
+  position: fixed;
+  top: 7%;
+}
+
+.globalChatNoMessagesContainer {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.globalChatMessageDetailsFlexedAnchor {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.globalChatDetailsUserProfilePicture {
+  width: 40px;
+}
+
+.globalChatNameMessageDetails {
+  text-align: center;
+  margin-bottom: 0.3em;
+}
+
+.globalChatDetailsUserMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  line-break: anywhere;
+  text-align: center;
+  margin-top: 1.5em;
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+
+.globalChatDetailsMessageDropDownMenu {
+  display: flex;
+  gap: 1rem;
+  position: relative;
+  justify-content: flex-end;
+  /* outline: 2px solid black; */
+}
+
+.globalChatDetailsMessageDropDownImg {
+  width: 5px;
+}
+
+.globalChatDetailsSendMessage {
+  max-width: 22em;
+  outline: 2px solid black;
+  padding: 0.5em;
+  margin-left: 0.25em;
+}
+
+.globalChatDetailsMessageDropDownButtonWrapper {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.globalChatDetailsDropDownMenuButtons {
+  position: absolute;
+  bottom: -35px;
+  left: -10px;
+}
+
+.globalChatReceiverSendingMessagesContainer {
+  margin-top: 1.5em;
+}
+
+.globalChatDetailsUserUsername {
+  width: 13%;
+  text-align: center;
+  margin-bottom: 0.3em;
+}
+
+.globalChatDetailsReceiverUserMessages {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+}
+
+.globalChatDetailsSendImage {
+  max-width: 35%;
+  height: auto;
+  margin-bottom: 1em;
+  position: relative;
+}
+
+.globalChatDetailsUserDefaultProfilePicture {
+  width: 40px;
+}
+
+.globalChatMessageDetailsBottomHr {
+  width: 72.5%;
+  position: fixed;
+  bottom: 9%;
+}
+
+.globalChatDetailsSendMessageOrImageContainer {
+  margin-top: auto;
+  position: sticky;
+  bottom: 0%;
+}
+
+.globalChatDetailsSendMessageInput {
+  width: 100%;
+}
+
+.globalChatDetailsSendImageInput,
+.globalChatDetailsSendMessageOrImageButton {
+  width: 50px;
+}

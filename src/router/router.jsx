@@ -13,9 +13,11 @@ import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import ErrorPage from "../components/ErrorPage/ErrorPage";
 import ToggleBetweenChatsOrSearchForUser from "../components/ToggleBetweenChatsOrSearchForUser/ToggleBetweenChatsOrSearchForUser";
 import RenderChatDetailsMessages from "../components/RenderChatDetailsMessages/RenderChatDetailsMessages";
-import RenderAllGroups from "../components/RenderAllGroups";
-import RenderGroupDetailsMessages from "../components/RenderGroupDetailsMessages";
-import CreateGroup from "../components/CreateGroup";
+import RenderAllGroups from "../components/RenderAllGroups/RenderAllGroups";
+import RenderGroupDetailsMessages from "../components/RenderGroupDetailsMessages/RenderGroupDetailsMessages";
+import CreateGroup from "../components/CreateGroup/CreateGroup";
+import FetchAndSearchForUsers from "../components/api/FetchAndSearchForUsers";
+import RenderGlobalChatDetailsMessages from "../components/RenderGlobalChatDetailsMessages/RenderGlobalChatDetailsMessages";
 
 const router = createBrowserRouter([
   {
@@ -113,6 +115,17 @@ const router = createBrowserRouter([
             <MainGridInterface
               leftGridComponent={<RenderAllGroups />}
               rightGridComponent={<CreateGroup />}
+            ></MainGridInterface>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/globalChat/:id",
+        element: (
+          <ProtectedRoute>
+            <MainGridInterface
+              leftGridComponent={<FetchAndSearchForUsers />}
+              rightGridComponent={<RenderGlobalChatDetailsMessages />}
             ></MainGridInterface>
           </ProtectedRoute>
         ),

@@ -9,12 +9,14 @@ const useFetchGlobalChatURL = () => {
     GlobalChatDetailsContext,
   );
 
+  console.log(globalChatDetails);
+
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/globalChats/${id}`, {
+    fetch(`http://localhost:5000/globalChat/${id}`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),

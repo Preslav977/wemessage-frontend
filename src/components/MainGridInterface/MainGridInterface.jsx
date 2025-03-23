@@ -5,6 +5,8 @@ import { UserLoggedInContext } from "../../contexts/UserLoggedInContext";
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { useContext } from "react";
 
+import { globalChatId } from "../../utility/globalChatId";
+
 function MainGridInterface({ leftGridComponent, rightGridComponent }) {
   const [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
@@ -25,7 +27,7 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
               <Link
                 data-testid="global_chat"
                 className={styles.anchorFlexedImgContainer}
-                to="/global/:id"
+                to={`/globalChat/${globalChatId}`}
               >
                 <img
                   className={styles.mainNavigationSvg}

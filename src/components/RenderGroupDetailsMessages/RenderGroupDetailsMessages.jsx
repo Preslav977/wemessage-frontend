@@ -9,8 +9,6 @@ function RenderGroupDetailsMessages() {
   const { groupDetails, setGroupDetails, loading, error } =
     useFetchSingleGroupURL();
 
-  console.log(groupDetails);
-
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
   const [sendAGroupMessageState, setSendAGroupMessageState] = useState("");
