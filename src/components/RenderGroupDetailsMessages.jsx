@@ -3,24 +3,15 @@ import { Link } from "react-router-dom";
 import { UserLogInObjectContext } from "../contexts/UserLoggedInContext";
 import { useContext, useState, useRef } from "react";
 import useFetchSingleGroupURL from "./api/custom hooks/useFetchSingleGroupURL";
+import { format } from "date-fns";
 
 function RenderGroupDetailsMessages() {
   const { groupDetails, setGroupDetails, loading, error } =
     useFetchSingleGroupURL();
 
-  // console.log(groupDetails);
+  console.log(groupDetails);
 
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
-
-  const object = groupDetails.users.some((obj) => obj.id === userLogInObj.id);
-
-  if (object) {
-    console.log("You are in the group");
-  } else {
-    console.log("You are not in the group");
-  }
-
-  // console.log(object);
 
   const [sendAGroupMessageState, setSendAGroupMessageState] = useState("");
 
@@ -376,7 +367,7 @@ function RenderGroupDetailsMessages() {
               </div>
             ) : (
               <div className={styles.groupDetailsMessagesContainer}>
-                {groupDetails.messagesGGChat.map((message) => (
+                {groupDetails.messagesGGChat.map((message, index) => (
                   <>
                     {message.userId === userLogInObj.id ? (
                       <ul
@@ -424,9 +415,18 @@ function RenderGroupDetailsMessages() {
                                 <button type="submit">Save</button>
                               </form>
                             ) : (
-                              <li className={styles.groupDetailsSendMessage}>
-                                {message.message_text}
-                              </li>
+                              <div>
+                                {index === 0 ? (
+                                  <>
+                                    <p>
+                                      {format(message.createdAt, "dd/MM/yy")}
+                                    </p>
+                                    <p>{message.message_text}</p>
+                                  </>
+                                ) : (
+                                  <p>{message.message_text}</p>
+                                )}
+                              </div>
                             )}
                             {showDropDownMenuGroupMessage ? (
                               <div
@@ -619,6 +619,12 @@ function RenderGroupDetailsMessages() {
                     name="file"
                     id="file"
                   />
+                  <button
+                    className={styles.groupDetailsSendMessageOrImageButton}
+                    type="submit"
+                  >
+                    Send
+                  </button>
                 </form>
               ) : (
                 <form encType="multipart/form" onSubmit={sendImageInGroup}>
