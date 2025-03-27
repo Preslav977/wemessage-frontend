@@ -26,7 +26,7 @@ function RenderAllChats({ onClick }) {
         <img
           className={styles.openSearchForAUserSvg}
           src="/open.svg"
-          alt="click to toggle and user for a user"
+          alt="click to toggle and search for a user"
           onClick={onClick}
         />
       </header>

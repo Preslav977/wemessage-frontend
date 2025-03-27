@@ -1011,7 +1011,7 @@ describe("should render MainGridInterface", () => {
     expect(oldPasswordErr).toBeInTheDocument();
   });
 
-  it.only("should login and navigate to chats and render that you have no chats", async () => {
+  it("should login and navigate to chats and render that you have no chats", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/chats"],
       initialIndex: 0,
@@ -1089,5 +1089,133 @@ describe("should render MainGridInterface", () => {
     screen.debug();
   });
 
-  it("should login navigate to chats and search for a user", async () => {});
+  it.only("should login navigate to chats and render all users", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/chats"],
+      initialIndex: 0,
+    });
+
+    server.use(
+      http.get("http://localhost:5000/users", () => {
+        return HttpResponse.json(
+          {
+            id: 4,
+            first_name: "preslaw",
+            last_name: "preslaw",
+            username: "preslaw",
+            password: "12345678Bg@",
+            confirm_password: "12345678Bg@",
+            bio: "",
+          },
+          { status: 200 },
+        );
+      }),
+
+      http.get("http://localhost:5000/users/4", () => {
+        return HttpResponse.json(
+          {
+            id: 4,
+            first_name: "preslaw",
+            last_name: "preslaw",
+            username: "preslaw",
+            password: "12345678Bg@",
+            confirm_password: "12345678Bg@",
+            bio: "",
+          },
+          { status: 200 },
+        );
+      }),
+
+      http.get("http://localhost:5000/chats/undefined", () => {
+        return HttpResponse.json([]);
+      }),
+
+      http.get("http://localhost:5000/users/all", () => {
+        return HttpResponse.json([
+          {
+            id: 4,
+            first_name: "preslaw",
+            last_name: "preslaw",
+            username: "preslaw",
+            password: "12345678Bg@",
+            confirm_password: "12345678Bg@",
+            bio: "",
+          },
+          {
+            id: 5,
+            first_name: "preslaw1",
+            last_name: "preslaw1",
+            username: "preslaw1",
+            password: "12345678Bg@",
+            confirm_password: "12345678Bg@",
+            bio: "",
+          },
+          {
+            id: 6,
+            first_name: "preslaw2",
+            last_name: "preslaw2",
+            username: "preslaw2",
+            password: "12345678Bg@",
+            confirm_password: "12345678Bg@",
+            bio: "",
+          },
+          { status: 200 },
+        ]);
+      }),
+    );
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    // screen.debug();
+
+    await user.click(screen.queryByText("Chats"));
+
+    await user.click(
+      screen.queryByAltText("click to toggle and search for a user"),
+    );
+
+    expect(
+      screen.queryAllByRole("heading", { level: 5 })[0].textContent,
+    ).toMatch(/search users/i);
+
+    expect(
+      screen.queryAllByRole("heading", { level: 5 })[1].textContent,
+    ).toMatch(/chats/i);
+
+    expect(screen.queryByText("preslaw preslaw").textContent).toMatch(
+      /preslaw preslaw/i,
+    );
+
+    expect(screen.queryByText("@preslaw").textContent).toMatch(/@preslaw/i);
+
+    expect(screen.queryByText("preslaw1 preslaw1").textContent).toMatch(
+      /preslaw1 preslaw1/i,
+    );
+
+    expect(screen.queryByText("@preslaw1").textContent).toMatch(/@preslaw1/i);
+
+    expect(screen.queryByText("preslaw2 preslaw2").textContent).toMatch(
+      /preslaw2 preslaw2/i,
+    );
+
+    expect(screen.queryByText("@preslaw2").textContent).toMatch(/@preslaw2/i);
+
+    screen.debug();
+  });
 });
