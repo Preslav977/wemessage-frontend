@@ -6,6 +6,8 @@ import { useContext, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { format } from "date-fns";
 
+import PopUpModal from "../PopUpModal/PopUpModal";
+
 function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
   const { chatDetails, setChatDetails, error, loading } =
     useFetchSingleChatURL();
@@ -281,7 +283,10 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                             <button type="submit">Save</button>
                           </form>
                         ) : (
-                          <li className={styles.chatDetailsSendMessage}>
+                          <li
+                            key={message.id}
+                            className={styles.chatDetailsSendMessage}
+                          >
                             {message.message_text}
                           </li>
                         )}
@@ -332,6 +337,7 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                               alt="message drop-down menu"
                             />
                             <img
+                              key={message.id}
                               className={styles.chatDetailsSendImage}
                               src={message.message_imageURL}
                               alt="send image in chat"
@@ -339,6 +345,7 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                           </div>
                         ) : (
                           <img
+                            key={message.id}
                             className={styles.chatDetailsSendImage}
                             src={message.message_imageURL}
                             alt="send image in chat"

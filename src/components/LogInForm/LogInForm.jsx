@@ -25,6 +25,8 @@ import {
   guestPassword,
 } from "../../utility/guestUserCredentials";
 
+import fetchAPIURL from "../../utility/fetchAPIURL";
+
 function LogInForm() {
   const { username, setUsername } = useContext(UserNameContext);
 
@@ -121,10 +123,10 @@ function LogInForm() {
         }),
       });
 
-      if (response.status === 200) {
-        setUsername("");
-        setPassword("");
-      }
+      // if (response.status === 200) {
+      //   setUsername("");
+      //   setPassword("");
+      // }
 
       const result = await response.json();
 
@@ -155,6 +157,9 @@ function LogInForm() {
       setUserLogInObj(userLoggedInInformation);
 
       navigate(`/profile/${userLogInObj.id}`);
+
+      setUsername("");
+      setPassword("");
 
       setPopUpModal(false);
     } catch (err) {

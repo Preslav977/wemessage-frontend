@@ -413,18 +413,19 @@ function RenderGroupDetailsMessages() {
                                 <button type="submit">Save</button>
                               </form>
                             ) : (
-                              <div>
-                                {index === 0 ? (
-                                  <>
-                                    <p>
-                                      {format(message.createdAt, "dd/MM/yy")}
-                                    </p>
-                                    <p>{message.message_text}</p>
-                                  </>
-                                ) : (
-                                  <p>{message.message_text}</p>
-                                )}
-                              </div>
+                              <li key={message.id}>{message.message_text}</li>
+                              // <div>
+                              //   {index === 0 ? (
+                              //     <>
+                              //       <p>
+                              //         {format(message.createdAt, "dd/MM/yy")}
+                              //       </p>
+                              //       <p>{message.message_text}</p>
+                              //     </>
+                              //   ) : (
+                              //     <p>{message.message_text}</p>
+                              //   )}
+                              // </div>
                             )}
                             {showDropDownMenuGroupMessage ? (
                               <div
@@ -510,6 +511,7 @@ function RenderGroupDetailsMessages() {
                                   </div>
 
                                   <img
+                                    key={message.id}
                                     className={styles.groupDetailsSendImage}
                                     src={message.message_imageURL}
                                     alt="send image in chat"
@@ -518,6 +520,7 @@ function RenderGroupDetailsMessages() {
                               </>
                             ) : (
                               <img
+                                key={message.id}
                                 className={styles.groupDetailsSendImage}
                                 src={message.message_imageURL}
                                 alt="send image in chat"

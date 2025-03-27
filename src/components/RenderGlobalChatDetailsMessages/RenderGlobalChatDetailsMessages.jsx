@@ -286,16 +286,17 @@ function RenderGlobalChatDetailsMessages() {
                               <button type="submit">Save</button>
                             </form>
                           ) : (
-                            <div>
-                              {index === 0 ? (
-                                <>
-                                  <p>{format(message.createdAt, "dd/MM/yy")}</p>
-                                  <p>{message.message_text}</p>
-                                </>
-                              ) : (
-                                <p>{message.message_text}</p>
-                              )}
-                            </div>
+                            <li key={message.id}>{message.message_text}</li>
+                            // <div>
+                            //   {index === 0 ? (
+                            //     <>
+                            //       <p>{format(message.createdAt, "dd/MM/yy")}</p>
+                            //       <p>{message.message_text}</p>
+                            //     </>
+                            //   ) : (
+                            //     <p>{message.message_text}</p>
+                            //   )}
+                            // </div>
                           )}
                           {showDropDownMenuGlobalChatMessage ? (
                             <div
@@ -382,6 +383,7 @@ function RenderGlobalChatDetailsMessages() {
                                 </div>
 
                                 <img
+                                  key={message.id}
                                   className={styles.globalChatDetailsSendImage}
                                   src={message.message_imageURL}
                                   alt="send image in chat"
@@ -390,6 +392,7 @@ function RenderGlobalChatDetailsMessages() {
                             </>
                           ) : (
                             <img
+                              key={message.id}
                               className={styles.globalChatDetailsSendImage}
                               src={message.message_imageURL}
                               alt="send image in chat"
@@ -446,6 +449,7 @@ function RenderGlobalChatDetailsMessages() {
                                   </p>
                                 ) : (
                                   <img
+                                    key={message.id}
                                     className={
                                       styles.globalChatDetailsSendImage
                                     }

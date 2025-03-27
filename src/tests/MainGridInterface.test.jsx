@@ -31,7 +31,7 @@ describe("should render MainGridInterface", () => {
     });
 
     server.use(
-      http.get("http://localhost:5000/users", () => {
+      http.get("http://localhost:5000/users/4", () => {
         return HttpResponse.json(
           {
             id: 4,
@@ -63,7 +63,7 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
     // screen.debug();
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    // await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
 
     expect(screen.queryByText("Global").textContent).toMatch(/global/i);
 
@@ -138,10 +138,15 @@ describe("should render MainGridInterface", () => {
     expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
 
     const submitBtn = screen.queryAllByRole("button");
+
     // screen.debug();
+
     await user.click(submitBtn[1]);
+
     // const loadingBtn = await screen.findByTestId("loading-btn");
+
     // expect(loadingBtn).toBeInTheDocument();
+
     await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
 
     expect(screen.queryAllByText("Edit Profile")[1].textContent).toMatch(
@@ -151,7 +156,9 @@ describe("should render MainGridInterface", () => {
     const manageUserProfileEditProfile = screen.queryAllByText("Edit Profile");
 
     await user.click(manageUserProfileEditProfile[1]);
+
     // screen.debug();
+
     expect(screen.queryByText("Global").textContent).toMatch(/global/i);
 
     expect(screen.queryByText("Chats").textContent).toMatch(/chats/i);
@@ -180,9 +187,11 @@ describe("should render MainGridInterface", () => {
     );
 
     expect(screen.queryByText("Edit").textContent).toMatch(/edit/i);
+
     // expect(
     //   screen.queryAllByRole("button", { name: "Send" })[0],
     // ).toBeInTheDocument();
+
     expect(screen.queryByText("First name:").textContent).toMatch(
       /first name:/i,
     );
@@ -432,11 +441,17 @@ describe("should render MainGridInterface", () => {
     const submitBtn = screen.queryAllByRole("button");
 
     await user.click(submitBtn[1]);
+
     // screen.debug();
+
     // const loadingBtn = await screen.findByText("Loading...");
+
     // expect(loadingBtn).toBeInTheDocument();
+
     await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
     // screen.debug();
+
     expect(screen.queryAllByText("Edit Profile")[1].textContent).toMatch(
       /edit profile/i,
     );
@@ -445,6 +460,7 @@ describe("should render MainGridInterface", () => {
 
     await user.click(manageUserProfileEditProfile[1]);
     // screen.debug();
+
     expect(screen.queryByText("Global").textContent).toMatch(/global/i);
 
     expect(screen.queryByText("Chats").textContent).toMatch(/chats/i);
@@ -502,7 +518,9 @@ describe("should render MainGridInterface", () => {
     await user.type(screen.getByTestId("bio"), "bio123");
 
     expect(screen.getByTestId("bio")).toHaveValue("bio123");
+
     // screen.debug();
+
     const saveChangesBtn = screen.queryByRole("button", {
       name: "save changes",
     });
@@ -570,9 +588,13 @@ describe("should render MainGridInterface", () => {
     const submitBtn = screen.queryAllByRole("button");
 
     await user.click(submitBtn[1]);
+
     // screen.debug();
+
     // const loadingBtn = await screen.findByTestId("loading-btn");
+
     // expect(loadingBtn).toBeInTheDocument();
+
     await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
 
     expect(screen.queryAllByText("Edit Profile")[1].textContent).toMatch(
@@ -582,7 +604,9 @@ describe("should render MainGridInterface", () => {
     const manageUserProfileEditProfile = screen.queryAllByText("Edit Profile");
 
     await user.click(manageUserProfileEditProfile[1]);
+
     // screen.debug();
+
     expect(screen.queryByText("Global").textContent).toMatch(/global/i);
 
     expect(screen.queryByText("Chats").textContent).toMatch(/chats/i);
@@ -612,9 +636,11 @@ describe("should render MainGridInterface", () => {
     );
 
     expect(screen.queryByText("Edit").textContent).toMatch(/edit/i);
+
     // expect(
     //   screen.queryAllByRole("button", { name: "Send" })[0],
     // ).toBeInTheDocument();
+
     expect(screen.queryByText("First name:").textContent).toMatch(
       /first name:/i,
     );
@@ -685,45 +711,66 @@ describe("should render MainGridInterface", () => {
       }),
     );
     render(<RouterProvider router={router} />);
+
     const user = userEvent.setup();
+
     await user.type(screen.getByTestId("username"), "preslaw123");
+
     expect(screen.getByTestId("username")).toHaveValue("preslaw123");
+
     await user.type(screen.getByTestId("password"), "12345678Bg@");
+
     expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
     const submitBtn = screen.queryAllByRole("button");
+
     await user.click(submitBtn[1]);
     // screen.debug();
     const changeUserProfilePasswords =
       await screen.findByText("Change Password");
+
     await user.click(changeUserProfilePasswords);
     // screen.debug();
     expect(screen.queryByText("Global").textContent).toMatch(/global/i);
+
     expect(screen.queryByText("Chats").textContent).toMatch(/chats/i);
+
     expect(screen.queryByText("Groups").textContent).toMatch(/groups/i);
+
     expect(screen.queryAllByText("Profile")[0].textContent).toMatch(/profile/i);
+
     expect(screen.queryByText("Logout").textContent).toMatch(/logout/i);
+
     expect(screen.queryByText("Manage Profile").textContent).toMatch(
       /manage profile/i,
     );
+
     expect(screen.queryAllByText("Profile")[1].textContent).toMatch(/profile/i);
+
     expect(screen.queryByText("Edit Profile").textContent).toMatch(
       /edit profile/i,
     );
+
     expect(screen.queryByText("Change Password").textContent).toMatch(
       /change password/i,
     );
+
     expect(screen.queryByRole("button", { name: "Save" })).toBeInTheDocument();
+
     expect(screen.queryByText("Enter old password:").textContent).toMatch(
       /enter old password:/i,
     );
+
     expect(screen.queryByText("Enter new password:").textContent).toMatch(
       /enter new password:/i,
     );
+
     expect(
       screen.queryByText(
         "Password must be 8 characters long, and contain one lower, one uppercase and one special character",
       ),
     ).toBeInTheDocument();
+
     expect(screen.queryByText("Confirm new password:").textContent).toMatch(
       /confirm new password:/i,
     );
@@ -963,4 +1010,84 @@ describe("should render MainGridInterface", () => {
 
     expect(oldPasswordErr).toBeInTheDocument();
   });
+
+  it.only("should login and navigate to chats and render that you have no chats", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/chats"],
+      initialIndex: 0,
+    });
+
+    server.use(
+      http.get("http://localhost:5000/users", () => {
+        return HttpResponse.json(
+          {
+            id: 4,
+            first_name: "preslaw",
+            last_name: "preslaw",
+            username: "preslaw",
+            password: "12345678Bg@",
+            confirm_password: "12345678Bg@",
+            bio: "",
+          },
+          { status: 200 },
+        );
+      }),
+      http.get("http://localhost:5000/users/4", () => {
+        return HttpResponse.json(
+          {
+            id: 4,
+            first_name: "preslaw",
+            last_name: "preslaw",
+            username: "preslaw",
+            password: "12345678Bg@",
+            confirm_password: "12345678Bg@",
+            bio: "",
+          },
+          { status: 200 },
+        );
+      }),
+
+      http.get("http://localhost:5000/chats/undefined", () => {
+        return HttpResponse.json([]);
+      }),
+    );
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    // screen.debug();
+
+    await user.click(screen.queryByText("Chats"));
+
+    expect(screen.queryByRole("heading", { level: 4 }).textContent).toMatch(
+      /chats/i,
+    );
+
+    expect(
+      screen.queryByText("You currently have no chats").textContent,
+    ).toMatch(/you currently have no chats/i);
+
+    expect(screen.queryByRole("heading", { level: 5 }).textContent).toMatch(
+      /chats/i,
+    );
+
+    screen.debug();
+  });
+
+  it("should login navigate to chats and search for a user", async () => {});
 });

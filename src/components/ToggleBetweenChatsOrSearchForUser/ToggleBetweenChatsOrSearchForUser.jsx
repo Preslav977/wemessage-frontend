@@ -27,9 +27,7 @@ function ToggleBetweenChatsOrSearchForUser() {
 
       const getFoundUser = await fetchUsersBySearching.json();
 
-      const copyArray = [...getFoundUser];
-
-      setUsers(copyArray);
+      setUsers(getFoundUser);
     } catch (err) {
       console.log(err);
     }

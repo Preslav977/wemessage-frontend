@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { useContext } from "react";
+import { Fragment } from "react";
 
 function RenderAllChats({ onClick }) {
   const { chats, error, loading } = useFetchChatsURL();
@@ -34,7 +35,7 @@ function RenderAllChats({ onClick }) {
       ) : (
         <ul>
           {chats.map((chat) => (
-            <>
+            <Fragment key={chat.id}>
               {chat.senderChatId === userLogInObj.id ? (
                 <Link to={`/chats/${chat.id}`} key={chat.id}>
                   <li className={styles.flexedNestedLiUserContainer}>
@@ -85,7 +86,7 @@ function RenderAllChats({ onClick }) {
                   </li>
                 </Link>
               )}
-            </>
+            </Fragment>
           ))}
         </ul>
       )}

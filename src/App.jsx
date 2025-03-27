@@ -72,7 +72,7 @@ function App() {
 
   const [chatDetails, setChatDetails] = useState([]);
 
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState();
 
   const [userGetById, setUserGetById] = useState([]);
 
