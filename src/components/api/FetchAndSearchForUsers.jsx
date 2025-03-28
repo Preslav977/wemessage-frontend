@@ -26,6 +26,7 @@ function FetchAndSearchForUsers({ onClick, onChange }) {
         />
       </header>
       <input
+        data-testid="user"
         onChange={onChange}
         className={styles.searchForUsersInput}
         type="text"
