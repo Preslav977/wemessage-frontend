@@ -1,7 +1,6 @@
 import {
   render,
   screen,
-  waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
@@ -11,7 +10,6 @@ import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { beforeAll, afterEach, afterAll } from "vitest";
 import { server } from "./mocks/node/server";
 import { http, HttpResponse } from "msw";
-import { act } from "react";
 
 beforeAll(() => {
   server.listen();
@@ -31,23 +29,6 @@ describe("should render MainGridInterface", () => {
       initialEntries: ["/login", "/profile/4"],
       initialIndex: 0,
     });
-
-    // server.use(
-    //   http.get("http://localhost:5000/users/4", () => {
-    //     return HttpResponse.json(
-    //       {
-    //         id: 4,
-    //         first_name: "preslaw",
-    //         last_name: "preslaw",
-    //         username: "preslaw",
-    //         password: "12345678Bg@",
-    //         confirm_password: "12345678Bg@",
-    //         bio: "",
-    //       },
-    //       { status: 200 },
-    //     );
-    //   }),
-    // );
 
     render(<RouterProvider router={router} />);
 
@@ -118,22 +99,6 @@ describe("should render MainGridInterface", () => {
       initialIndex: 0,
     });
 
-    // server.use(
-    //   http.get("http://localhost:5000/users", () => {
-    //     return HttpResponse.json(
-    //       {
-    //         id: 4,
-    //         first_name: "preslaw",
-    //         last_name: "preslaw",
-    //         username: "preslaw",
-    //         password: "12345678Bg@",
-    //         confirm_password: "12345678Bg@",
-    //         bio: "",
-    //       },
-    //       { status: 200 },
-    //     );
-    //   }),
-    // );
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
@@ -240,24 +205,6 @@ describe("should render MainGridInterface", () => {
       initialIndex: 0,
     });
 
-    // server.use(
-    //   http.get("http://localhost:5000/users", () => {
-    //     return HttpResponse.json(
-    //       {
-    //         id: 4,
-    //         first_name: "preslaw",
-    //         last_name: "preslaw",
-    //         username: "preslaw",
-    //         password: "12345678Bg@",
-    //         confirm_password: "12345678Bg@",
-    //         bio: "",
-    //         background_image: "",
-    //       },
-    //       { status: 200 },
-    //     );
-    //   }),
-    // );
-
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
@@ -328,25 +275,6 @@ describe("should render MainGridInterface", () => {
       initialEntries: ["/login", "/profile/4"],
       initialIndex: 0,
     });
-
-    // server.use(
-    //   http.get("http://localhost:5000/users", () => {
-    //     return HttpResponse.json(
-    //       {
-    //         id: 4,
-    //         first_name: "preslaw",
-    //         last_name: "preslaw",
-    //         username: "preslaw",
-    //         password: "12345678Bg@",
-    //         confirm_password: "12345678Bg@",
-    //         bio: "",
-    //         background_image: "",
-    //         profile_image: "",
-    //       },
-    //       { status: 200 },
-    //     );
-    //   }),
-    // );
 
     render(<RouterProvider router={router} />);
 
@@ -422,23 +350,6 @@ describe("should render MainGridInterface", () => {
       initialEntries: ["/login", "/profile/4", "/profile/edit/4"],
       initialIndex: 0,
     });
-
-    // server.use(
-    //   http.get("http://localhost:5000/users", () => {
-    //     return HttpResponse.json(
-    //       {
-    //         id: 4,
-    //         first_name: "preslaw123",
-    //         last_name: "preslaw123",
-    //         username: "preslaw123",
-    //         password: "12345678Bg@",
-    //         confirm_password: "12345678Bg@",
-    //         bio: "bio123",
-    //       },
-    //       { status: 200 },
-    //     );
-    //   }),
-    // );
 
     render(<RouterProvider router={router} />);
 
@@ -557,20 +468,6 @@ describe("should render MainGridInterface", () => {
       initialIndex: 0,
     });
     server.use(
-      // http.get("http://localhost:5000/users", () => {
-      //   return HttpResponse.json(
-      //     {
-      //       id: 4,
-      //       first_name: "preslaw123",
-      //       last_name: "preslaw123",
-      //       username: "preslaw123",
-      //       password: "12345678Bg@",
-      //       confirm_password: "12345678Bg@",
-      //       bio: "bio123",
-      //     },
-      //     { status: 200 },
-      //   );
-      // }),
       http.put("http://localhost:5000/users/profile/edit/4", () => {
         return HttpResponse.json(
           [
@@ -695,21 +592,6 @@ describe("should render MainGridInterface", () => {
     const usernameErr = await screen.findByText("Username is already taken");
 
     expect(usernameErr).toBeInTheDocument();
-
-    // screen.debug();
-
-    // const firstNameErr = await screen.findByText("First name is already taken");
-
-    // expect(firstNameErr).toBeInTheDocument();
-
-    // const lastNameErr = await screen.findByText("Last name is already taken");
-
-    // expect(lastNameErr).toBeInTheDocument();
-
-    // const usernameErr = await screen.findByText("Username is already taken");
-
-    // expect(usernameErr).toBeInTheDocument();
-    //   screen.debug();
   });
 
   it("should navigate to ChangeUserProfilePasswords and render the component", async () => {
@@ -717,22 +599,7 @@ describe("should render MainGridInterface", () => {
       initialEntries: ["/login", "/profile/4", "/profile/change_passwords/4"],
       initialIndex: 0,
     });
-    // server.use(
-    //   http.get("http://localhost:5000/users", () => {
-    //     return HttpResponse.json(
-    //       {
-    //         id: 4,
-    //         first_name: "preslaw123",
-    //         last_name: "preslaw123",
-    //         username: "preslaw123",
-    //         password: "12345678Bg@",
-    //         confirm_password: "12345678Bg@",
-    //         bio: "bio123",
-    //       },
-    //       { status: 200 },
-    //     );
-    //   }),
-    // );
+
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
@@ -804,23 +671,6 @@ describe("should render MainGridInterface", () => {
       initialEntries: ["/login", "/profile/4", "/profile/change_passwords/4"],
       initialIndex: 0,
     });
-
-    // server.use(
-    //   http.get("http://localhost:5000/users", () => {
-    //     return HttpResponse.json(
-    //       {
-    //         id: 4,
-    //         first_name: "preslaw123",
-    //         last_name: "preslaw123",
-    //         username: "preslaw123",
-    //         password: "12345678Bg@",
-    //         confirm_password: "12345678Bg@",
-    //         bio: "bio123",
-    //       },
-    //       { status: 200 },
-    //     );
-    //   }),
-    // );
 
     render(<RouterProvider router={router} />);
 
@@ -917,20 +767,6 @@ describe("should render MainGridInterface", () => {
     });
 
     server.use(
-      // http.get("http://localhost:5000/users", () => {
-      //   return HttpResponse.json(
-      //     {
-      //       id: 4,
-      //       first_name: "preslaw123",
-      //       last_name: "preslaw123",
-      //       username: "preslaw123",
-      //       password: "12345678Bg@@",
-      //       confirm_password: "12345678Bg@@",
-      //       bio: "bio123",
-      //     },
-      //     { status: 200 },
-      //   );
-      // }),
       http.put("http://localhost:5000/users/profile/change_passwords/4", () => {
         return HttpResponse.json(
           {
@@ -1049,42 +885,6 @@ describe("should render MainGridInterface", () => {
         return HttpResponse.json([]);
       }),
     );
-
-    // server
-    //   .use
-    // http.get("http://localhost:5000/users", () => {
-    //   return HttpResponse.json(
-    //     {
-    //       id: 4,
-    //       first_name: "preslaw",
-    //       last_name: "preslaw",
-    //       username: "preslaw",
-    //       password: "12345678Bg@",
-    //       confirm_password: "12345678Bg@",
-    //       bio: "",
-    //     },
-    //     { status: 200 },
-    //   );
-    // }),
-    // http.get("http://localhost:5000/users/4", () => {
-    //   return HttpResponse.json(
-    //     {
-    //       id: 4,
-    //       first_name: "preslaw",
-    //       last_name: "preslaw",
-    //       username: "preslaw",
-    //       password: "12345678Bg@",
-    //       confirm_password: "12345678Bg@",
-    //       bio: "",
-    //     },
-    //     { status: 200 },
-    //   );
-    // }),
-
-    // http.get("http://localhost:5000/chats/undefined", () => {
-    //   return HttpResponse.json([]);
-    // }),
-    // ();
 
     render(<RouterProvider router={router} />);
 
@@ -1209,93 +1009,6 @@ describe("should render MainGridInterface", () => {
       }),
     );
 
-    // server.use(
-    //   http.get("http://localhost:5000/users", () => {
-    //     return HttpResponse.json(
-    //       {
-    //         id: 4,
-    //         first_name: "preslaw",
-    //         last_name: "preslaw",
-    //         username: "preslaw",
-    //         password: "12345678Bg@",
-    //         confirm_password: "12345678Bg@",
-    //         bio: "",
-    //       },
-    //       { status: 200 },
-    //     );
-    //   }),
-
-    //   http.get("http://localhost:5000/users/4", () => {
-    //     return HttpResponse.json(
-    //       {
-    //         id: 4,
-    //         first_name: "preslaw",
-    //         last_name: "preslaw",
-    //         username: "preslaw",
-    //         password: "12345678Bg@",
-    //         confirm_password: "12345678Bg@",
-    //         bio: "",
-    //       },
-    //       { status: 200 },
-    //     );
-    //   }),
-
-    //   http.get("http://localhost:5000/users/all", () => {
-    //     return HttpResponse.json([
-    //       {
-    //         id: 4,
-    //         first_name: "preslaw",
-    //         last_name: "preslaw",
-    //         username: "preslaw",
-    //         password: "12345678Bg@",
-    //         confirm_password: "12345678Bg@",
-    //         bio: "",
-    //       },
-    //       {
-    //         id: 5,
-    //         first_name: "preslaw1",
-    //         last_name: "preslaw1",
-    //         username: "preslaw1",
-    //         password: "12345678Bg@",
-    //         confirm_password: "12345678Bg@",
-    //         bio: "",
-    //       },
-    //       {
-    //         id: 6,
-    //         first_name: "preslaw2",
-    //         last_name: "preslaw2",
-    //         username: "preslaw2",
-    //         password: "12345678Bg@",
-    //         confirm_password: "12345678Bg@",
-    //         bio: "",
-    //       },
-    //       { status: 200 },
-    //     ]);
-    //   }),
-
-    //   http.get("http://localhost:5000/users/search", ({ request }) => {
-    //     const url = new URL(request.url);
-
-    //     const getUser = url.searchParams.get("query");
-
-    //     if (!getUser) {
-    //       return new HttpResponse(null, { status: 404 });
-    //     }
-
-    //     return HttpResponse.json([
-    //       {
-    //         id: 5,
-    //         first_name: "preslaw1",
-    //         last_name: "preslaw1",
-    //         username: "preslaw1",
-    //         password: "12345678Bg@",
-    //         confirm_password: "12345678Bg@",
-    //         bio: "",
-    //       },
-    //     ]);
-    //   }),
-    // );
-
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
@@ -1354,7 +1067,7 @@ describe("should render MainGridInterface", () => {
     // screen.debug();
   });
 
-  it.only("navigate to chats and start conversation with a user", async () => {
+  it("navigate to chats and start conversation with a user", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/chats", "/profile/5"],
       initialIndex: 0,
@@ -1449,5 +1162,114 @@ describe("should render MainGridInterface", () => {
     ).toMatch(/start a conversation, say hi!/i);
 
     expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
+  });
+
+  it.only("start conversation with another user and send a message", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/chats", "/profile/5"],
+      initialIndex: 0,
+    });
+
+    server.use(
+      http.get("http://localhost:5000/chats/undefined", () => {
+        return HttpResponse.json([]);
+      }),
+    );
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    // screen.debug();
+
+    await user.click(screen.queryByText("Chats"));
+
+    // screen.debug();
+
+    await user.click(
+      screen.queryByAltText("click to toggle and search for a user"),
+    );
+
+    expect(
+      screen.queryAllByRole("heading", { level: 5 })[0].textContent,
+    ).toMatch(/search users/i);
+
+    expect(
+      screen.queryAllByRole("heading", { level: 5 })[1].textContent,
+    ).toMatch(/chats/i);
+
+    // console.log(screen.getByTestId("user"));
+
+    await user.type(screen.getByTestId("user"), "preslaw1");
+
+    expect(screen.getByTestId("user")).toHaveValue("preslaw1");
+
+    // screen.debug();
+
+    expect(screen.queryByText("preslaw preslaw")).not.toBeInTheDocument();
+
+    expect(screen.queryByText("@preslaw")).not.toBeInTheDocument();
+
+    expect(screen.queryByText("preslaw1 preslaw1").textContent).toMatch(
+      /preslaw1 preslaw1/i,
+    );
+
+    expect(screen.queryByText("@preslaw1").textContent).toMatch(/@preslaw1/i);
+
+    expect(screen.queryByText("preslaw2 preslaw2")).not.toBeInTheDocument();
+
+    expect(screen.queryByText("@preslaw2")).not.toBeInTheDocument();
+
+    await user.click(screen.getByTestId("userAnchor"));
+
+    await user.click(screen.getByRole("button", { name: "Send Message" }));
+
+    // screen.debug();
+
+    expect(screen.queryAllByText("preslaw1 preslaw1")[0].textContent).toMatch(
+      /preslaw1 preslaw1/i,
+    );
+
+    expect(screen.queryAllByText("@preslaw1")[0].textContent).toMatch(
+      /@preslaw1/i,
+    );
+
+    expect(screen.queryByRole("heading", { level: 6 }).textContent).toMatch(
+      /preslaw1 preslaw1/i,
+    );
+
+    expect(
+      screen.queryByText("Start a conversation, say Hi!").textContent,
+    ).toMatch(/start a conversation, say hi!/i);
+
+    expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
+
+    // screen.debug();
+
+    await user.type(screen.queryByTestId("message_text"), "hello!");
+
+    expect(screen.queryByTestId("message_text")).toHaveValue("hello!");
+
+    await user.click(screen.getByRole("button", { name: "Send" }));
+
+    expect(screen.queryByText("hello!").textContent).toMatch(/hello!/i);
+
+    // screen.debug();
   });
 });

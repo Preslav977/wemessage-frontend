@@ -58,6 +58,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
         messages: result.messages,
       };
 
+      console.log(chatDetails);
+
       setChatDetails(sendMessageObj);
     } catch (err) {
       console.log(err);
@@ -86,6 +88,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
       );
 
       const result = await response.json();
+
+      console.log(result);
 
       const sendImageObj = {
         ...chatDetails,
@@ -181,6 +185,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
       );
 
       const result = await response.json();
+
+      // console.log(result)
 
       const retrieveNewMessagesAfterDeletingAMessage = {
         ...chatDetails,
@@ -397,53 +403,60 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
           <hr />
         </div>
         <div className={styles.chatDetailsSendMessageOrImageContainer}>
-          {sendAMessageState !== "" ? (
-            <form onSubmit={sendMessageInChat}>
-              <input
-                className={styles.chatDetailsSendMessageInput}
-                type="text"
-                name="message_text"
-                id="message_text"
-                value={sendAMessageState}
-                onChange={(e) => setSendAMessageState(e.target.value)}
-              />
-              {/* <input
+          {/* {sendAMessageState !== "" ? ( */}
+          {/* <form onSubmit={sendMessageInChat}>
+            <input
+              className={styles.chatDetailsSendMessageInput}
+              data-testid="message_text"
+              type="text"
+              name="message_text"
+              id="message_text"
+              value={sendAMessageState}
+              onChange={(e) => setSendAMessageState(e.target.value)}
+            /> */}
+          {/* <input
                 className={styles.chatDetailsSendImageInput}
                 type="file"
                 name="file"
                 id="file"
               /> */}
-              <button
-                className={styles.chatDetailsSendMessageOrImageButton}
-                type="submit"
-              >
-                Send
-              </button>
-            </form>
-          ) : (
-            <form encType="multipart/form" onSubmit={sendImageInChat}>
-              <input
-                className={styles.chatDetailsSendMessageInput}
-                type="text"
-                name="message_text"
-                id="message_text"
-                value={sendAMessageState}
-                onChange={(e) => setSendAMessageState(e.target.value)}
-              />
-              <input
-                className={styles.chatDetailsSendImageInput}
-                type="file"
-                name="file"
-                id="file"
-              />
-              <button
-                className={styles.chatDetailsSendMessageOrImageButton}
-                type="submit"
-              >
-                Send
-              </button>
-            </form>
-          )}
+          {/* <button
+              className={styles.chatDetailsSendMessageOrImageButton}
+              type="submit"
+            >
+              Send
+            </button> */}
+          {/* </form> */}
+          {/* ) : ( */}
+          <form
+            encType="multipart/form"
+            onSubmit={
+              sendAMessageState !== "" ? sendMessageInChat : sendImageInChat
+            }
+          >
+            <input
+              className={styles.chatDetailsSendMessageInput}
+              data-testid="message_text"
+              type="text"
+              name="message_text"
+              id="message_text"
+              value={sendAMessageState}
+              onChange={(e) => setSendAMessageState(e.target.value)}
+            />
+            <input
+              className={styles.chatDetailsSendImageInput}
+              type="file"
+              name="file"
+              id="file"
+            />
+            <button
+              className={styles.chatDetailsSendMessageOrImageButton}
+              type="submit"
+            >
+              Send
+            </button>
+          </form>
+          {/* )} */}
         </div>
       </div>
     );
