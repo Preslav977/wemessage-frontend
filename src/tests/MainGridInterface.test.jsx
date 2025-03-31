@@ -1164,7 +1164,7 @@ describe("should render MainGridInterface", () => {
     expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
   });
 
-  it.only("start conversation with another user and send a message", async () => {
+  it("start conversation with another user and send a message", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/chats", "/profile/5"],
       initialIndex: 0,
@@ -1269,6 +1269,123 @@ describe("should render MainGridInterface", () => {
     await user.click(screen.getByRole("button", { name: "Send" }));
 
     expect(screen.queryByText("hello!").textContent).toMatch(/hello!/i);
+
+    // screen.debug();
+  });
+
+  it.only("start conversation with another user and send a image", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/chats", "/profile/5"],
+      initialIndex: 0,
+    });
+
+    server.use(
+      http.get("http://localhost:5000/chats/undefined", () => {
+        return HttpResponse.json([]);
+      }),
+    );
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    // screen.debug();
+
+    await user.click(screen.queryByText("Chats"));
+
+    // screen.debug();
+
+    await user.click(
+      screen.queryByAltText("click to toggle and search for a user"),
+    );
+
+    expect(
+      screen.queryAllByRole("heading", { level: 5 })[0].textContent,
+    ).toMatch(/search users/i);
+
+    expect(
+      screen.queryAllByRole("heading", { level: 5 })[1].textContent,
+    ).toMatch(/chats/i);
+
+    // console.log(screen.getByTestId("user"));
+
+    await user.type(screen.getByTestId("user"), "preslaw1");
+
+    expect(screen.getByTestId("user")).toHaveValue("preslaw1");
+
+    // screen.debug();
+
+    expect(screen.queryByText("preslaw preslaw")).not.toBeInTheDocument();
+
+    expect(screen.queryByText("@preslaw")).not.toBeInTheDocument();
+
+    expect(screen.queryByText("preslaw1 preslaw1").textContent).toMatch(
+      /preslaw1 preslaw1/i,
+    );
+
+    expect(screen.queryByText("@preslaw1").textContent).toMatch(/@preslaw1/i);
+
+    expect(screen.queryByText("preslaw2 preslaw2")).not.toBeInTheDocument();
+
+    expect(screen.queryByText("@preslaw2")).not.toBeInTheDocument();
+
+    await user.click(screen.getByTestId("userAnchor"));
+
+    await user.click(screen.getByRole("button", { name: "Send Message" }));
+
+    // screen.debug();
+
+    expect(screen.queryAllByText("preslaw1 preslaw1")[0].textContent).toMatch(
+      /preslaw1 preslaw1/i,
+    );
+
+    expect(screen.queryAllByText("@preslaw1")[0].textContent).toMatch(
+      /@preslaw1/i,
+    );
+
+    expect(screen.queryByRole("heading", { level: 6 }).textContent).toMatch(
+      /preslaw1 preslaw1/i,
+    );
+
+    expect(
+      screen.queryByText("Start a conversation, say Hi!").textContent,
+    ).toMatch(/start a conversation, say hi!/i);
+
+    expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
+
+    await user.click(screen.queryByTestId("message_image"));
+
+    const file = new File(["image"], "image.png", { type: "image/png" });
+
+    const bgImageInput = screen.getByTestId("message_image");
+
+    await user.upload(bgImageInput, file);
+
+    // screen.debug();
+
+    expect(bgImageInput.files[0]).toBe(file);
+
+    expect(bgImageInput.files.item(0)).toBe(file);
+
+    expect(bgImageInput.files).toHaveLength(1);
+
+    await user.click(screen.getByRole("button", { name: "Send" }));
 
     // screen.debug();
   });

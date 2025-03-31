@@ -403,31 +403,6 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
           <hr />
         </div>
         <div className={styles.chatDetailsSendMessageOrImageContainer}>
-          {/* {sendAMessageState !== "" ? ( */}
-          {/* <form onSubmit={sendMessageInChat}>
-            <input
-              className={styles.chatDetailsSendMessageInput}
-              data-testid="message_text"
-              type="text"
-              name="message_text"
-              id="message_text"
-              value={sendAMessageState}
-              onChange={(e) => setSendAMessageState(e.target.value)}
-            /> */}
-          {/* <input
-                className={styles.chatDetailsSendImageInput}
-                type="file"
-                name="file"
-                id="file"
-              /> */}
-          {/* <button
-              className={styles.chatDetailsSendMessageOrImageButton}
-              type="submit"
-            >
-              Send
-            </button> */}
-          {/* </form> */}
-          {/* ) : ( */}
           <form
             encType="multipart/form"
             onSubmit={
@@ -445,6 +420,7 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
             />
             <input
               className={styles.chatDetailsSendImageInput}
+              data-testid="message_image"
               type="file"
               name="file"
               id="file"
@@ -456,7 +432,6 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
               Send
             </button>
           </form>
-          {/* )} */}
         </div>
       </div>
     );
