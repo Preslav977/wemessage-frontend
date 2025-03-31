@@ -53,7 +53,7 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
       );
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       const sendMessageObj = {
         ...chatDetails,
@@ -148,14 +148,14 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
 
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       const editAMessage = {
         ...chatDetails,
         messages: result.messages,
       };
 
-      console.log(chatDetails);
+      // console.log(chatDetails);
 
       setChatDetails(editAMessage);
 
