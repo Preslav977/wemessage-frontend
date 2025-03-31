@@ -26,6 +26,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
 
   const [clickedMessage, setClickedMessage] = useState();
 
+  const formRef = useRef(null);
+
   async function sendMessageInChat(e) {
     e.preventDefault();
 
@@ -57,6 +59,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
         ...chatDetails,
         messages: result.messages,
       };
+
+      formRef.current.reset();
 
       console.log(chatDetails);
 
@@ -404,6 +408,7 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
         </div>
         <div className={styles.chatDetailsSendMessageOrImageContainer}>
           <form
+            ref={formRef}
             encType="multipart/form"
             onSubmit={
               sendAMessageState !== "" ? sendMessageInChat : sendImageInChat
