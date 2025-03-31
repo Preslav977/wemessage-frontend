@@ -12,19 +12,16 @@ function ManageUserProfile() {
 
   const { id } = useParams();
 
-  function goBackToChats() {
-    navigate("/chats");
-  }
-
   if (userLogInObj.id !== Number(id)) {
     return (
       <nav className={styles.flexedUserNav}>
-        <img
-          onClick={goBackToChats}
-          className={styles.goBackArrowSvg}
-          src="/back-arrow.svg"
-          alt="go to previous page"
-        />
+        <Link to={"/chats"} data-testid="backArrow">
+          <img
+            className={styles.goBackArrowSvg}
+            src="/back-arrow.svg"
+            alt="go to previous page"
+          />
+        </Link>
         <h2>User Profile</h2>
       </nav>
     );

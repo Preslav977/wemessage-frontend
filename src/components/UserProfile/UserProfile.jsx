@@ -10,6 +10,7 @@ import { PopUpModalContext } from "../../contexts/PopUpModalContext";
 import { useParams } from "react-router-dom";
 import useFetchSingleUserURL from "../api/custom hooks/useFetchSingleUserURL";
 import { GroupFriendsContext } from "../../contexts/GroupsContext";
+import { useNavigate } from "react-router-dom";
 
 function UserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
@@ -29,6 +30,8 @@ function UserProfile() {
   const { userGetById } = useFetchSingleUserURL();
 
   const [groupFriends, setGroupFriends] = useContext(GroupFriendsContext);
+
+  const navigate = useNavigate();
 
   async function changeBackgroundImage(e) {
     e.preventDefault();
@@ -99,7 +102,13 @@ function UserProfile() {
       });
       const result = await response.json();
 
+      // console.log(result);
+
       setGroupFriends([...groupFriends, result.receiverChat]);
+
+      navigate(`/chats/${result.id}`);
+
+      console.log("Started a conversation");
     } catch (err) {
       console.log(err);
     }

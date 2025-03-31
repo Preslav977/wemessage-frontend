@@ -130,10 +130,21 @@ function EditUserProfile() {
 
         setPopUpModal(true);
 
+        const result = await response.json();
+
+        const userLoggedInInformation = {
+          ...userLogInObj,
+          first_name: result.first_name,
+          last_name: result.last_name,
+          username: result.username,
+          bio: result.bio,
+        };
+
+        setUserLogInObj(userLoggedInInformation);
+
         navigate(`/profile/${userLogInObj.id}`);
       } else {
         const result = await response.json();
-
         result.map((err) => {
           if (err.msg === "First name is already taken") {
             setFirstNameError(err.msg);
@@ -144,18 +155,6 @@ function EditUserProfile() {
           }
         });
       }
-
-      const result = await response.json();
-
-      const userLoggedInInformation = {
-        ...userLogInObj,
-        first_name: result.first_name,
-        last_name: result.last_name,
-        username: result.username,
-        bio: result.bio,
-      };
-
-      setUserLogInObj(userLoggedInInformation);
     } catch (err) {
       console.log(err);
     }

@@ -35,7 +35,11 @@ function FetchAndSearchForUsers({ onClick, onChange }) {
       />
       <ul>
         {users.map((user) => (
-          <Link to={`/profile/${user.id}`} key={user.id}>
+          <Link
+            key={user.id}
+            to={`/profile/${user.id}`}
+            data-testid="userAnchor"
+          >
             <li className={styles.flexedNestedLiUsersContainer}>
               {user.profile_picture === "" ? (
                 <img
