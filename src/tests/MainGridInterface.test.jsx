@@ -2890,7 +2890,7 @@ describe("should render MainGridInterface", () => {
     // screen.debug();
   });
 
-  it.only("should't not render specific buttons if the user is not the creator of the group", async () => {
+  it("should't not render specific buttons if the user is not the creator of the group", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/profile/5", "/groups"],
       initialIndex: 0,
@@ -3037,6 +3037,114 @@ describe("should render MainGridInterface", () => {
       screen.queryByRole("button", { name: "Delete" }),
     ).not.toBeInTheDocument();
 
+    // screen.debug();
+  });
+
+  it.only("should't not render specific buttons if the user is the creator of the group", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/1", "/groups"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw1");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw1");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    // screen.debug();
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    // screen.debug();
+
+    await user.click(screen.queryByText("Groups"));
+
+    await user.click(screen.queryByTestId("groupAnchor"));
+
+    expect(
+      screen.queryAllByRole("heading", { leven: 4 })[0].textContent,
+    ).toMatch(/groups/i);
+
+    expect(screen.queryAllByRole("heading", { leven: 5 })[1].textContent)
+      .toMatch;
+
+    expect(screen.queryByRole("heading", { level: 5 }).textContent).toMatch(
+      /create group/i,
+    );
+
+    expect(screen.queryByText("Group Profile").textContent).toMatch(
+      /group profile/i,
+    );
+
+    expect(screen.queryByText("Group name:").textContent).toMatch(
+      /group name:/i,
+    );
+
+    expect(screen.queryByText("Select members:").textContent).toMatch(
+      /select members/i,
+    );
+
+    await user.click(screen.queryByTestId("group_image"));
+
+    let file = new File(["image"], "image.png", { type: "image/png" });
+
+    const groupImageInput = screen.getByTestId("group_image");
+
+    await user.upload(groupImageInput, file);
+
+    expect(groupImageInput.files[0]).toBe(file);
+
+    expect(groupImageInput.files.item(0)).toBe(file);
+
+    expect(groupImageInput.files).toHaveLength(1);
+
+    await user.type(screen.queryByTestId("group_name"), "test");
+
+    expect(screen.queryByTestId("group_name"), "test");
+
+    expect(
+      screen.queryByText("Group name must be between 3 and 30 characters"),
+    ).not.toBeInTheDocument();
+
+    await user.type(screen.queryByTestId("group_member"), "preslaw2");
+
+    expect(screen.queryByTestId("group_member"), "preslaw2");
+
+    const selectMember = screen.queryByTestId("select_member");
+
+    await user.click(selectMember);
+
+    expect(
+      screen.queryByRole("button", { name: "Create Group" }),
+    ).toBeInTheDocument();
+
+    // screen.debug();
+
+    await user.click(screen.queryByRole("button", { name: "Create Group" }));
+
+    expect(screen.queryByText("Loading..."));
+
     screen.debug();
+
+    expect(screen.queryByRole("button", { name: "Edit" })).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole("button", { name: "Delete" }),
+    ).toBeInTheDocument();
+
+    // screen.debug();
   });
 });
