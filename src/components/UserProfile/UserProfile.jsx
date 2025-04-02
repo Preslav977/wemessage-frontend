@@ -100,6 +100,7 @@ function UserProfile() {
           receiverId: Number(userGetById.id),
         }),
       });
+
       const result = await response.json();
 
       // console.log(result);

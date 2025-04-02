@@ -17,8 +17,6 @@ function CreateGroup() {
 
   const [selectedGroupMember, setSelectedGroupMember] = useState();
 
-  // console.log(selectedGroupMember);
-
   const [showSelectedGroupMember, setShowSelectedGroupMember] = useState(false);
 
   const selectedGroupUserMemberRef = useRef(null);
@@ -38,6 +36,8 @@ function CreateGroup() {
       );
 
       const getGroupMembers = await fetchGroupFriends.json();
+
+      // console.log(groupFriends);
 
       const filterTheLoggedInUser = getGroupMembers.filter(
         (obj) => obj.id !== userLogInObj.id,
