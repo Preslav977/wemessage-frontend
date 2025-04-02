@@ -342,18 +342,26 @@ function RenderGroupDetailsMessages() {
               </form>
             </div>
           )}
-          <form onSubmit={joinGroup}>
-            <button type="submit">Join</button>
-          </form>
+          {groupDetails.users.some((obj) => obj.id === userLogInObj.id) ? (
+            <button>Joined</button>
+          ) : (
+            <form onSubmit={joinGroup}>
+              <button type="submit">Join</button>
+            </form>
+          )}
         </header>
-        <div>
-          <button onClick={() => setShowDropDownMenuGroupName(true)}>
-            Edit
-          </button>
-          <form onSubmit={deleteGroup}>
-            <button type="submit">Delete</button>
-          </form>
-        </div>
+        {groupDetails.group_creatorId === userLogInObj.id ? (
+          <div>
+            <button onClick={() => setShowDropDownMenuGroupName(true)}>
+              Edit
+            </button>
+            <form onSubmit={deleteGroup}>
+              <button type="submit">Delete</button>
+            </form>
+          </div>
+        ) : (
+          ""
+        )}
         <div className={styles.groupMessageDetailsTopHr}>
           <hr />
         </div>

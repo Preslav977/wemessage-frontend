@@ -50,9 +50,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
 
     expect(screen.queryByText("Global").textContent).toMatch(/global/i);
 
@@ -117,9 +117,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
 
     expect(screen.queryAllByText("Edit Profile")[1].textContent).toMatch(
       /edit profile/i,
@@ -223,7 +223,7 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
     // await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
@@ -294,9 +294,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
 
     expect(screen.queryByText("Global").textContent).toMatch(/global/i);
 
@@ -369,9 +369,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
 
     // screen.debug();
 
@@ -499,9 +499,9 @@ describe("should render MainGridInterface", () => {
     await user.click(submitBtn[1]);
 
     // screen.debug();
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
 
     // await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
@@ -903,9 +903,9 @@ describe("should render MainGridInterface", () => {
     await user.click(submitBtn[1]);
 
     // screen.debug();
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
 
     await user.click(screen.queryByText("Chats"));
 
@@ -954,7 +954,7 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
     await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
@@ -1025,9 +1025,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Chats"));
@@ -1095,9 +1095,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
 
     // screen.debug();
 
@@ -1192,9 +1192,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
 
     // screen.debug();
 
@@ -1301,9 +1301,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
 
     // screen.debug();
 
@@ -1418,9 +1418,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
 
     // screen.debug();
 
@@ -1512,14 +1512,14 @@ describe("should render MainGridInterface", () => {
 
     await user.click(screen.getByRole("button", { name: "Save" }));
 
-    screen.debug();
+    // screen.debug();
 
     expect(screen.queryByText("edited message").textContent).toMatch(
       /edited message/i,
     );
   });
 
-  it.only("should delete a message in chat", async () => {
+  it("should delete a message in chat", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/chats", "/profile/5"],
       initialIndex: 0,
@@ -1547,9 +1547,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
 
     // screen.debug();
 
@@ -1625,7 +1625,7 @@ describe("should render MainGridInterface", () => {
 
     await user.click(screen.getByAltText("message drop-down menu"));
 
-    screen.debug();
+    // screen.debug();
 
     await user.click(screen.getByRole("button", { name: "Delete" }));
 
@@ -1638,5 +1638,223 @@ describe("should render MainGridInterface", () => {
     ).toMatch(/start a conversation, say hi!/i);
 
     // screen.debug();
+  });
+
+  it("should show no groups if there are not any", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/5", "/groups"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    // screen.debug();
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    await user.click(screen.queryByText("Groups"));
+
+    expect(screen.queryByText("Loading..."));
+
+    expect(
+      screen.queryAllByRole("heading", { leven: 4 })[0].textContent,
+    ).toMatch(/groups/i);
+
+    expect(
+      screen.queryAllByRole("heading", { leven: 5 })[1].textContent,
+    ).toMatch(/groups/i);
+
+    expect(
+      screen.queryByText("You currently have no groups").textContent,
+    ).toMatch(/you currently have no groups/i);
+
+    // screen.debug();
+  });
+
+  it("should render group create route", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/5", "/groups/create"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    // screen.debug();
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    await user.click(screen.queryByText("Groups"));
+
+    await user.click(screen.queryByTestId("groupAnchor"));
+
+    expect(
+      screen.queryAllByRole("heading", { leven: 4 })[0].textContent,
+    ).toMatch(/groups/i);
+
+    expect(screen.queryAllByRole("heading", { leven: 5 })[1].textContent)
+      .toMatch;
+
+    expect(screen.queryByRole("heading", { level: 5 }).textContent).toMatch(
+      /create group/i,
+    );
+
+    expect(screen.queryByText("Group Profile").textContent).toMatch(
+      /group profile/i,
+    );
+
+    expect(screen.queryByText("Group name:").textContent).toMatch(
+      /group name:/i,
+    );
+
+    expect(
+      screen.queryByText("Group name must be between 3 and 30 characters")
+        .textContent,
+    ).toMatch(/group name must be between 3 and 30 characters/i);
+
+    expect(screen.queryByText("Select members:").textContent).toMatch(
+      /select members/i,
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Create Group" }),
+    ).toBeInTheDocument();
+
+    // screen.debug();
+  });
+
+  it.only("should create a group between two users", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/4", "/groups", "/groups/create"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    // screen.debug();
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    // screen.debug();
+
+    await user.click(screen.queryByText("Groups"));
+
+    await user.click(screen.queryByTestId("groupAnchor"));
+
+    // screen.debug();
+
+    expect(
+      screen.queryAllByRole("heading", { leven: 4 })[0].textContent,
+    ).toMatch(/groups/i);
+
+    expect(screen.queryAllByRole("heading", { leven: 5 })[1].textContent)
+      .toMatch;
+
+    expect(screen.queryByRole("heading", { level: 5 }).textContent).toMatch(
+      /create group/i,
+    );
+
+    expect(screen.queryByText("Group Profile").textContent).toMatch(
+      /group profile/i,
+    );
+
+    expect(screen.queryByText("Group name:").textContent).toMatch(
+      /group name:/i,
+    );
+
+    expect(screen.queryByText("Select members:").textContent).toMatch(
+      /select members/i,
+    );
+
+    await user.click(screen.queryByTestId("group_image"));
+
+    const file = new File(["image"], "image.png", { type: "image/png" });
+
+    const bgImageInput = screen.getByTestId("group_image");
+
+    await user.upload(bgImageInput, file);
+
+    await user.type(screen.queryByTestId("group_name"), "test");
+
+    expect(screen.queryByTestId("group_name"), "test");
+
+    expect(
+      screen.queryByText("Group name must be between 3 and 30 characters"),
+    ).not.toBeInTheDocument();
+
+    await user.type(screen.queryByTestId("group_member"), "preslaw1");
+
+    expect(screen.queryByTestId("group_member"), "preslaw1");
+
+    const selectMember = screen.queryByTestId("select_member");
+
+    await user.click(selectMember);
+
+    expect(
+      screen.queryByRole("button", { name: "Create Group" }),
+    ).toBeInTheDocument();
+
+    await user.click(screen.queryByRole("button", { name: "Create Group" }));
+
+    expect(screen.queryByAltText("Loading..."));
+
+    screen.debug();
+
+    expect(screen.queryAllByText("group")[0].textContent).toMatch(/group/i);
+
+    expect(screen.getByRole("button", { name: "Join" })).toBeInTheDocument();
+
+    expect(
+      screen.queryByText(
+        "You must join a group first before sending a message!",
+      ).textContent,
+    ).toMatch(/you must join a group first before sending a message!/i);
   });
 });

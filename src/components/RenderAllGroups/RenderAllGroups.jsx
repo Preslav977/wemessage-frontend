@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 function RenderAllGroups() {
   const { groups, error, loading } = useFetchGroupsURL();
 
-  // console.log(groups);
-
   if (loading) {
     return <img src="/loading_spinner.svg" alt="Loading..." />;
   }
@@ -19,7 +17,9 @@ function RenderAllGroups() {
     <>
       <header>
         <h4>Groups</h4>
-        <Link to={"/groups/create"}>X</Link>
+        <Link data-testid="groupAnchor" to={"/groups/create"}>
+          X
+        </Link>
       </header>
       <>
         {groups.length === 0 ? (
@@ -28,7 +28,7 @@ function RenderAllGroups() {
           <>
             <ul>
               {groups.map((group) => (
-                <Link to={`/groups/${group.id}`} key={group.id}>
+                <Link key={group.id} to={`/groups/${group.id}`}>
                   <div className={styles.flexedLiGroupContainer}>
                     <div className={styles.groupImageContainer}>
                       <img

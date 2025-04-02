@@ -40,7 +40,7 @@ function CreateGroup() {
       const getGroupMembers = await fetchGroupFriends.json();
 
       const filterTheLoggedInUser = getGroupMembers.filter(
-        (obj) => obj.id !== 2,
+        (obj) => obj.id !== userLogInObj.id,
       );
 
       setGroupFriends(filterTheLoggedInUser);
@@ -54,7 +54,7 @@ function CreateGroup() {
 
     setSelectedGroupMember(friend);
 
-    console.log(selectedGroupUserMemberRef.current);
+    // console.log(selectedGroupUserMemberRef.current);
 
     if (selectedGroupUserMemberRef.current.style.display === "flex") {
       selectedGroupUserMemberRef.current.style.display = "none";
@@ -66,11 +66,11 @@ function CreateGroup() {
 
     const formData = new FormData(e.target);
 
-    formData.get("group_name");
-
     formData.append("userId", selectedGroupMember.id);
 
     formData.append("group_creatorId", userLogInObj.id);
+
+    // console.log(formData);
 
     try {
       const response = await fetch("http://localhost:5000/groups", {
@@ -81,16 +81,18 @@ function CreateGroup() {
         body: formData,
       });
 
+      // console.log(response.status);
+
       const result = await response.json();
+
+      // console.log(result);
 
       if (response.status === 200) {
         setGroupName("");
 
-        console.log(result);
-
         setGroups([...groups, result]);
 
-        navigate("/groups");
+        navigate(`/groups/${result.id}`);
       } else {
         setError(result[0].msg);
       }
@@ -109,22 +111,23 @@ function CreateGroup() {
         <div className={styles.flexedGroupProfileAndChangeBtn}>
           <p>Group Profile</p>
           {/* <button>Change</button> */}
-          <input type="file" name="file" id="file" />
+          <input data-testid="group_image" type="file" name="file" id="file" />
         </div>
         <div className={styles.groupPreviewImgContainer}>
           <div className={styles.groupPreviewImgFlexedWrapper}>
             <img
               className={styles.groupPreviewImg}
               src="/default_pfp.svg"
-              alt=""
+              alt="group default image"
             />
           </div>
         </div>
         <hr />
         <div className={styles.formGroup}>
           <div className={styles.formGroupContent}>
-            <label htmlFor="">Group name:</label>
+            <label htmlFor="group_name">Group name:</label>
             <input
+              data-testid="group_name"
               type="text"
               name="group_name"
               id="group_name"
@@ -141,12 +144,19 @@ function CreateGroup() {
             {error && <span className={styles.error}>{error}</span>}
           </div>
           <div className={styles.formGroupContent}>
-            <label htmlFor="">Select members:</label>
-            <input type="text" name="" id="" onChange={searchForGroupFriends} />
+            <label htmlFor="group_member">Select members:</label>
+            <input
+              data-testid="group_member"
+              type="text"
+              name="group_member"
+              id="group_member"
+              onChange={searchForGroupFriends}
+            />
             {groupFriends !== undefined ? (
               <ul className={styles.ulDropDownGroupUserMembers}>
                 {groupFriends.map((friend) => (
                   <li
+                    data-testid="select_member"
                     style={{
                       display: "flex",
                     }}
@@ -211,7 +221,7 @@ function CreateGroup() {
           </div>
         </div>
         <div className={styles.createGroupButton}>
-          <button>Create Group</button>
+          <button type="submit">Create Group</button>
         </div>
       </form>
     </div>
