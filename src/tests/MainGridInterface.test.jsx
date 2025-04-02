@@ -1373,17 +1373,17 @@ describe("should render MainGridInterface", () => {
 
     const file = new File(["image"], "image.png", { type: "image/png" });
 
-    const bgImageInput = screen.getByTestId("message_image");
+    const messageImageInput = screen.getByTestId("message_image");
 
-    await user.upload(bgImageInput, file);
+    await user.upload(messageImageInput, file);
 
     // screen.debug();
 
-    expect(bgImageInput.files[0]).toBe(file);
+    expect(messageImageInput.files[0]).toBe(file);
 
-    expect(bgImageInput.files.item(0)).toBe(file);
+    expect(messageImageInput.files.item(0)).toBe(file);
 
-    expect(bgImageInput.files).toHaveLength(1);
+    expect(messageImageInput.files).toHaveLength(1);
 
     await user.click(screen.getByRole("button", { name: "Send" }));
 
@@ -1817,9 +1817,15 @@ describe("should render MainGridInterface", () => {
 
     const file = new File(["image"], "image.png", { type: "image/png" });
 
-    const bgImageInput = screen.getByTestId("group_image");
+    const groupImageInput = screen.getByTestId("group_image");
 
-    await user.upload(bgImageInput, file);
+    await user.upload(groupImageInput, file);
+
+    expect(groupImageInput.files[0]).toBe(file);
+
+    expect(groupImageInput.files.item(0)).toBe(file);
+
+    expect(groupImageInput.files).toHaveLength(1);
 
     await user.type(screen.queryByTestId("group_name"), "test");
 
@@ -1934,9 +1940,15 @@ describe("should render MainGridInterface", () => {
 
     const file = new File(["image"], "image.png", { type: "image/png" });
 
-    const bgImageInput = screen.getByTestId("group_image");
+    const groupImageInput = screen.getByTestId("group_image");
 
-    await user.upload(bgImageInput, file);
+    await user.upload(groupImageInput, file);
+
+    expect(groupImageInput.files[0]).toBe(file);
+
+    expect(groupImageInput.files.item(0)).toBe(file);
+
+    expect(groupImageInput.files).toHaveLength(1);
 
     await user.type(screen.queryByTestId("group_name"), "gr");
 
@@ -2041,9 +2053,15 @@ describe("should render MainGridInterface", () => {
 
     const file = new File(["image"], "image.png", { type: "image/png" });
 
-    const bgImageInput = screen.getByTestId("group_image");
+    const groupImageInput = screen.getByTestId("group_image");
 
-    await user.upload(bgImageInput, file);
+    await user.upload(groupImageInput, file);
+
+    expect(groupImageInput.files[0]).toBe(file);
+
+    expect(groupImageInput.files.item(0)).toBe(file);
+
+    expect(groupImageInput.files).toHaveLength(1);
 
     await user.type(screen.queryByTestId("group_name"), "test");
 
@@ -2244,9 +2262,15 @@ describe("should render MainGridInterface", () => {
 
     const file = new File(["image"], "image.png", { type: "image/png" });
 
-    const bgImageInput = screen.getByTestId("group_image");
+    const groupImageInput = screen.getByTestId("group_image");
 
-    await user.upload(bgImageInput, file);
+    await user.upload(groupImageInput, file);
+
+    expect(groupImageInput.files[0]).toBe(file);
+
+    expect(groupImageInput.files.item(0)).toBe(file);
+
+    expect(groupImageInput.files).toHaveLength(1);
 
     await user.type(screen.queryByTestId("group_name"), "test");
 
@@ -2291,7 +2315,7 @@ describe("should render MainGridInterface", () => {
     expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
   });
 
-  it.only("should send a message in group", async () => {
+  it("should send a message in group", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: [
         "/login",
@@ -2299,6 +2323,7 @@ describe("should render MainGridInterface", () => {
         "/groups",
         "/groups/create",
         "/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/join",
+        "/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/message",
       ],
       initialIndex: 0,
     });
@@ -2360,9 +2385,15 @@ describe("should render MainGridInterface", () => {
 
     const file = new File(["image"], "image.png", { type: "image/png" });
 
-    const bgImageInput = screen.getByTestId("group_image");
+    const groupImageInput = screen.getByTestId("group_image");
 
-    await user.upload(bgImageInput, file);
+    await user.upload(groupImageInput, file);
+
+    expect(groupImageInput.files[0]).toBe(file);
+
+    expect(groupImageInput.files.item(0)).toBe(file);
+
+    expect(groupImageInput.files).toHaveLength(1);
 
     await user.type(screen.queryByTestId("group_name"), "test");
 
@@ -2413,6 +2444,149 @@ describe("should render MainGridInterface", () => {
     await user.click(screen.getByRole("button", { name: "Send" }));
 
     expect(screen.queryByText("hello").textContent).toMatch(/hello/i);
+
+    // screen.debug();
+  });
+
+  it.only("should send a image in group", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: [
+        "/login",
+        "/profile/4",
+        "/groups",
+        "/groups/create",
+        "/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/join",
+        "/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/image",
+      ],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    // screen.debug();
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    // screen.debug();
+
+    await user.click(screen.queryByText("Groups"));
+
+    await user.click(screen.queryByTestId("groupAnchor"));
+
+    // screen.debug();
+
+    expect(
+      screen.queryAllByRole("heading", { leven: 4 })[0].textContent,
+    ).toMatch(/groups/i);
+
+    expect(screen.queryAllByRole("heading", { leven: 5 })[1].textContent)
+      .toMatch;
+
+    expect(screen.queryByRole("heading", { level: 5 }).textContent).toMatch(
+      /create group/i,
+    );
+
+    expect(screen.queryByText("Group Profile").textContent).toMatch(
+      /group profile/i,
+    );
+
+    expect(screen.queryByText("Group name:").textContent).toMatch(
+      /group name:/i,
+    );
+
+    expect(screen.queryByText("Select members:").textContent).toMatch(
+      /select members/i,
+    );
+
+    await user.click(screen.queryByTestId("group_image"));
+
+    let file = new File(["image"], "image.png", { type: "image/png" });
+
+    const groupImageInput = screen.getByTestId("group_image");
+
+    await user.upload(groupImageInput, file);
+
+    expect(groupImageInput.files[0]).toBe(file);
+
+    expect(groupImageInput.files.item(0)).toBe(file);
+
+    expect(groupImageInput.files).toHaveLength(1);
+
+    await user.type(screen.queryByTestId("group_name"), "test");
+
+    expect(screen.queryByTestId("group_name"), "test");
+
+    expect(
+      screen.queryByText("Group name must be between 3 and 30 characters"),
+    ).not.toBeInTheDocument();
+
+    await user.type(screen.queryByTestId("group_member"), "preslaw1");
+
+    expect(screen.queryByTestId("group_member"), "preslaw1");
+
+    const selectMember = screen.queryByTestId("select_member");
+
+    await user.click(selectMember);
+
+    expect(
+      screen.queryByRole("button", { name: "Create Group" }),
+    ).toBeInTheDocument();
+
+    await user.click(screen.queryByRole("button", { name: "Create Group" }));
+
+    expect(screen.queryByText("Loading..."));
+
+    // screen.debug();
+
+    expect(screen.queryAllByText("group")[0].textContent).toMatch(/group/i);
+
+    expect(screen.getByRole("button", { name: "Join" })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Join" }));
+
+    // screen.debug();
+
+    expect(screen.getByRole("button", { name: "Joined" })).toBeInTheDocument();
+
+    expect(
+      screen.queryByText("Start a conversation, say Hi!").textContent,
+    ).toMatch(/start a conversation, say hi!/i);
+
+    expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
+
+    await user.click(screen.queryByTestId("message_image"));
+
+    file = new File(["image"], "image.png", {
+      type: "image/png",
+    });
+
+    const messageImageInput = screen.getByTestId("message_image");
+
+    await user.upload(messageImageInput, file);
+
+    expect(messageImageInput.files[0]).toBe(file);
+
+    expect(messageImageInput.files.item(0)).toBe(file);
+
+    expect(messageImageInput.files).toHaveLength(1);
+
+    await user.click(screen.getByRole("button", { name: "Send" }));
 
     screen.debug();
   });

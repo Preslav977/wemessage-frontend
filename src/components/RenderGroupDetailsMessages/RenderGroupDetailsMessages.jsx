@@ -617,7 +617,7 @@ function RenderGroupDetailsMessages() {
                 onSubmit={
                   sendAGroupMessageState !== ""
                     ? sendMessageInGroup
-                    : sendMessageInGroup
+                    : sendImageInGroup
                 }
               >
                 <input
