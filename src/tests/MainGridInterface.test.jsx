@@ -1754,7 +1754,7 @@ describe("should render MainGridInterface", () => {
     // screen.debug();
   });
 
-  it.only("should create a group between two users", async () => {
+  it("should create a group between two users", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/profile/4", "/groups", "/groups/create"],
       initialIndex: 0,
@@ -1856,5 +1856,322 @@ describe("should render MainGridInterface", () => {
         "You must join a group first before sending a message!",
       ).textContent,
     ).toMatch(/you must join a group first before sending a message!/i);
+  });
+
+  it("should fail to create a group if the name is less than 3 characters", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/4", "/groups", "/groups/create"],
+      initialIndex: 0,
+    });
+
+    server.use(
+      http.post("http://localhost:5000/groups", async () => {
+        return HttpResponse.json(
+          [
+            {
+              msg: "Group name must be between 3 and 30 characters",
+            },
+          ],
+          { status: 400 },
+        );
+      }),
+    );
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    // screen.debug();
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    // screen.debug();
+
+    await user.click(screen.queryByText("Groups"));
+
+    await user.click(screen.queryByTestId("groupAnchor"));
+
+    // screen.debug();
+
+    expect(
+      screen.queryAllByRole("heading", { leven: 4 })[0].textContent,
+    ).toMatch(/groups/i);
+
+    expect(screen.queryAllByRole("heading", { leven: 5 })[1].textContent)
+      .toMatch;
+
+    expect(screen.queryByRole("heading", { level: 5 }).textContent).toMatch(
+      /create group/i,
+    );
+
+    expect(screen.queryByText("Group Profile").textContent).toMatch(
+      /group profile/i,
+    );
+
+    expect(screen.queryByText("Group name:").textContent).toMatch(
+      /group name:/i,
+    );
+
+    expect(screen.queryByText("Select members:").textContent).toMatch(
+      /select members/i,
+    );
+
+    await user.click(screen.queryByTestId("group_image"));
+
+    const file = new File(["image"], "image.png", { type: "image/png" });
+
+    const bgImageInput = screen.getByTestId("group_image");
+
+    await user.upload(bgImageInput, file);
+
+    await user.type(screen.queryByTestId("group_name"), "gr");
+
+    expect(screen.queryByTestId("group_name"), "gr");
+
+    expect(
+      screen.queryByText("Group name must be between 3 and 30 characters"),
+    ).toBeInTheDocument();
+
+    await user.type(screen.queryByTestId("group_member"), "preslaw1");
+
+    expect(screen.queryByTestId("group_member"), "preslaw1");
+
+    const selectMember = screen.queryByTestId("select_member");
+
+    await user.click(selectMember);
+
+    expect(
+      screen.queryByRole("button", { name: "Create Group" }),
+    ).toBeInTheDocument();
+
+    // screen.debug();
+
+    await user.click(screen.queryByRole("button", { name: "Create Group" }));
+
+    // screen.debug();
+  });
+
+  it("should fail to create a group if the name already exists", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/4", "/groups", "/groups/create"],
+      initialIndex: 0,
+    });
+
+    server.use(
+      http.post("http://localhost:5000/groups", async () => {
+        return HttpResponse.json(
+          [
+            {
+              msg: "Group name already exists",
+            },
+          ],
+          { status: 400 },
+        );
+      }),
+    );
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    // screen.debug();
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    // screen.debug();
+
+    await user.click(screen.queryByText("Groups"));
+
+    await user.click(screen.queryByTestId("groupAnchor"));
+
+    // screen.debug();
+
+    expect(
+      screen.queryAllByRole("heading", { leven: 4 })[0].textContent,
+    ).toMatch(/groups/i);
+
+    expect(screen.queryAllByRole("heading", { leven: 5 })[1].textContent)
+      .toMatch;
+
+    expect(screen.queryByRole("heading", { level: 5 }).textContent).toMatch(
+      /create group/i,
+    );
+
+    expect(screen.queryByText("Group Profile").textContent).toMatch(
+      /group profile/i,
+    );
+
+    expect(screen.queryByText("Group name:").textContent).toMatch(
+      /group name:/i,
+    );
+
+    expect(screen.queryByText("Select members:").textContent).toMatch(
+      /select members/i,
+    );
+
+    await user.click(screen.queryByTestId("group_image"));
+
+    const file = new File(["image"], "image.png", { type: "image/png" });
+
+    const bgImageInput = screen.getByTestId("group_image");
+
+    await user.upload(bgImageInput, file);
+
+    await user.type(screen.queryByTestId("group_name"), "test");
+
+    expect(screen.queryByTestId("group_name"), "test");
+
+    expect(
+      screen.queryByText("Group name must be between 3 and 30 characters"),
+    ).not.toBeInTheDocument();
+
+    await user.type(screen.queryByTestId("group_member"), "preslaw1");
+
+    expect(screen.queryByTestId("group_member"), "preslaw1");
+
+    const selectMember = screen.queryByTestId("select_member");
+
+    await user.click(selectMember);
+
+    expect(
+      screen.queryByRole("button", { name: "Create Group" }),
+    ).toBeInTheDocument();
+
+    // screen.debug();
+
+    await user.click(screen.queryByRole("button", { name: "Create Group" }));
+
+    expect(screen.queryByText("Group name already exists"));
+  });
+
+  it.only("should fail to create a group if image is not selected", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/4", "/groups", "/groups/create"],
+      initialIndex: 0,
+    });
+
+    server.use(
+      http.post("http://localhost:5000/groups", async () => {
+        return HttpResponse.json(
+          [
+            {
+              msg: "Please choose an image for the group",
+            },
+          ],
+          { status: 400 },
+        );
+      }),
+    );
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    // screen.debug();
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    // screen.debug();
+
+    await user.click(screen.queryByText("Groups"));
+
+    await user.click(screen.queryByTestId("groupAnchor"));
+
+    // screen.debug();
+
+    expect(
+      screen.queryAllByRole("heading", { leven: 4 })[0].textContent,
+    ).toMatch(/groups/i);
+
+    expect(screen.queryAllByRole("heading", { leven: 5 })[1].textContent)
+      .toMatch;
+
+    expect(screen.queryByRole("heading", { level: 5 }).textContent).toMatch(
+      /create group/i,
+    );
+
+    expect(screen.queryByText("Group Profile").textContent).toMatch(
+      /group profile/i,
+    );
+
+    expect(screen.queryByText("Group name:").textContent).toMatch(
+      /group name:/i,
+    );
+
+    expect(screen.queryByText("Select members:").textContent).toMatch(
+      /select members/i,
+    );
+
+    await user.type(screen.queryByTestId("group_name"), "test");
+
+    expect(screen.queryByTestId("group_name"), "test");
+
+    expect(
+      screen.queryByText("Group name must be between 3 and 30 characters"),
+    ).not.toBeInTheDocument();
+
+    await user.type(screen.queryByTestId("group_member"), "preslaw1");
+
+    expect(screen.queryByTestId("group_member"), "preslaw1");
+
+    const selectMember = screen.queryByTestId("select_member");
+
+    await user.click(selectMember);
+
+    expect(
+      screen.queryByRole("button", { name: "Create Group" }),
+    ).toBeInTheDocument();
+
+    // screen.debug();
+
+    await user.click(screen.queryByRole("button", { name: "Create Group" }));
+
+    expect(
+      screen.queryByText("Please choose an image for the group").textContent,
+    ).toMatch(/please choose an image for the group/i);
+
+    screen.debug();
   });
 });
