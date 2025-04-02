@@ -908,4 +908,87 @@ export const handlers = [
       );
     },
   ),
+
+  http.put(
+    "http://localhost:5000/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/message/1",
+    async () => {
+      return HttpResponse.json(
+        {
+          id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
+          group_name: "group",
+          group_image:
+            "https://res.cloudinary.com/dsofl9wku/image/upload/v1742973488/wemessage_images/Screenshot_2025-03-07_09-15-16.png.png",
+          group_creatorId: 5,
+          users: [
+            {
+              id: 4,
+              first_name: "preslaw",
+              last_name: "preslaw",
+              username: "preslaw",
+              password:
+                "$2a$10$BFtkYW3Mt15L2qRZMqPeluRMhRF1w9n8QVOdqi5ZSgrhXvDETf4SW",
+              confirm_password:
+                "$2a$10$BFtkYW3Mt15L2qRZMqPeluRMhRF1w9n8QVOdqi5ZSgrhXvDETf4SW",
+              bio: "",
+              profile_picture: "",
+              background_picture: "",
+              online_presence: "ONLINE",
+              role: "USER",
+              groupId: "56cfae47-9d7f-4583-8d12-f6039ef61240",
+              globalChatId: "e280338e-f5b9-4942-884f-b48ea0e6c2df",
+            },
+            {
+              id: 5,
+              first_name: "preslaw1",
+              last_name: "preslaw1",
+              username: "preslaw1",
+              password:
+                "$2a$10$GOEFM7Z.Kg7ELre4fNyqfeRO8Sn2AIfp7sTU7YuyB7GZMvgRjT21W",
+              confirm_password:
+                "$2a$10$GOEFM7Z.Kg7ELre4fNyqfeRO8Sn2AIfp7sTU7YuyB7GZMvgRjT21W",
+              bio: "",
+              profile_picture: "",
+              background_picture: "",
+              online_presence: "ONLINE",
+              role: "USER",
+              groupId: "56cfae47-9d7f-4583-8d12-f6039ef61240",
+              globalChatId: "e280338e-f5b9-4942-884f-b48ea0e6c2df",
+            },
+            {
+              id: 6,
+              first_name: "preslaw2",
+              last_name: "preslaw2",
+              username: "preslaw2",
+              password:
+                "$2a$10$GOEFM7Z.Kg7ELre4fNyqfeRO8Sn2AIfp7sTU7YuyB7GZMvgRjT21W",
+              confirm_password:
+                "$2a$10$GOEFM7Z.Kg7ELre4fNyqfeRO8Sn2AIfp7sTU7YuyB7GZMvgRjT21W",
+              bio: "",
+              profile_picture: "",
+              background_picture: "",
+              online_presence: "ONLINE",
+              role: "USER",
+              groupId: "56cfae47-9d7f-4583-8d12-f6039ef61240",
+              globalChatId: "e280338e-f5b9-4942-884f-b48ea0e6c2df",
+            },
+          ],
+          messagesGGChat: [
+            {
+              id: 1,
+              message_text: "new message",
+              message_imageName: "",
+              message_imageURL: "",
+              message_imageType: "",
+              message_imageSize: 0,
+              createdAt: "2025-03-24T10:42:22.213Z",
+              updatedAt: "2025-03-24T10:42:22.216Z",
+              userId: 4,
+              chatId: "73cc246e-897e-412f-8ab8-6fb4c29db485",
+            },
+          ],
+        },
+        { status: 200 },
+      );
+    },
+  ),
 ];

@@ -401,6 +401,7 @@ function RenderGroupDetailsMessages() {
                               >
                                 <input
                                   type="text"
+                                  data-testid="message_text"
                                   name="message_text"
                                   id="message_text"
                                   value={editTheSelectedGroupMessage}
