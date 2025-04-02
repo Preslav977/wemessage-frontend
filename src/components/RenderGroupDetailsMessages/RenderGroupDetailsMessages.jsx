@@ -612,53 +612,37 @@ function RenderGroupDetailsMessages() {
               <hr />
             </div>
             <div className={styles.groupDetailsSendMessageOrImageContainer}>
-              {sendAGroupMessageState !== "" ? (
-                <form onSubmit={sendMessageInGroup}>
-                  <input
-                    className={styles.groupDetailsSendMessageInput}
-                    type="text"
-                    name="message_text"
-                    id="message_text"
-                    value={sendAGroupMessageState}
-                    onChange={(e) => setSendAGroupMessageState(e.target.value)}
-                  />
-                  <input
-                    className={styles.groupDetailsSendImageInput}
-                    type="file"
-                    name="file"
-                    id="file"
-                  />
-                  <button
-                    className={styles.groupDetailsSendMessageOrImageButton}
-                    type="submit"
-                  >
-                    Send
-                  </button>
-                </form>
-              ) : (
-                <form encType="multipart/form" onSubmit={sendImageInGroup}>
-                  <input
-                    className={styles.groupDetailsSendMessageInput}
-                    type="text"
-                    name="message_text"
-                    id="message_text"
-                    value={sendAGroupMessageState}
-                    onChange={(e) => setSendAGroupMessageState(e.target.value)}
-                  />
-                  <input
-                    className={styles.groupDetailsSendImageInput}
-                    type="file"
-                    name="file"
-                    id="file"
-                  />
-                  <button
-                    className={styles.groupDetailsSendMessageOrImageButton}
-                    type="submit"
-                  >
-                    Send
-                  </button>
-                </form>
-              )}
+              <form
+                encType="multipart/form"
+                onSubmit={
+                  sendAGroupMessageState !== ""
+                    ? sendMessageInGroup
+                    : sendMessageInGroup
+                }
+              >
+                <input
+                  className={styles.groupDetailsSendMessageInput}
+                  data-testid="message_text"
+                  type="text"
+                  name="message_text"
+                  id="message_text"
+                  value={sendAGroupMessageState}
+                  onChange={(e) => setSendAGroupMessageState(e.target.value)}
+                />
+                <input
+                  className={styles.groupDetailsSendImageInput}
+                  data-testid="message_image"
+                  type="file"
+                  name="file"
+                  id="file"
+                />
+                <button
+                  className={styles.groupDetailsSendMessageOrImageButton}
+                  type="submit"
+                >
+                  Send
+                </button>
+              </form>
             </div>
           </>
         ) : (
