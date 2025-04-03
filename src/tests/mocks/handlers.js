@@ -706,4 +706,55 @@ export const handlers = [
       );
     },
   ),
+
+  http.post("http://localhost:5000/globalChat", async () => {
+    return HttpResponse.json(
+      {
+        id: "e280338e-f5b9-4942-884f-b48ea0e6c2df",
+        users: [
+          {
+            id: 1,
+            first_name: "preslaw",
+            last_name: "preslaw",
+            username: "preslaw",
+          },
+          {
+            id: 2,
+            first_name: "preslaw1",
+            last_name: "preslaw1",
+            username: "preslaw1",
+          },
+        ],
+        messagesGGChat: [],
+      },
+      { status: 200 },
+    );
+  }),
+
+  http.get(
+    "http://localhost:5000/globalChat/e280338e-f5b9-4942-884f-b48ea0e6c2df",
+    async () => {
+      return HttpResponse.json(
+        {
+          id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
+          users: [
+            {
+              id: 1,
+              first_name: "preslaw",
+              last_name: "preslaw",
+              username: "preslaw",
+            },
+            {
+              id: 2,
+              first_name: "preslaw1",
+              last_name: "preslaw1",
+              username: "preslaw1",
+            },
+          ],
+          messagesGGChat: [],
+        },
+        { status: 200 },
+      );
+    },
+  ),
 ];

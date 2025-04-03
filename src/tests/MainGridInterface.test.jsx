@@ -3267,4 +3267,63 @@ describe("should render MainGridInterface", () => {
 
   //   // screen.debug();
   // });
+
+  it.only("should navigate to globalChat", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/1", "/globalChat"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw1");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw1");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    // screen.debug();
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    await user.click(screen.queryByTestId("global_chat"));
+
+    expect(screen.queryByText("Search Users").textContent).toMatch(
+      /search users/i,
+    );
+
+    expect(screen.queryByText("preslaw preslaw").textContent).toMatch(
+      /preslaw preslaw/i,
+    );
+
+    expect(screen.queryByText("@preslaw").textContent).toMatch(/@preslaw/i);
+
+    expect(screen.queryByText("preslaw1 preslaw1").textContent).toMatch(
+      /preslaw1 preslaw1/i,
+    );
+
+    expect(screen.queryByText("@preslaw1").textContent).toMatch(/@preslaw1/i);
+
+    expect(screen.queryByText("Global Chat").textContent).toMatch(
+      /global chat/i,
+    );
+
+    expect(
+      screen.queryByText("Start a conversation, say Hi!").textContent,
+    ).toMatch(/start a conversation, say hi!/i);
+
+    expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
+
+    screen.debug();
+  });
 });
