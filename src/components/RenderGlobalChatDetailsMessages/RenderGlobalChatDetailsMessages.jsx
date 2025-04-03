@@ -21,6 +21,8 @@ function RenderGlobalChatDetailsMessages() {
 
   const dropDownFormRef = useRef(null);
 
+  const formRef = useRef(null);
+
   const [
     showDropDownMenuGlobalChatMessage,
     setShowDropDownMenuGlobalChatMessage,
@@ -74,6 +76,8 @@ function RenderGlobalChatDetailsMessages() {
       };
 
       setGlobalChatDetails(sendMessageObj);
+
+      formRef.current.reset();
     } catch (err) {
       console.log(err);
     }
@@ -164,7 +168,7 @@ function RenderGlobalChatDetailsMessages() {
 
       setGlobalChatDetails(editAMessage);
 
-      setShowDropDownMenuGlobalChatMessage(false);
+      setShowDropDownGlobalChatMessageForm(false);
     } catch (err) {
       console.log(err);
     }
@@ -265,6 +269,7 @@ function RenderGlobalChatDetailsMessages() {
                               onSubmit={showEditGlobalChatMessageForm}
                             >
                               <input
+                                data-testid="message_text"
                                 type="text"
                                 name="message_text"
                                 id="message_text"
@@ -477,6 +482,7 @@ function RenderGlobalChatDetailsMessages() {
         </div>
         <div className={styles.globalChatDetailsSendMessageOrImageContainer}>
           <form
+            ref={formRef}
             encType="multipart/form"
             onSubmit={
               sendAGlobalChatMessageState !== ""

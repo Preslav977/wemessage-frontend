@@ -6,8 +6,6 @@ import { useContext, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { format } from "date-fns";
 
-import PopUpModal from "../PopUpModal/PopUpModal";
-
 function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
   const { chatDetails, setChatDetails, error, loading } =
     useFetchSingleChatURL();
