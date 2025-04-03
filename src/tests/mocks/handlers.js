@@ -776,4 +776,82 @@ export const handlers = [
       },
     ]);
   }),
+
+  http.post(
+    "http://localhost:5000/globalChat/56cfae47-9d7f-4583-8d12-f6039ef61240/message",
+    async () => {
+      return HttpResponse.json(
+        {
+          id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
+          users: [
+            {
+              id: 1,
+              first_name: "preslaw",
+              last_name: "preslaw",
+              username: "preslaw",
+            },
+            {
+              id: 2,
+              first_name: "preslaw1",
+              last_name: "preslaw1",
+              username: "preslaw1",
+            },
+          ],
+          messagesGGChat: [
+            {
+              id: 1,
+              message_text: "hello",
+              message_imageName: "",
+              message_imageURL: "",
+              message_imageType: "",
+              message_imageSize: 0,
+              createdAt: "2025-03-24T10:42:22.213Z",
+              updatedAt: "2025-03-24T10:42:22.216Z",
+              userId: 1,
+            },
+          ],
+        },
+        { status: 200 },
+      );
+    },
+  ),
+
+  http.post(
+    "http://localhost:5000/globalChat/56cfae47-9d7f-4583-8d12-f6039ef61240/image",
+    async () => {
+      return HttpResponse.json(
+        {
+          id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
+          users: [
+            {
+              id: 1,
+              first_name: "preslaw",
+              last_name: "preslaw",
+              username: "preslaw",
+            },
+            {
+              id: 2,
+              first_name: "preslaw1",
+              last_name: "preslaw1",
+              username: "preslaw1",
+            },
+          ],
+          messagesGGChat: [
+            {
+              id: 1,
+              message_text: "",
+              message_imageName: "image",
+              message_imageURL: "http://image.com",
+              message_imageType: "image/png",
+              message_imageSize: 120,
+              createdAt: "2025-03-24T10:42:22.213Z",
+              updatedAt: "2025-03-24T10:42:22.216Z",
+              userId: 1,
+            },
+          ],
+        },
+        { status: 200 },
+      );
+    },
+  ),
 ];

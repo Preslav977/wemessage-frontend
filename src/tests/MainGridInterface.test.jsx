@@ -3327,7 +3327,7 @@ describe("should render MainGridInterface", () => {
   //   screen.debug();
   // });
 
-  it.only("should navigate to globalChat and search for a user", async () => {
+  it("should navigate to globalChat and search for a user", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/profile/1", "/globalChat"],
       initialIndex: 0,
@@ -3377,16 +3377,140 @@ describe("should render MainGridInterface", () => {
 
     expect(screen.queryByText("@preslaw1").textContent).toMatch(/@preslaw/i);
 
-    // expect(screen.queryByText("preslaw1 preslaw1").textContent).toMatch(
-    //   /preslaw1 preslaw1/i,
-    // );
+    expect(
+      screen.queryByText("Start a conversation, say Hi!").textContent,
+    ).toMatch(/start a conversation, say hi!/i);
 
-    // expect(screen.queryByText("@preslaw1").textContent).toMatch(/@preslaw1/i);
+    expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
+  });
+
+  it("should navigate to globalChat and send a message", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/1", "/globalChat"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw1");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw1");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    // screen.debug();
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    await user.click(screen.queryByTestId("global_chat"));
+
+    expect(screen.queryByText("Global Chat").textContent).toMatch(
+      /global chat/i,
+    );
+
+    expect(screen.queryByText("Search Users").textContent).toMatch(
+      /search users/i,
+    );
+
+    expect(screen.queryByText("preslaw1 preslaw1").textContent).toMatch(
+      /preslaw1 preslaw1/i,
+    );
+
+    expect(screen.queryByText("@preslaw1").textContent).toMatch(/@preslaw/i);
 
     expect(
       screen.queryByText("Start a conversation, say Hi!").textContent,
     ).toMatch(/start a conversation, say hi!/i);
 
     expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
+
+    await user.type(screen.queryByTestId("message_text"), "hello");
+
+    expect(user.type(screen.queryByTestId("message_text"), "hello"));
+
+    await user.click(screen.getByRole("button", { name: "Send" }));
+
+    expect(screen.queryByText("hello").textContent).toMatch(/hello/i);
+
+    screen.debug();
+  });
+
+  it.only("should navigate to globalChat and send a image", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/1", "/globalChat"],
+      initialIndex: 0,
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByTestId("username"), "preslaw1");
+
+    expect(screen.getByTestId("username")).toHaveValue("preslaw1");
+
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
+
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+
+    const submitBtn = screen.queryAllByRole("button");
+
+    await user.click(submitBtn[1]);
+
+    // screen.debug();
+
+    expect(screen.queryByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+    await user.click(screen.queryByTestId("global_chat"));
+
+    expect(screen.queryByText("Global Chat").textContent).toMatch(
+      /global chat/i,
+    );
+
+    expect(screen.queryByText("Search Users").textContent).toMatch(
+      /search users/i,
+    );
+
+    expect(screen.queryByText("preslaw1 preslaw1").textContent).toMatch(
+      /preslaw1 preslaw1/i,
+    );
+
+    expect(screen.queryByText("@preslaw1").textContent).toMatch(/@preslaw/i);
+
+    expect(
+      screen.queryByText("Start a conversation, say Hi!").textContent,
+    ).toMatch(/start a conversation, say hi!/i);
+
+    expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
+
+    await user.click(screen.queryByTestId("message_image"));
+
+    let file = new File(["image"], "image.png", { type: "image/png" });
+
+    const globalChatImageInput = screen.getByTestId("message_image");
+
+    await user.upload(globalChatImageInput, file);
+
+    expect(globalChatImageInput.files[0]).toBe(file);
+
+    expect(globalChatImageInput.files.item(0)).toBe(file);
+
+    expect(globalChatImageInput.files).toHaveLength(1);
+
+    await user.click(screen.getByRole("button", { name: "Send" }));
+
+    screen.debug();
   });
 });

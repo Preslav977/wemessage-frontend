@@ -476,53 +476,37 @@ function RenderGlobalChatDetailsMessages() {
           <hr />
         </div>
         <div className={styles.globalChatDetailsSendMessageOrImageContainer}>
-          {sendAGlobalChatMessageState !== "" ? (
-            <form onSubmit={sendMessageInGlobalChat}>
-              <input
-                className={styles.globalChatDetailsSendMessageInput}
-                type="text"
-                name="message_text"
-                id="message_text"
-                value={sendAGlobalChatMessageState}
-                onChange={(e) => setSendAGlobalChatMessageState(e.target.value)}
-              />
-              <input
-                className={styles.globalChatDetailsSendImageInput}
-                type="file"
-                name="file"
-                id="file"
-              />
-              <button
-                className={styles.globalChatDetailsSendMessageOrImageButton}
-                type="submit"
-              >
-                Send
-              </button>
-            </form>
-          ) : (
-            <form encType="multipart/form" onSubmit={sendImageInGlobalChat}>
-              <input
-                className={styles.globalChatDetailsSendMessageInput}
-                type="text"
-                name="message_text"
-                id="message_text"
-                value={sendAGlobalChatMessageState}
-                onChange={(e) => setSendAGlobalChatMessageState(e.target.value)}
-              />
-              <input
-                className={styles.globalChatDetailsSendImageInput}
-                type="file"
-                name="file"
-                id="file"
-              />
-              <button
-                className={styles.globalChatDetailsSendMessageOrImageButton}
-                type="submit"
-              >
-                Send
-              </button>
-            </form>
-          )}
+          <form
+            encType="multipart/form"
+            onSubmit={
+              sendAGlobalChatMessageState !== ""
+                ? sendMessageInGlobalChat
+                : sendImageInGlobalChat
+            }
+          >
+            <input
+              className={styles.globalChatDetailsSendMessageInput}
+              data-testid="message_text"
+              type="text"
+              name="message_text"
+              id="message_text"
+              value={sendAGlobalChatMessageState}
+              onChange={(e) => setSendAGlobalChatMessageState(e.target.value)}
+            />
+            <input
+              className={styles.globalChatDetailsSendImageInput}
+              data-testid="message_image"
+              type="file"
+              name="file"
+              id="file"
+            />
+            <button
+              className={styles.globalChatDetailsSendMessageOrImageButton}
+              type="submit"
+            >
+              Send
+            </button>
+          </form>
         </div>
       </div>
     );
