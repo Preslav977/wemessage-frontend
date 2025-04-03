@@ -29,7 +29,7 @@ const useFetchSingleGroupURL = () => {
       .finally(() => setLoading(false));
   }, [id, setGroupDetails]);
 
-  return { groupDetails, setGroupDetails, error, loading };
+  return { groupDetails, setGroupDetails, error, loading, setLoading };
 };
 
 export default useFetchSingleGroupURL;

@@ -4,10 +4,13 @@ import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { useContext, useState, useRef } from "react";
 import useFetchSingleGroupURL from "../api/custom hooks/useFetchSingleGroupURL";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 function RenderGroupDetailsMessages() {
   const { groupDetails, setGroupDetails, loading, error } =
     useFetchSingleGroupURL();
+
+  // console.log(groupDetails);
 
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
@@ -28,6 +31,10 @@ function RenderGroupDetailsMessages() {
 
   const [showDropDownMenuGroupName, setShowDropDownMenuGroupName] =
     useState(false);
+
+  const [groupName, setGroupName] = useState("");
+
+  const navigate = useNavigate();
 
   if (loading) {
     return <img src="./loading_spinner.svg" alt="Loading..." />;
@@ -243,7 +250,7 @@ function RenderGroupDetailsMessages() {
 
     const formData = new FormData(e.target);
 
-    console.log(formData);
+    // console.log(formData);
 
     const formDataGroupName = formData.get("group_name");
 
@@ -265,12 +272,16 @@ function RenderGroupDetailsMessages() {
 
       const result = await response.json();
 
+      console.log(result);
+
       const updateGroupNameObj = {
         ...groupDetails,
         group_name: result.group_name,
       };
 
       setGroupDetails(updateGroupNameObj);
+
+      navigate(`/groups/create`);
     } catch (err) {
       console.log(err);
     }
@@ -337,7 +348,14 @@ function RenderGroupDetailsMessages() {
               />
               <form onSubmit={editGroupName}>
                 <label htmlFor="group_name"></label>
-                <input type="text" name="group_name" id="group_name" />
+                <input
+                  data-testid="group_name"
+                  type="text"
+                  name="group_name"
+                  id="group_name"
+                  value={groupName}
+                  onChange={(e) => setGroupName(e.target.value)}
+                />
                 <button type="submit">Send</button>
               </form>
             </div>
@@ -352,12 +370,12 @@ function RenderGroupDetailsMessages() {
         </header>
         {groupDetails.group_creatorId === userLogInObj.id ? (
           <div>
-            <button onClick={() => setShowDropDownMenuGroupName(true)}>
+            {/* <button onClick={() => setShowDropDownMenuGroupName(true)}>
               Edit
-            </button>
-            <form onSubmit={deleteGroup}>
+            </button> */}
+            {/* <form onSubmit={deleteGroup}>
               <button type="submit">Delete</button>
-            </form>
+            </form> */}
           </div>
         ) : (
           ""

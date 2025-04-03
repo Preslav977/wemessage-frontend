@@ -670,4 +670,40 @@ export const handlers = [
       );
     },
   ),
+
+  http.put(
+    "http://localhost:5000/groups/56cfae47-9d7f-4583-8d12-f6039ef61240",
+    async () => {
+      return HttpResponse.json(
+        {
+          id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
+          group_name: "edited group",
+          group_image: "image.png",
+          group_creatorId: 1,
+          users: [
+            {
+              id: 1,
+              first_name: "preslaw",
+              last_name: "preslaw",
+              username: "preslaw",
+            },
+            {
+              id: 2,
+              first_name: "preslaw1",
+              last_name: "preslaw1",
+              username: "preslaw1",
+            },
+            {
+              id: 3,
+              first_name: "preslaw2",
+              last_name: "preslaw2",
+              username: "preslaw2",
+            },
+          ],
+          messagesGGChat: [],
+        },
+        { status: 200 },
+      );
+    },
+  ),
 ];
