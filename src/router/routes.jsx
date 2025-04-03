@@ -63,7 +63,11 @@ const routes = [
         element: (
           <ProtectedRoute>
             <MainGridInterface
-              leftGridComponent={<ToggleBetweenChatsOrSearchForUser />}
+              leftGridComponent={
+                <ToggleBetweenChatsOrSearchForUser
+                  renderChatsOrGlobalChat={false}
+                />
+              }
               rightGridComponent={
                 <RenderChatDetailsMessages renderChatsOrChatDetails={false} />
               }
@@ -76,7 +80,11 @@ const routes = [
         element: (
           <ProtectedRoute>
             <MainGridInterface
-              leftGridComponent={<ToggleBetweenChatsOrSearchForUser />}
+              leftGridComponent={
+                <ToggleBetweenChatsOrSearchForUser
+                  renderChatsOrGlobalChat={false}
+                />
+              }
               rightGridComponent={
                 <RenderChatDetailsMessages renderChatsOrChatDetails={true} />
               }
@@ -122,7 +130,11 @@ const routes = [
         element: (
           <ProtectedRoute>
             <MainGridInterface
-              leftGridComponent={<FetchAndSearchForUsers />}
+              leftGridComponent={
+                <ToggleBetweenChatsOrSearchForUser
+                  renderChatsOrGlobalChat={true}
+                />
+              }
               rightGridComponent={<RenderGlobalChatDetailsMessages />}
             ></MainGridInterface>
           </ProtectedRoute>

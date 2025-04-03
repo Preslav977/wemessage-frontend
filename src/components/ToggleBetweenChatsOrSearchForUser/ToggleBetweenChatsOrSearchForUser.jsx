@@ -3,7 +3,7 @@ import FetchAndSearchForUsers from "../api/FetchAndSearchForUsers";
 import { UserContext } from "../../contexts/UsersContext";
 import RenderAllChats from "../RenderAllChats/RenderAllChats";
 
-function ToggleBetweenChatsOrSearchForUser() {
+function ToggleBetweenChatsOrSearchForUser({ renderChatsOrGlobalChat }) {
   const [users, setUsers] = useContext(UserContext);
 
   const [toggleBetweenChatAndUsers, setToggleBetweenChatAndUsers] =
@@ -27,6 +27,8 @@ function ToggleBetweenChatsOrSearchForUser() {
 
       const getFoundUser = await fetchUsersBySearching.json();
 
+      console.log(getFoundUser);
+
       setUsers(getFoundUser);
     } catch (err) {
       console.log(err);
@@ -35,7 +37,7 @@ function ToggleBetweenChatsOrSearchForUser() {
 
   return (
     <>
-      {!toggleBetweenChatAndUsers ? (
+      {!renderChatsOrGlobalChat && !toggleBetweenChatAndUsers ? (
         <RenderAllChats onClick={toggleChatsOrUsers} />
       ) : (
         <FetchAndSearchForUsers

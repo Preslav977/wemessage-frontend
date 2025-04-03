@@ -65,7 +65,11 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
-              leftGridComponent={<ToggleBetweenChatsOrSearchForUser />}
+              leftGridComponent={
+                <ToggleBetweenChatsOrSearchForUser
+                  renderChatsOrGlobalChat={false}
+                />
+              }
               rightGridComponent={
                 <RenderChatDetailsMessages renderChatsOrChatDetails={false} />
               }
@@ -78,7 +82,11 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
-              leftGridComponent={<ToggleBetweenChatsOrSearchForUser />}
+              leftGridComponent={
+                <ToggleBetweenChatsOrSearchForUser
+                  renderChatsOrGlobalChat={false}
+                />
+              }
               rightGridComponent={
                 <RenderChatDetailsMessages renderChatsOrChatDetails={true} />
               }
@@ -124,7 +132,11 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
-              leftGridComponent={<FetchAndSearchForUsers />}
+              leftGridComponent={
+                <ToggleBetweenChatsOrSearchForUser
+                  renderChatsOrGlobalChat={true}
+                />
+              }
               rightGridComponent={<RenderGlobalChatDetailsMessages />}
             ></MainGridInterface>
           </ProtectedRoute>

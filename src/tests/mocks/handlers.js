@@ -757,4 +757,23 @@ export const handlers = [
       );
     },
   ),
+
+  http.get("http://localhost:5000/users/search", async ({ request }) => {
+    const url = new URL(request.url);
+
+    const getUser = url.searchParams.get("query");
+
+    if (!getUser) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    return HttpResponse.json([
+      {
+        id: 1,
+        first_name: "preslaw1",
+        last_name: "preslaw1",
+        username: "preslaw1",
+      },
+    ]);
+  }),
 ];
