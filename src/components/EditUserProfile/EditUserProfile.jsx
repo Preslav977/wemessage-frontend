@@ -1,19 +1,18 @@
 import styles from "./EditUserProfile.module.css";
+
+import { useContext, useState, useRef } from "react";
+
+import { useNavigate, Link } from "react-router-dom";
+
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
-import { ProfilePictureContext } from "../../contexts/UserRegistrationContext";
+
 import {
   FirstNameContext,
   LastNameContext,
   UserNameContext,
   BioContext,
+  ProfilePictureContext,
 } from "../../contexts/UserRegistrationContext";
-import { useContext, useState } from "react";
-
-import { useNavigate } from "react-router-dom";
-
-import { useRef } from "react";
-
-import { PopUpModalContext } from "../../contexts/PopUpModalContext";
 
 function EditUserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
@@ -36,11 +35,9 @@ function EditUserProfile() {
 
   const [usernameError, setUsernameError] = useState("");
 
-  const [popUpModal, setPopUpModal] = useContext(PopUpModalContext);
+  const hideSendBtnRef = useRef(null);
 
   const navigate = useNavigate();
-
-  const sendBtnRef = useRef(null);
 
   async function changeProfileImage(e) {
     e.preventDefault();
@@ -77,8 +74,8 @@ function EditUserProfile() {
 
       setUserLogInObj(userLoggedInInformation);
 
-      if (sendBtnRef.current.style.display === "block") {
-        sendBtnRef.current.style.display = "none";
+      if (hideSendBtnRef.current.style.display === "block") {
+        hideSendBtnRef.current.style.display = "none";
       }
     } catch (err) {
       console.log(err);
@@ -161,15 +158,27 @@ function EditUserProfile() {
   }
 
   function showSendBtn() {
-    if (sendBtnRef.current.style.display === "none") {
-      sendBtnRef.current.style.display = "block";
+    if (hideSendBtnRef.current.style.display === "none") {
+      hideSendBtnRef.current.style.display = "block";
     }
   }
 
   return (
     <div className={styles.sectionWrapper}>
+      <Link
+        className={styles.userProfileAnchor}
+        to={`/profile/${userLogInObj.id}`}
+      >
+        <img
+          className={styles.useProfileAnchorImg}
+          src="/back-arrow.svg"
+          alt="go back to user profile"
+        />
+      </Link>
+      <hr />
+
       <div className={styles.changeProfilePictureContainer}>
-        <h3>Profile Picture</h3>
+        <h4>Profile Picture</h4>
         <form
           className={styles.formChangeProfilePicture}
           onSubmit={changeProfileImage}
@@ -195,7 +204,7 @@ function EditUserProfile() {
               style={{
                 display: "none",
               }}
-              ref={sendBtnRef}
+              ref={hideSendBtnRef}
               className={styles.submitProfilePicture}
               type="submit"
             >
@@ -307,7 +316,7 @@ function EditUserProfile() {
               onChange={(e) => setBio(e.target.value)}
               minLength={1}
               maxLength={150}
-              rows={12}
+              rows={14}
               name="bio"
               id="bio"
               data-testid="bio"

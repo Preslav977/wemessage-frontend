@@ -3,12 +3,10 @@ import { Link } from "react-router-dom";
 
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function ManageUserProfile() {
   const [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
-
-  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -22,13 +20,13 @@ function ManageUserProfile() {
             alt="go to previous page"
           />
         </Link>
-        <h2>User Profile</h2>
+        <h2 className={styles.userProfileHeader}>User Profile</h2>
       </nav>
     );
   } else {
     return (
       <>
-        <h2>Manage Profile</h2>
+        <h3 className={styles.manageProfileHeader}>Manage Profile</h3>
         <nav>
           <ul className={styles.ulFlexedLiContainer}>
             <li className={styles.liFlexedContent}>

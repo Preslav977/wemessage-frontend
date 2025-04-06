@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import { UserContext } from "../../../contexts/UsersContext";
+import { UsersContext } from "../../../contexts/UsersContext";
 import { useEffect } from "react";
 
 const useFetchUsersURL = () => {
-  const [users, setUsers] = useContext(UserContext);
+  const [users, setUsers] = useContext(UsersContext);
 
   const [error, setError] = useState(null);
 

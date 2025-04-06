@@ -1,11 +1,13 @@
 import styles from "./UpdateUserPasswords.module.css";
 
+import { Link } from "react-router-dom";
+
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { PasswordContext } from "../../contexts/UserRegistrationContext";
 import { useState, useContext } from "react";
 import { passwordRegex } from "../../utility/passwordRegex";
-import { PopUpModalContext } from "../../contexts/PopUpModalContext";
 import { useNavigate } from "react-router-dom";
+
 import PopUpModal from "../PopUpModal/PopUpModal";
 
 function UpdateUserPasswords() {
@@ -19,7 +21,8 @@ function UpdateUserPasswords() {
 
   const [oldPasswordErr, setOldPasswordErr] = useState("");
 
-  const [popUpModal, setPopUpModal] = useContext(PopUpModalContext);
+  const [showPopUpModalUpdatedPasswords, setShowPopUpModalUpdatedPasswords] =
+    useState(false);
 
   const navigate = useNavigate();
 
@@ -69,10 +72,11 @@ function UpdateUserPasswords() {
         setPassword("");
         setConfirmPassword("");
 
-        setPopUpModal(true);
+        showPopUpModalUpdatedPasswords(true);
 
+        //reset the state in order to popup the modal again
         setTimeout(() => {
-          setPopUpModal(false);
+          setShowPopUpModalUpdatedPasswords(false);
         }, 3000);
       }
 
@@ -91,8 +95,19 @@ function UpdateUserPasswords() {
 
   return (
     <form onSubmit={userUserPasswords} className={styles.sectionWrapper}>
+      <Link
+        className={styles.userProfileAnchor}
+        to={`/profile/${userLogInObj.id}`}
+      >
+        <img
+          className={styles.useProfileAnchorImg}
+          src="/back-arrow.svg"
+          alt="go back to user profile"
+        />
+      </Link>
+      <hr />
       <header>
-        <h3>Change Passwords</h3>
+        <h5>Change Passwords</h5>
         <button type="submit">Save</button>
       </header>
       <hr />
@@ -149,7 +164,7 @@ function UpdateUserPasswords() {
           <span className={styles.error}>Passwords must match</span>
         )}
       </div>
-      {popUpModal && (
+      {showPopUpModalUpdatedPasswords && (
         <PopUpModal
           popUpModalBackgroundColor={"white"}
           popUpModalContentColor={"black"}

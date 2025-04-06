@@ -1,27 +1,167 @@
 import styles from "./MainGridInterface.module.css";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { UserLoggedInContext } from "../../contexts/UserLoggedInContext";
-import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
-import { useContext } from "react";
 
 import { globalChatId } from "../../utility/globalChatId";
 
-function MainGridInterface({ leftGridComponent, rightGridComponent }) {
+import { UserLoggedInContext } from "../../contexts/UserLoggedInContext";
+import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
+import { useContext, useEffect, useState } from "react";
+
+function MainGridInterface({
+  leftGridComponent,
+  rightGridComponent,
+  currentPath,
+}) {
   const [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
   const [isUserLoggedIn, setIsUserLoggedIn] = useContext(UserLoggedInContext);
 
-  function logout() {
+  const [mainGridInterfaceStyles, setMainGridInterfaceStyles] = useState([
+    styles.mainGridContainer,
+  ]);
+
+  const useDeviceSize = () => {
+    const [width, setWidth] = useState(0);
+
+    const handleWindowSize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    useEffect(() => {
+      handleWindowSize();
+
+      window.addEventListener("resize", handleWindowSize);
+
+      return () => window.removeEventListener("resize", handleWindowSize);
+    }, []);
+
+    return [width];
+  };
+
+  function userLogOut() {
     setIsUserLoggedIn(false);
 
     localStorage.clear();
   }
 
+  const [width] = useDeviceSize();
+
+  console.log(width);
+
+  if (currentPath === "/chats") {
+    console.log("You are currently on /chats path");
+  } else {
+    console.log(`You are not on /chats path, ${currentPath}`);
+  }
+
   return (
-    <main className={styles.mainGridContainer}>
-      <aside className={styles.asideMainNavigationContainer}>
-        <nav className={styles.mainNavigation}>
+    <>
+      <main className={styles.mainGridContainer}>
+        <aside
+          style={{
+            display: width <= 640 ? "none" : "block",
+          }}
+          className={styles.asideMainNavigationContainer}
+        >
+          <nav className={styles.mainNavigation}>
+            <ul className={styles.ulLinkContainer}>
+              <li className={styles.liFlexedImgAnchorContainer}>
+                <Link
+                  data-testid="global_chat"
+                  className={styles.anchorFlexedImgContainer}
+                  to={`/globalChat/${globalChatId}`}
+                >
+                  <img
+                    className={styles.mainNavigationSvg}
+                    src="/global_chat.svg"
+                    alt="global chat"
+                  />
+                  <span className={styles.anchorFlexedSpan}>Global</span>
+                </Link>
+              </li>
+              <li className={styles.liFlexedImgAnchorContainer}>
+                <Link
+                  data-testid="chats"
+                  className={styles.anchorFlexedImgContainer}
+                  to="/chats"
+                >
+                  <img
+                    className={styles.mainNavigationSvg}
+                    src="/chats.svg"
+                    alt="chats (conversations)"
+                  />
+                  <span className={styles.anchorFlexedSpan}>Chats</span>
+                </Link>
+              </li>
+              <li className={styles.liFlexedImgAnchorContainer}>
+                <Link
+                  data-testid="groups"
+                  className={styles.anchorFlexedImgContainer}
+                  to="/groups"
+                >
+                  <img
+                    className={styles.mainNavigationSvg}
+                    src="/groups.svg"
+                    alt="groups"
+                  />
+                  <span className={styles.anchorFlexedSpan}>Groups</span>
+                </Link>
+              </li>
+            </ul>
+            <ul>
+              <li className={styles.liFlexedImgAnchorContainer}>
+                <Link
+                  data-testid="profile"
+                  className={styles.anchorFlexedImgContainer}
+                  to={`/profile/${userLogInObj.id}`}
+                >
+                  <img
+                    className={styles.mainNavigationSvg}
+                    src="/profile.svg"
+                    alt="user profile"
+                  />
+                  <span className={styles.anchorFlexedSpan}>Profile</span>
+                </Link>
+              </li>
+              <li
+                onClick={userLogOut}
+                className={styles.liFlexedImgAnchorContainer}
+              >
+                <Link
+                  data-testid="logout"
+                  className={styles.anchorFlexedImgContainer}
+                  to="/login"
+                >
+                  <img
+                    className={styles.mainNavigationSvg}
+                    src="/logout.svg"
+                    alt="user logout"
+                  />
+                  <span className={styles.anchorFlexedSpan}>Logout</span>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </aside>
+        <section
+          style={{
+            display:
+              currentPath === "/chats" ||
+              (currentPath !== "/chats" && width >= 640)
+                ? "block"
+                : "none",
+          }}
+          className={styles.mainGridSection}
+        >
+          {leftGridComponent}
+        </section>
+        <section className={styles.secondaryGridSection}>
+          {rightGridComponent}
+        </section>
+      </main>
+      <footer className={styles.footerMobileNavigation}>
+        <nav>
           <ul className={styles.ulLinkContainer}>
             <li className={styles.liFlexedImgAnchorContainer}>
               <Link
@@ -34,7 +174,6 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
                   src="/global_chat.svg"
                   alt="global chat"
                 />
-                Global
               </Link>
             </li>
             <li className={styles.liFlexedImgAnchorContainer}>
@@ -48,7 +187,6 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
                   src="/chats.svg"
                   alt="chats (conversations)"
                 />
-                Chats
               </Link>
             </li>
             <li className={styles.liFlexedImgAnchorContainer}>
@@ -62,11 +200,8 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
                   src="/groups.svg"
                   alt="groups"
                 />
-                Groups
               </Link>
             </li>
-          </ul>
-          <ul>
             <li className={styles.liFlexedImgAnchorContainer}>
               <Link
                 data-testid="profile"
@@ -76,12 +211,14 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
                 <img
                   className={styles.mainNavigationSvg}
                   src="/profile.svg"
-                  alt="profile"
+                  alt="user profile"
                 />
-                Profile
               </Link>
             </li>
-            <li onClick={logout} className={styles.liFlexedImgAnchorContainer}>
+            <li
+              onClick={userLogOut}
+              className={styles.liFlexedImgAnchorContainer}
+            >
               <Link
                 data-testid="logout"
                 className={styles.anchorFlexedImgContainer}
@@ -90,19 +227,14 @@ function MainGridInterface({ leftGridComponent, rightGridComponent }) {
                 <img
                   className={styles.mainNavigationSvg}
                   src="/logout.svg"
-                  alt="logout"
+                  alt="user logout"
                 />
-                Logout
               </Link>
             </li>
           </ul>
         </nav>
-      </aside>
-      <section className={styles.mainGridSection}>{leftGridComponent}</section>
-      <section className={styles.secondaryGridSection}>
-        {rightGridComponent}
-      </section>
-    </main>
+      </footer>
+    </>
   );
 }
 

@@ -6,11 +6,6 @@
   flex-direction: column;
   justify-content: center;
   padding: 1.5rem;
-  position: relative;
-}
-
-.formContainer {
-  width: 100%;
 }
 
 .formContainerHeader {
@@ -33,6 +28,15 @@
   font-size: 1.75rem;
 }
 
+.formFlexedContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.formContainer {
+  width: 100%;
+}
+
 .formContainer input {
   padding: 0.15rem 0;
 }
@@ -44,9 +48,10 @@
   width: 100%;
 }
 
-.formFlexedContainer {
-  display: flex;
-  gap: 0.5rem;
+.error {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: crimson;
 }
 
 .signUpAnchorLink {
@@ -67,6 +72,11 @@
   transition: opacity 1s ease-in-out;
 }
 
+.submitBtn:hover {
+  cursor: pointer;
+  opacity: 0.75;
+}
+
 .formRightSideFlexedContainer {
   max-width: 300px;
   margin-left: 3em;
@@ -75,11 +85,6 @@
 .formRightSideFlexedImage {
   max-width: 100%;
   border-radius: 50%;
-}
-
-.submitBtn:hover {
-  cursor: pointer;
-  opacity: 0.75;
 }
 
 @media screen and (max-width: 1000px) {
@@ -91,10 +96,4 @@
     max-width: 400px;
     margin: 0 auto;
   }
-}
-
-.error {
-  margin-top: 0.3rem;
-  font-size: 0.8rem;
-  color: crimson;
 }

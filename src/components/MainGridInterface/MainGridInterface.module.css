@@ -1,5 +1,4 @@
 .mainGridContainer {
-  outline: 2px solid black;
   display: grid;
   grid-template-columns: 150px 300px 1fr;
   min-height: 100vh;
@@ -10,21 +9,6 @@
 
 .asideMainNavigationContainer {
   background-color: aquamarine;
-}
-
-.mainGridSection {
-  background-color: beige;
-  /* outline: 2px solid bisque; */
-  padding: 1em;
-  outline: 2px solid black;
-}
-
-.secondaryGridSection {
-  background-color: blanchedalmond;
-  padding: 1em;
-  /* outline: 2px solid black; */
-  display: flex;
-  flex-direction: column;
 }
 
 .mainNavigation {
@@ -48,13 +32,67 @@
   background-color: blue;
 }
 
-.mainNavigationSvg {
-  max-width: 30px;
-}
-
 .anchorFlexedImgContainer {
   /* outline: 2px solid black; */
   display: flex;
   align-items: center;
   gap: 0.5em;
+}
+
+.mainNavigationSvg {
+  max-width: 30px;
+}
+
+.mainGridSection {
+  background-color: beige;
+  /* outline: 2px solid bisque; */
+  padding: 1em;
+  /* outline: 2px solid black; */
+}
+
+.secondaryGridSection {
+  background-color: blanchedalmond;
+  padding: 1em;
+  /* outline: 2px solid black; */
+  display: flex;
+  flex-direction: column;
+}
+
+.footerMobileNavigation {
+  display: none;
+}
+
+@media screen and (max-width: 1000px) {
+  .mainGridContainer {
+    display: grid;
+    grid-template-columns: 60px 300px 1fr;
+  }
+
+  .anchorFlexedSpan {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .mainGridContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  /* .asideMainNavigationContainer,
+  .mainGridSection {
+    display: none;
+  } */
+
+  .footerMobileNavigation {
+    display: block;
+    outline: 2px solid black;
+    background-color: black;
+  }
+
+  .ulLinkContainer {
+    display: flex;
+    justify-content: space-around;
+  }
 }

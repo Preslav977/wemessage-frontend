@@ -4,4 +4,4 @@ export const GroupsContext = createContext(null);
 
 export const GroupDetailsContext = createContext(null);
 
-export const GroupFriendsContext = createContext(null);
+export const GroupMembersContext = createContext(null);

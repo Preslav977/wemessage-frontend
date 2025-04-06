@@ -8,10 +8,6 @@
   padding: 1.5rem;
 }
 
-.formContainer {
-  width: 100%;
-}
-
 .formContainerHeader {
   display: flex;
   align-items: center;
@@ -27,6 +23,14 @@
   font-size: 1.25rem;
 }
 
+.formContainer {
+  width: 100%;
+}
+
+.formContainer input {
+  padding: 0.15rem 0;
+}
+
 .formHeader {
   margin-bottom: 0.8rem;
   font-size: 1.75rem;
@@ -35,10 +39,7 @@
 .formFlexedContainer {
   display: flex;
   justify-content: space-between;
-}
-
-.formContainer input {
-  padding: 0.15rem 0;
+  gap: 0.5rem;
 }
 
 .formContent {
@@ -48,9 +49,10 @@
   width: 100%;
 }
 
-.formFlexedContainer {
-  display: flex;
-  gap: 0.5rem;
+.error {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: crimson;
 }
 
 .loginAnchorLink {
@@ -67,6 +69,11 @@
   transition: opacity 1s ease-in-out;
 }
 
+.submitBtn:hover {
+  cursor: pointer;
+  opacity: 0.75;
+}
+
 .formRightSideFlexedContainer {
   max-width: 300px;
   margin-left: 3em;
@@ -77,24 +84,19 @@
   border-radius: 50%;
 }
 
-.submitBtn:hover {
-  cursor: pointer;
-  opacity: 0.75;
-}
-
 @media screen and (max-width: 1000px) {
+  .formContainerWrapper {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
   .formRightSideFlexedContainer {
     display: none;
   }
-
-  .formContainerWrapper {
-    max-width: 500px;
-    margin: 0 auto;
-  }
 }
 
-.error {
-  margin-top: 0.3rem;
-  font-size: 0.8rem;
-  color: crimson;
+@media screen and (max-width: 400px) {
+  .formFlexedContainer {
+    display: block;
+  }
 }

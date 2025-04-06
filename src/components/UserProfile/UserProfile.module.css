@@ -101,10 +101,61 @@
 
 .usersBioParagraph {
   margin-top: 1rem;
+  /* outline: 2px solid black; */
+  overflow-wrap: anywhere;
+  max-width: 50%;
+  padding: 0.8rem;
 }
 
-.editProfileAnchor {
+.editProfileAnchor,
+.updatePasswordsAnchor {
   padding: 0.5rem 0.8rem;
   border-radius: 0.3rem;
   background-color: white;
+}
+
+.updatePasswordsAnchor {
+  display: none;
+}
+
+@media screen and (max-width: 760px) {
+  .userCredentials {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5em;
+  }
+
+  .changeBgImgContainer {
+    position: absolute;
+    right: 10px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .updatePasswordsAnchor {
+    display: block;
+  }
+
+  .ulProfileAndPasswordsAnchorContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .editProfileAnchor,
+  .updatePasswordsAnchor {
+    padding: 0.5rem 0.6rem;
+    border-radius: 0.3rem;
+    background-color: white;
+  }
+
+  .ulProfileAndPasswordsAnchorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1em;
+  }
 }

@@ -1,10 +1,13 @@
 import styles from "./LogInForm.module.css";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useContext, useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import {
+  guestUsername,
+  guestPassword,
+} from "../../utility/guestUserCredentials";
 
 import {
   UserNameContext,
@@ -16,16 +19,7 @@ import {
   UserLoggedInContext,
 } from "../../contexts/UserLoggedInContext";
 
-import { PopUpModalContext } from "../../contexts/PopUpModalContext";
-
 import PopUpModal from "../PopUpModal/PopUpModal";
-
-import {
-  guestUsername,
-  guestPassword,
-} from "../../utility/guestUserCredentials";
-
-import fetchAPIURL from "../../utility/fetchAPIURL";
 
 function LogInForm() {
   const { username, setUsername } = useContext(UserNameContext);
@@ -40,7 +34,7 @@ function LogInForm() {
 
   const [loading, setLoading] = useState(false);
 
-  const [popUpModal, setPopUpModal] = useContext(PopUpModalContext);
+  const [popUpModal, setPopUpModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -123,11 +117,6 @@ function LogInForm() {
         }),
       });
 
-      // if (response.status === 200) {
-      //   setUsername("");
-      //   setPassword("");
-      // }
-
       const result = await response.json();
 
       const bearerToken = `Bearer ${result.token}`;
@@ -174,7 +163,7 @@ function LogInForm() {
           <img
             className={styles.formHeaderImage}
             src="/wemessage_logo.jpg"
-            alt="wemessage"
+            alt="wemessage logo"
           />
           <p className={styles.formHeaderName}>Wemessage</p>
         </div>
@@ -250,7 +239,7 @@ function LogInForm() {
             <img
               className={styles.formRightSideFlexedImage}
               src="/wemessage_logo.jpg"
-              alt="wemessage"
+              alt="wemessage logo"
             />
           </div>
         </div>

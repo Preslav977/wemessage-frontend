@@ -1,16 +1,14 @@
 import styles from "./UserProfile.module.css";
 
+import { useContext, useState, useRef } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { BackgroundPictureContext } from "../../contexts/UserRegistrationContext";
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import PopUpModal from "../PopUpModal/PopUpModal";
-import { useRef } from "react";
-import { PopUpModalContext } from "../../contexts/PopUpModalContext";
-import { useParams } from "react-router-dom";
+import { GroupMembersContext } from "../../contexts/GroupsContext";
+
 import useFetchSingleUserURL from "../api/custom hooks/useFetchSingleUserURL";
-import { GroupFriendsContext } from "../../contexts/GroupsContext";
-import { useNavigate } from "react-router-dom";
+import PopUpModal from "../PopUpModal/PopUpModal";
 
 function UserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
@@ -19,17 +17,19 @@ function UserProfile() {
     BackgroundPictureContext,
   );
 
-  const [showModalOnSuccess, setShowModalOnSuccess] = useState(false);
+  const [showPopModalBackgroundPicture, setShowPopModalBackgroundPicture] =
+    useState(false);
 
-  const [popUpModal, setPopUpModal] = useContext(PopUpModalContext);
-
-  const saveBtnRef = useRef(null);
-
-  const { id } = useParams();
+  const [showPopUpModalProfileUpdate, setShowPopUpModalProfileUpdate] =
+    useState(false);
 
   const { userGetById } = useFetchSingleUserURL();
 
-  const [groupFriends, setGroupFriends] = useContext(GroupFriendsContext);
+  const [groupMembers, setGroupMembers] = useContext(GroupMembersContext);
+
+  const hideSaveBtnRef = useRef(null);
+
+  const { id } = useParams();
 
   const navigate = useNavigate();
 
@@ -60,11 +60,12 @@ function UserProfile() {
       );
 
       if (response.status === 200) {
-        setShowModalOnSuccess(true);
+        setShowPopModalBackgroundPicture(true);
 
+        //reset the state in order to popup the modal again
         setTimeout(() => {
-          setShowModalOnSuccess(false);
-          setPopUpModal(false);
+          setShowPopModalBackgroundPicture(false);
+          setShowPopUpModalProfileUpdate(false);
         }, 3000);
       }
 
@@ -77,8 +78,8 @@ function UserProfile() {
 
       setUserLogInObj(userLoggedInInformation);
 
-      if (saveBtnRef.current.style.display === "block") {
-        saveBtnRef.current.style.display = "none";
+      if (hideSaveBtnRef.current.style.display === "block") {
+        hideSaveBtnRef.current.style.display = "none";
       }
     } catch (err) {
       console.log(err);
@@ -105,22 +106,22 @@ function UserProfile() {
 
       // console.log(result);
 
-      setGroupFriends([...groupFriends, result.receiverChat]);
+      //add the person who you had chat with in this state
+      setGroupMembers([...groupMembers, result.receiverChat]);
 
       navigate(`/chats/${result.id}`);
-
-      console.log("Started a conversation");
     } catch (err) {
       console.log(err);
     }
   }
 
   function showSaveBtn() {
-    if (saveBtnRef.current.style.display === "none") {
-      saveBtnRef.current.style.display = "block";
+    if (hideSaveBtnRef.current.style.display === "none") {
+      hideSaveBtnRef.current.style.display = "block";
     }
   }
 
+  //if the logged user doesn't represent the ID render the other user profile
   if (userLogInObj.id !== Number(id)) {
     return (
       <>
@@ -129,7 +130,7 @@ function UserProfile() {
             <img
               className={styles.userBgImg}
               src="/default_users_bg_picture.jpg"
-              alt="default user background picture"
+              alt="user default background picture"
             />
           ) : (
             <img
@@ -189,7 +190,7 @@ function UserProfile() {
           <img
             className={styles.userBgImg}
             src="/default_users_bg_picture.jpg"
-            alt="default user background picture"
+            alt="user default background picture"
           />
         ) : (
           <img
@@ -234,7 +235,7 @@ function UserProfile() {
               }}
               className={styles.changeBgImgBtn}
               type="submit"
-              ref={saveBtnRef}
+              ref={hideSaveBtnRef}
             >
               Save
             </button>
@@ -265,18 +266,30 @@ function UserProfile() {
             {userLogInObj.first_name} {userLogInObj.last_name}
           </p>
           <p>@{userLogInObj.username}</p>
-          <p className={styles.usersBioParagraph}>{userLogInObj.bio}</p>
         </div>
-        <li>
-          <Link
-            className={styles.editProfileAnchor}
-            to={`/profile/edit/${userLogInObj.id}`}
-          >
-            Edit Profile
-          </Link>
-        </li>
+        <ul className={styles.ulProfileAndPasswordsAnchorContainer}>
+          <li>
+            <Link
+              className={styles.editProfileAnchor}
+              to={`/profile/edit/${userLogInObj.id}`}
+            >
+              Edit Profile
+            </Link>
+          </li>
+          <li>
+            <Link
+              className={styles.updatePasswordsAnchor}
+              to={`/profile/change_passwords/${userLogInObj.id}`}
+            >
+              Change Passwords
+            </Link>
+          </li>
+        </ul>
       </div>
-      {popUpModal && (
+      <div className={styles.usersBioParagraph}>
+        <p>{userLogInObj.bio}</p>
+      </div>
+      {showPopUpModalProfileUpdate && (
         <PopUpModal
           popUpModalBackgroundColor={"white"}
           popUpModalContentColor={"black"}
@@ -285,7 +298,7 @@ function UserProfile() {
           popUpModalContentText={"Your profile has been updated successfully"}
         />
       )}
-      {showModalOnSuccess && (
+      {showPopModalBackgroundPicture && (
         <PopUpModal
           popUpModalBackgroundColor={"white"}
           popUpModalContentColor={"black"}

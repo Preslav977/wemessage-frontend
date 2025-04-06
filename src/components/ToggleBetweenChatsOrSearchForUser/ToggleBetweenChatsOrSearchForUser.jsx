@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import FetchAndSearchForUsers from "../api/FetchAndSearchForUsers";
-import { UserContext } from "../../contexts/UsersContext";
+import { UsersContext } from "../../contexts/UsersContext";
 import RenderAllChats from "../RenderAllChats/RenderAllChats";
 
 function ToggleBetweenChatsOrSearchForUser({ renderChatsOrGlobalChat }) {
-  const [users, setUsers] = useContext(UserContext);
+  const [users, setUsers] = useContext(UsersContext);
 
   const [toggleBetweenChatAndUsers, setToggleBetweenChatAndUsers] =
     useState(false);
