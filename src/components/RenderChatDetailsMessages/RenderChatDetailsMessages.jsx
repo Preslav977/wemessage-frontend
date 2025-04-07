@@ -1,30 +1,42 @@
 import styles from "./RenderChatDetailsMessages.module.css";
-import useFetchSingleChatURL from "../api/custom hooks/useFetchSingleChatURL";
 import { Link } from "react-router-dom";
-import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, Fragment } from "react";
 import PropTypes from "prop-types";
+import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
+import useFetchSingleChatURL from "../api/custom hooks/useFetchSingleChatURL";
 import { format } from "date-fns";
 
-function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
+function RenderChatDetailsMessages() {
   const { chatDetails, setChatDetails, error, loading } =
     useFetchSingleChatURL();
 
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
+  // this state will be used a condition to send a message or image in the form
   const [sendAMessageState, setSendAMessageState] = useState("");
 
+  //this state will selected the clicked message in the array
   const [editTheSelectedMessage, setEditTheSelectedMessage] = useState();
 
-  const dropDownFormRef = useRef(null);
+  //this will show or hide the drop-down menu
+  const dropDownMenuRef = useRef(null);
 
-  const [showDropDownMenuMessage, setShowDropDownMenuMessage] = useState(false);
+  //this state will render the drop-down menu when is true
+  const [showDropDownMenu, setShowDropDownMenu] = useState(false);
 
-  const [showDropDownMessageForm, setShowDropDownMessageForm] = useState(false);
+  //this state will render the input or textarea to edit the message
+  const [showDropDownFormOnMessage, setShowDropDownFormOnMessage] =
+    useState(false);
 
   const [clickedMessage, setClickedMessage] = useState();
 
-  const formRef = useRef(null);
+  if (loading) {
+    return <img src="./loading_spinner.svg" alt="Loading..." />;
+  }
+
+  if (error) {
+    return <p>Failed to fetch chat details!</p>;
+  }
 
   async function sendMessageInChat(e) {
     e.preventDefault();
@@ -32,6 +44,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
     const formData = new FormData(e.target);
 
     const getMessageTextFormData = formData.get("message_text");
+
+    setSendAMessageState("");
 
     try {
       const response = await fetch(
@@ -58,8 +72,6 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
         messages: result.messages,
       };
 
-      formRef.current.reset();
-
       console.log(chatDetails);
 
       setChatDetails(sendMessageObj);
@@ -76,6 +88,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
     formData.append("senderMessageId", userLogInObj.id);
 
     formData.append("receiverId", chatDetails.receiverChat.id);
+
+    setSendAMessageState("");
 
     try {
       const response = await fetch(
@@ -104,11 +118,16 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
     }
   }
 
+  //function that gets the current clicked message
+  //then renders the drop-down menu
+  //edits the message and hides the drop-down
   function toggleMessageDropDown(message) {
     setClickedMessage(message.id);
-    setShowDropDownMenuMessage(true);
+    setShowDropDownMenu(true);
     setEditTheSelectedMessage(message.message_text);
 
+    //since the state is undefined check if is not
+    //then get the messageID
     if (clickedMessage !== undefined) {
       setClickedMessage(message.id);
     }
@@ -117,15 +136,17 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
   async function showEditMessageForm(e) {
     e.preventDefault();
 
-    setShowDropDownMenuMessage(false);
+    setShowDropDownMenu(false);
 
-    setShowDropDownMessageForm(true);
+    setShowDropDownFormOnMessage(true);
 
     const formData = new FormData(e.target);
 
     const getMessageTextFormData = formData.get("message_text");
 
     console.log(getMessageTextFormData);
+
+    setSendAMessageState("");
 
     try {
       const response = await fetch(
@@ -157,7 +178,7 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
 
       setChatDetails(editAMessage);
 
-      setShowDropDownMessageForm(false);
+      setShowDropDownFormOnMessage(false);
     } catch (err) {
       console.log(err);
     }
@@ -201,17 +222,9 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
     }
   }
 
-  if (loading) {
-    return <img src="./loading_spinner.svg" alt="Loading..." />;
-  }
-
-  if (error) {
-    return <p>A network error was encountered</p>;
-  }
-
-  if (!renderChatsOrChatDetails) {
+  if (chatDetails === null) {
     return <h5>Chats</h5>;
-  } else if (renderChatsOrChatDetails && chatDetails !== null) {
+  } else {
     return (
       <div className={styles.chatMessagesDetailsContainer}>
         <header className={styles.chatMessageDetailsHeader}>
@@ -223,7 +236,7 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
               <img
                 className={styles.chatDetailsUserProfilePicture}
                 src="/default_users_pfp.jpg"
-                alt="default user profile picture"
+                alt="user default profile picture"
               />
             ) : (
               <img
@@ -238,20 +251,19 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
             </h6>
           </Link>
         </header>
-        <div className={styles.chatMessageDetailsTopHr}>
-          <hr />
-        </div>
+
         {chatDetails.messages.length === 0 ? (
           <div className={styles.chatNoMessagesContainer}>
             <p>Start a conversation, say Hi!</p>
           </div>
         ) : (
-          <div className={styles.chatDetailsMessagesContainer}>
+          <ul className={styles.chatDetailsMessagesContainer}>
             {chatDetails.messages.map((message) => (
-              <>
+              <Fragment key={message.id}>
+                {/* if the messageId equal the loggedIn userId render the message of that user  */}
                 {message.senderMessageId === userLogInObj.id ? (
-                  <ul
-                    key={message.id}
+                  <li
+                    // key={message.id}
                     className={styles.chatDetailsUserMessage}
                   >
                     {message.message_text ? (
@@ -262,13 +274,13 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                           src="/three_dots.svg"
                           alt="message drop-down menu"
                         />
-                        {showDropDownMessageForm &&
+                        {showDropDownFormOnMessage &&
                         message.id === clickedMessage ? (
                           <form
                             style={{
                               display: "block",
                             }}
-                            ref={dropDownFormRef}
+                            ref={dropDownMenuRef}
                             onSubmit={showEditMessageForm}
                           >
                             <input
@@ -282,8 +294,8 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                             />
                             <button
                               onClick={() => {
-                                setShowDropDownMenuMessage(false);
-                                setShowDropDownMessageForm(false);
+                                setShowDropDownMenu(false);
+                                setShowDropDownFormOnMessage(false);
                               }}
                             >
                               Cancel
@@ -298,14 +310,14 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                             {message.message_text}
                           </li>
                         )}
-                        {showDropDownMenuMessage ? (
+                        {showDropDownMenu ? (
                           <div
                             className={styles.chatDetailsDropDownMenuButtons}
                           >
                             <button
                               onClick={() => {
-                                setShowDropDownMessageForm(true);
-                                setShowDropDownMenuMessage(false);
+                                setShowDropDownFormOnMessage(true);
+                                setShowDropDownMenu(false);
                               }}
                               style={{
                                 display:
@@ -361,52 +373,55 @@ function RenderChatDetailsMessages({ renderChatsOrChatDetails }) {
                         )}
                       </>
                     )}
-                  </ul>
+                  </li>
                 ) : (
                   <>
                     <div
                       className={styles.chatReceiverSendingMessagesContainer}
                     >
                       <div className={styles.chatDetailsUserUsername}>
-                        <p>{"@" + chatDetails.receiverChat.username}</p>
+                        <p>{"@" + chatDetails.senderChat.username}</p>
                       </div>
                       <div className={styles.chatDetailsReceiverUserMessages}>
-                        <Link to={`/profile/${chatDetails.receiverChat.id}`}>
-                          {chatDetails.receiverChat.profile_picture === "" ? (
+                        <Link to={`/profile/${chatDetails.senderChat.id}`}>
+                          {chatDetails.senderChat.profile_picture === "" ? (
                             <img
                               className={
                                 styles.chatDetailsUserDefaultProfilePicture
                               }
                               src="/default_users_pfp.jpg"
-                              alt="default user profile picture"
+                              alt="user default profile picture"
                             />
                           ) : (
                             <img
-                              src={chatDetails.receiverChat.profile_picture}
+                              src={chatDetails.senderChat.profile_picture}
                               alt="user profile picture"
                             />
                           )}
                         </Link>
-                        <p
-                          key={message.id}
-                          className={styles.chatDetailsSendMessage}
-                        >
-                          {message.message_text}
-                        </p>
+                        {message.message_text ? (
+                          <li className={styles.chatDetailsSendMessage}>
+                            {message.message_text}
+                          </li>
+                        ) : (
+                          <img
+                            className={styles.chatDetailsSendImage}
+                            src={message.message_imageURL}
+                          />
+                        )}
                       </div>
                     </div>
                   </>
                 )}
-              </>
+              </Fragment>
             ))}
-          </div>
+          </ul>
         )}
-        <div className={styles.chatMessageDetailsBottomHr}>
+        {/* <div className={styles.chatMessageDetailsBottomHr}>
           <hr />
-        </div>
+        </div> */}
         <div className={styles.chatDetailsSendMessageOrImageContainer}>
           <form
-            ref={formRef}
             encType="multipart/form"
             onSubmit={
               sendAMessageState !== "" ? sendMessageInChat : sendImageInChat

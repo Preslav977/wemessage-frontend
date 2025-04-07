@@ -1,10 +1,9 @@
 import styles from "./RenderGroupDetailsMessages.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState, useRef, Fragment } from "react";
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
-import { useContext, useState, useRef } from "react";
 import useFetchSingleGroupURL from "../api/custom hooks/useFetchSingleGroupURL";
 import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
 
 function RenderGroupDetailsMessages() {
   const { groupDetails, setGroupDetails, loading, error } =
@@ -14,21 +13,26 @@ function RenderGroupDetailsMessages() {
 
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
+  // this state will be used a condition to send a message or image in the form
   const [sendAGroupMessageState, setSendAGroupMessageState] = useState("");
 
+  //this state will selected the clicked message in the array
   const [editTheSelectedGroupMessage, setEditTheSelectedGroupMessage] =
     useState();
 
+  //this will show or hide the drop-down menu
   const dropDownFormRef = useRef(null);
 
-  const [showDropDownMenuGroupMessage, setShowDropDownMenuGroupMessage] =
-    useState(false);
+  //this state will render the drop-down menu when is true
+  const [showDropDownMenu, setShowDropDownMenu] = useState(false);
 
-  const [showDropDownGroupMessageForm, setShowDropDownGroupMessageForm] =
+  //this state will render the input or textarea to edit the message
+  const [showDropDownFormOMessage, setShowDropDownFormOMessage] =
     useState(false);
 
   const [clickedGroupMessage, setClickedGroupMessage] = useState();
 
+  //this state will render the input with the group name
   const [showDropDownMenuGroupName, setShowDropDownMenuGroupName] =
     useState(false);
 
@@ -41,7 +45,7 @@ function RenderGroupDetailsMessages() {
   }
 
   if (error) {
-    return <p>A network error was encountered</p>;
+    return <p>Failed to fetch groups details!</p>;
   }
 
   async function sendMessageInGroup(e) {
@@ -50,6 +54,8 @@ function RenderGroupDetailsMessages() {
     const formData = new FormData(e.target);
 
     const getMessageTextFormData = formData.get("message_text");
+
+    setSendAGroupMessageState("");
 
     try {
       const response = await fetch(
@@ -87,6 +93,8 @@ function RenderGroupDetailsMessages() {
 
     const formData = new FormData(e.target);
 
+    setSendAGroupMessageState("");
+
     try {
       const response = await fetch(
         `http://localhost:5000/groups/${groupDetails.id}/image`,
@@ -114,11 +122,16 @@ function RenderGroupDetailsMessages() {
     }
   }
 
+  //function that gets the current clicked message
+  //then renders the drop-down menu
+  //edits the message and hides the drop-down
   function toggleMessageDropDown(message) {
     setClickedGroupMessage(message.id);
-    setShowDropDownMenuGroupMessage(true);
+    setShowDropDownMenu(true);
     setEditTheSelectedGroupMessage(message.message_text);
 
+    //since the state is undefined check if is not
+    //then get the messageID
     if (clickedGroupMessage !== undefined) {
       setClickedGroupMessage(message.id);
     }
@@ -127,15 +140,17 @@ function RenderGroupDetailsMessages() {
   async function showEditGroupMessageForm(e) {
     e.preventDefault();
 
-    setShowDropDownMenuGroupMessage(false);
+    setShowDropDownMenu(false);
 
-    setShowDropDownGroupMessageForm(true);
+    setShowDropDownFormOMessage(true);
 
     const formData = new FormData(e.target);
 
     const getMessageTextFormData = formData.get("message_text");
 
     console.log(getMessageTextFormData);
+
+    setSendAGroupMessageState("");
 
     try {
       const response = await fetch(
@@ -167,7 +182,7 @@ function RenderGroupDetailsMessages() {
 
       setGroupDetails(editAMessage);
 
-      setShowDropDownGroupMessageForm(false);
+      setShowDropDownFormOMessage(false);
     } catch (err) {
       console.log(err);
     }
@@ -253,6 +268,8 @@ function RenderGroupDetailsMessages() {
     // console.log(formData);
 
     const formDataGroupName = formData.get("group_name");
+
+    setGroupName("");
 
     try {
       const response = await fetch(
@@ -360,6 +377,7 @@ function RenderGroupDetailsMessages() {
               </form>
             </div>
           )}
+          {/* check if the users array of the group contains the loggedIn userId */}
           {groupDetails.users.some((obj) => obj.id === userLogInObj.id) ? (
             <button>Joined</button>
           ) : (
@@ -368,6 +386,8 @@ function RenderGroupDetailsMessages() {
             </form>
           )}
         </header>
+
+        {/* if the groupCreatorId is the loggedIn userId render this form */}
         {groupDetails.group_creatorId === userLogInObj.id ? (
           <div>
             {/* <button onClick={() => setShowDropDownMenuGroupName(true)}>
@@ -380,9 +400,8 @@ function RenderGroupDetailsMessages() {
         ) : (
           ""
         )}
-        <div className={styles.groupMessageDetailsTopHr}>
-          <hr />
-        </div>
+
+        {/* if the users array of the group contains the userId then he is joined the group */}
         {groupDetails.users.some((obj) => obj.id === userLogInObj.id) ? (
           <>
             {groupDetails.messagesGGChat.length === 0 ? (
@@ -390,16 +409,13 @@ function RenderGroupDetailsMessages() {
                 <p>Start a conversation, say Hi!</p>
               </div>
             ) : (
-              <div className={styles.groupDetailsMessagesContainer}>
+              <ul className={styles.groupDetailsMessagesContainer}>
                 {groupDetails.messagesGGChat.map((message, index) => (
-                  <>
+                  <Fragment key={message.id}>
                     {message.userId === userLogInObj.id ? (
-                      <ul
-                        key={message.id}
-                        className={styles.groupDetailsUserMessage}
-                      >
+                      <div className={styles.groupDetailsUserMessage}>
                         {message.message_text ? (
-                          <div
+                          <ul
                             className={styles.groupDetailsMessageDropDownMenu}
                           >
                             <img
@@ -408,7 +424,7 @@ function RenderGroupDetailsMessages() {
                               src="/three_dots.svg"
                               alt="message drop-down menu"
                             />
-                            {showDropDownGroupMessageForm &&
+                            {showDropDownFormOMessage &&
                             message.id === clickedGroupMessage ? (
                               <form
                                 style={{
@@ -431,8 +447,8 @@ function RenderGroupDetailsMessages() {
                                 />
                                 <button
                                   onClick={() => {
-                                    setShowDropDownMenuGroupMessage(false);
-                                    setShowDropDownGroupMessageForm(false);
+                                    setShowDropDownMenu(false);
+                                    setShowDropDownFormOMessage(false);
                                   }}
                                 >
                                   Cancel
@@ -440,7 +456,12 @@ function RenderGroupDetailsMessages() {
                                 <button type="submit">Save</button>
                               </form>
                             ) : (
-                              <li key={message.id}>{message.message_text}</li>
+                              <li
+                                className={styles.groupDetailsSendMessage}
+                                key={message.id}
+                              >
+                                {message.message_text}
+                              </li>
                               // <div>
                               //   {index === 0 ? (
                               //     <>
@@ -454,7 +475,7 @@ function RenderGroupDetailsMessages() {
                               //   )}
                               // </div>
                             )}
-                            {showDropDownMenuGroupMessage ? (
+                            {showDropDownMenu ? (
                               <div
                                 className={
                                   styles.groupDetailsDropDownMenuButtons
@@ -462,8 +483,8 @@ function RenderGroupDetailsMessages() {
                               >
                                 <button
                                   onClick={() => {
-                                    setShowDropDownGroupMessageForm(true);
-                                    setShowDropDownMenuGroupMessage(false);
+                                    setShowDropDownFormOMessage(true);
+                                    setShowDropDownMenu(false);
                                   }}
                                   style={{
                                     display:
@@ -491,7 +512,7 @@ function RenderGroupDetailsMessages() {
                             ) : (
                               ""
                             )}
-                          </div>
+                          </ul>
                         ) : (
                           <>
                             {message.userId === userLogInObj.id ? (
@@ -516,7 +537,7 @@ function RenderGroupDetailsMessages() {
                                       src="/three_dots.svg"
                                       alt="message drop-down menu"
                                     />
-                                    {showDropDownMenuGroupMessage ? (
+                                    {showDropDownMenu ? (
                                       <div className={styles.btn}>
                                         <button
                                           onClick={() =>
@@ -555,14 +576,13 @@ function RenderGroupDetailsMessages() {
                             )}
                           </>
                         )}
-                      </ul>
+                      </div>
                     ) : (
                       <>
                         {groupDetails.users.map((user) => (
-                          <>
+                          <Fragment key={user.id}>
                             {user.id !== userLogInObj.id ? (
                               <div
-                                key={user.id}
                                 className={
                                   styles.groupReceiverSendingMessagesContainer
                                 }
@@ -584,7 +604,7 @@ function RenderGroupDetailsMessages() {
                                           styles.groupDetailsUserDefaultProfilePicture
                                         }
                                         src="/default_users_pfp.jpg"
-                                        alt="default user profile picture"
+                                        alt="user default profile picture"
                                       />
                                     ) : (
                                       <img
@@ -594,12 +614,12 @@ function RenderGroupDetailsMessages() {
                                     )}
                                   </Link>
                                   {message.message_text ? (
-                                    <p
+                                    <li
                                       key={message.id}
                                       className={styles.groupDetailsSendMessage}
                                     >
                                       {message.message_text}
-                                    </p>
+                                    </li>
                                   ) : (
                                     <img
                                       className={styles.groupDetailsSendImage}
@@ -612,13 +632,13 @@ function RenderGroupDetailsMessages() {
                             ) : (
                               ""
                             )}
-                          </>
+                          </Fragment>
                         ))}
                       </>
                     )}
-                  </>
+                  </Fragment>
                 ))}
-              </div>
+              </ul>
             )}
           </>
         ) : (
@@ -627,9 +647,6 @@ function RenderGroupDetailsMessages() {
 
         {groupDetails.users.some((obj) => obj.id === userLogInObj.id) ? (
           <>
-            <div className={styles.groupMessageDetailsBottomHr}>
-              <hr />
-            </div>
             <div className={styles.groupDetailsSendMessageOrImageContainer}>
               <form
                 encType="multipart/form"
@@ -645,6 +662,7 @@ function RenderGroupDetailsMessages() {
                   type="text"
                   name="message_text"
                   id="message_text"
+                  maxLength={200}
                   value={sendAGroupMessageState}
                   onChange={(e) => setSendAGroupMessageState(e.target.value)}
                 />

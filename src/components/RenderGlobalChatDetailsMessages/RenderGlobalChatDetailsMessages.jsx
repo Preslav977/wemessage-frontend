@@ -1,8 +1,8 @@
 import styles from "./RenderGlobalChatDetailsMessages.module.css";
-import useFetchGlobalChatURL from "../api/custom hooks/useFetchGlobalChatURL";
 import { Link } from "react-router-dom";
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, Fragment } from "react";
+import useFetchGlobalChatURL from "../api/custom hooks/useFetchGlobalChatURL";
 import { format } from "date-fns";
 
 function RenderGlobalChatDetailsMessages() {
@@ -11,27 +11,27 @@ function RenderGlobalChatDetailsMessages() {
 
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
+  // this state will be used a condition to send a message or image in the form
   const [sendAGlobalChatMessageState, setSendAGlobalChatMessageState] =
     useState("");
 
+  //this state will selected the clicked message in the array
   const [
     editTheSelectedGlobalChatMessage,
     setEditTheSelectedGlobalChatMessage,
   ] = useState();
 
-  const dropDownFormRef = useRef(null);
+  //this will show or hide the drop-down menu
+  const dropDownMenuRef = useRef(null);
 
   const formRef = useRef(null);
 
-  const [
-    showDropDownMenuGlobalChatMessage,
-    setShowDropDownMenuGlobalChatMessage,
-  ] = useState(false);
+  //this state will render the drop-down menu when is true
+  const [showDropDownMenu, setShowDropDownMenu] = useState(false);
 
-  const [
-    showDropDownGlobalChatMessageForm,
-    setShowDropDownGlobalChatMessageForm,
-  ] = useState(false);
+  //this state will render the input or textarea to edit the message
+  const [showDropDownFormOnMessage, setShowDropDownFormOnMessage] =
+    useState(false);
 
   const [clickedGlobalChatMessage, setClickedGlobalChatMessage] = useState();
 
@@ -40,7 +40,7 @@ function RenderGlobalChatDetailsMessages() {
   }
 
   if (error) {
-    return <p>A network error was encountered</p>;
+    return <p>Failed to fetch globalChat details!</p>;
   }
 
   async function sendMessageInGlobalChat(e) {
@@ -49,6 +49,8 @@ function RenderGlobalChatDetailsMessages() {
     const formData = new FormData(e.target);
 
     const getMessageTextFormData = formData.get("message_text");
+
+    setSendAGlobalChatMessageState("");
 
     try {
       const response = await fetch(
@@ -88,6 +90,8 @@ function RenderGlobalChatDetailsMessages() {
 
     const formData = new FormData(e.target);
 
+    setSendAGlobalChatMessageState("");
+
     try {
       const response = await fetch(
         `http://localhost:5000/globalChat/${globalChatDetails.id}/image`,
@@ -115,9 +119,12 @@ function RenderGlobalChatDetailsMessages() {
     }
   }
 
+  //function that gets the current clicked message
+  //then renders the drop-down menu
+  //edits the message and hides the drop-down
   function toggleMessageDropDown(message) {
     setClickedGlobalChatMessage(message.id);
-    setShowDropDownMenuGlobalChatMessage(true);
+    setShowDropDownMenu(true);
     setEditTheSelectedGlobalChatMessage(message.message_text);
 
     if (clickedGlobalChatMessage !== undefined) {
@@ -128,15 +135,17 @@ function RenderGlobalChatDetailsMessages() {
   async function showEditGlobalChatMessageForm(e) {
     e.preventDefault();
 
-    setShowDropDownGlobalChatMessageForm(false);
+    setShowDropDownMenu(false);
 
-    setShowDropDownGlobalChatMessageForm(true);
+    setShowDropDownFormOnMessage(true);
 
     const formData = new FormData(e.target);
 
     const getMessageTextFormData = formData.get("message_text");
 
     console.log(getMessageTextFormData);
+
+    setSendAGlobalChatMessageState("");
 
     try {
       const response = await fetch(
@@ -168,7 +177,7 @@ function RenderGlobalChatDetailsMessages() {
 
       setGlobalChatDetails(editAMessage);
 
-      setShowDropDownGlobalChatMessageForm(false);
+      setShowDropDownFormOnMessage(false);
     } catch (err) {
       console.log(err);
     }
@@ -227,24 +236,17 @@ function RenderGlobalChatDetailsMessages() {
             {"Global Chat"}
           </h6>
         </header>
-        <div className={styles.globalChatMessageDetailsTopHr}>
-          <hr />
-        </div>
-
         <>
           {globalChatDetails.messagesGGChat.length === 0 ? (
             <div className={styles.globalChatNoMessagesContainer}>
               <p>Start a conversation, say Hi!</p>
             </div>
           ) : (
-            <div className={styles.globalChatDetailsMessagesContainer}>
+            <ul className={styles.globalChatDetailsMessagesContainer}>
               {globalChatDetails.messagesGGChat.map((message, index) => (
-                <>
+                <Fragment key={message.id}>
                   {message.userId === userLogInObj.id ? (
-                    <ul
-                      key={message.id}
-                      className={styles.globalChatDetailsUserMessage}
-                    >
+                    <ul className={styles.globalChatDetailsUserMessage}>
                       {message.message_text ? (
                         <div
                           className={
@@ -259,13 +261,13 @@ function RenderGlobalChatDetailsMessages() {
                             src="/three_dots.svg"
                             alt="message drop-down menu"
                           />
-                          {showDropDownGlobalChatMessageForm &&
+                          {showDropDownFormOnMessage &&
                           message.id === clickedGlobalChatMessage ? (
                             <form
                               style={{
                                 display: "block",
                               }}
-                              ref={dropDownFormRef}
+                              ref={dropDownMenuRef}
                               onSubmit={showEditGlobalChatMessageForm}
                             >
                               <input
@@ -282,8 +284,8 @@ function RenderGlobalChatDetailsMessages() {
                               />
                               <button
                                 onClick={() => {
-                                  setShowDropDownMenuGlobalChatMessage(false);
-                                  setShowDropDownGlobalChatMessageForm(false);
+                                  setShowDropDownMenu(false);
+                                  setShowDropDownFormOnMessage(false);
                                 }}
                               >
                                 Cancel
@@ -291,7 +293,12 @@ function RenderGlobalChatDetailsMessages() {
                               <button type="submit">Save</button>
                             </form>
                           ) : (
-                            <li key={message.id}>{message.message_text}</li>
+                            <li
+                              className={styles.globalChatDetailsSendImage}
+                              key={message.id}
+                            >
+                              {message.message_text}
+                            </li>
                             // <div>
                             //   {index === 0 ? (
                             //     <>
@@ -303,7 +310,7 @@ function RenderGlobalChatDetailsMessages() {
                             //   )}
                             // </div>
                           )}
-                          {showDropDownMenuGlobalChatMessage ? (
+                          {showDropDownMenu ? (
                             <div
                               className={
                                 styles.globalChatDetailsDropDownMenuButtons
@@ -311,8 +318,8 @@ function RenderGlobalChatDetailsMessages() {
                             >
                               <button
                                 onClick={() => {
-                                  setShowDropDownGlobalChatMessageForm(true);
-                                  setShowDropDownMenuGlobalChatMessage(false);
+                                  setShowDropDownFormOnMessage(true);
+                                  setShowDropDownMenu(false);
                                 }}
                                 style={{
                                   display:
@@ -365,7 +372,7 @@ function RenderGlobalChatDetailsMessages() {
                                     src="/three_dots.svg"
                                     alt="message drop-down menu"
                                   />
-                                  {showDropDownMenuGlobalChatMessage ? (
+                                  {showDropDownMenu ? (
                                     <div className={styles.btn}>
                                       <button
                                         onClick={() =>
@@ -409,10 +416,9 @@ function RenderGlobalChatDetailsMessages() {
                   ) : (
                     <>
                       {globalChatDetails.users.map((user) => (
-                        <>
+                        <Fragment key={user.id}>
                           {user.id !== userLogInObj.id ? (
                             <div
-                              key={user.id}
                               className={
                                 styles.globalChatReceiverSendingMessagesContainer
                               }
@@ -434,7 +440,7 @@ function RenderGlobalChatDetailsMessages() {
                                         styles.globalChatDetailsUserDefaultProfilePicture
                                       }
                                       src="/default_users_pfp.jpg"
-                                      alt="default user profile picture"
+                                      alt="user default profile picture"
                                     />
                                   ) : (
                                     <img
@@ -444,14 +450,14 @@ function RenderGlobalChatDetailsMessages() {
                                   )}
                                 </Link>
                                 {message.message_text ? (
-                                  <p
+                                  <li
                                     key={message.id}
                                     className={
                                       styles.globalChatDetailsSendMessage
                                     }
                                   >
                                     {message.message_text}
-                                  </p>
+                                  </li>
                                 ) : (
                                   <img
                                     key={message.id}
@@ -467,19 +473,16 @@ function RenderGlobalChatDetailsMessages() {
                           ) : (
                             ""
                           )}
-                        </>
+                        </Fragment>
                       ))}
                     </>
                   )}
-                </>
+                </Fragment>
               ))}
-            </div>
+            </ul>
           )}
         </>
 
-        <div className={styles.globalChatMessageDetailsBottomHr}>
-          <hr />
-        </div>
         <div className={styles.globalChatDetailsSendMessageOrImageContainer}>
           <form
             ref={formRef}
@@ -496,6 +499,7 @@ function RenderGlobalChatDetailsMessages() {
               type="text"
               name="message_text"
               id="message_text"
+              maxLength={200}
               value={sendAGlobalChatMessageState}
               onChange={(e) => setSendAGlobalChatMessageState(e.target.value)}
             />

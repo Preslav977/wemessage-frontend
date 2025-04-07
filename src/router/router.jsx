@@ -31,7 +31,7 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
-              // currentPath={"/profile/"}
+              currentPath={"/profile/"}
               leftGridComponent={<ManageUserProfile />}
               rightGridComponent={<UserProfile />}
             ></MainGridInterface>
@@ -43,6 +43,7 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/profile/edit/"}
               leftGridComponent={<ManageUserProfile />}
               rightGridComponent={<EditUserProfile />}
             ></MainGridInterface>
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/profile/change_passwords/"}
               leftGridComponent={<ManageUserProfile />}
               rightGridComponent={<UpdateUserPasswords />}
             ></MainGridInterface>
@@ -83,6 +85,7 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/chats/"}
               leftGridComponent={
                 <ToggleBetweenChatsOrSearchForUser
                   renderChatsOrGlobalChat={false}
@@ -100,6 +103,7 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/groups"}
               leftGridComponent={<RenderAllGroups />}
               rightGridComponent={<RenderGroupDetailsMessages />}
             ></MainGridInterface>
@@ -111,6 +115,7 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/groups/"}
               leftGridComponent={<RenderAllGroups />}
               rightGridComponent={<RenderGroupDetailsMessages />}
             ></MainGridInterface>
@@ -133,6 +138,7 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/globalChat/"}
               leftGridComponent={
                 <ToggleBetweenChatsOrSearchForUser
                   renderChatsOrGlobalChat={true}

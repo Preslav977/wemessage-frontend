@@ -10,7 +10,7 @@ function RenderAllGroups() {
   }
 
   if (error) {
-    return <p>A network error was encountered</p>;
+    return <p>Failed to fetch groups!</p>;
   }
 
   return (

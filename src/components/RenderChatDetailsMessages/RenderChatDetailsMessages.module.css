@@ -1,27 +1,20 @@
 .chatMessagesDetailsContainer {
-  max-height: 93vh;
+  max-height: 96vh;
   overflow: scroll;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  /* outline: 2px solid black; */
+  scroll-behavior: smooth;
 }
 
 .chatMessageDetailsHeader {
   position: sticky;
   top: 0%;
-}
-
-.chatMessageDetailsTopHr {
-  width: 72.5%;
-  position: fixed;
-  top: 7%;
-}
-
-.chatNoMessagesContainer {
-  display: flex;
-  height: 100vh;
-  align-items: center;
-  justify-content: center;
+  z-index: 1;
+  /* background-color: black; */
+  outline: 2px solid black;
+  padding: 1em;
 }
 
 .chatMessageDetailsFlexedAnchor {
@@ -30,13 +23,21 @@
   gap: 0.5rem;
 }
 
-.chatDetailsUserProfilePicture {
+.chatDetailsUserProfilePicture,
+.chatDetailsUserDefaultProfilePicture {
   width: 40px;
 }
 
 .chatMessageDetailsUserFirstAndLastName {
   text-align: center;
   margin-bottom: 0.3em;
+}
+
+.chatNoMessagesContainer {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
 }
 
 .chatDetailsUserMessage {
@@ -48,9 +49,7 @@
   hyphens: auto;
   line-break: anywhere;
   text-align: center;
-  margin-top: 1.5em;
-  margin-right: 1em;
-  margin-bottom: 1em;
+  margin: 1.5em 1em 1em 0;
 }
 
 .chatDetailsMessageDropDownMenu {
@@ -67,14 +66,23 @@
 .chatDetailsSendMessage {
   max-width: 22em;
   outline: 2px solid black;
-  padding: 0.5em;
+  padding: 0.5em 1em;
   margin-left: 0.25em;
+  border-radius: 1em;
 }
 
 .chatDetailsDropDownMenuButtons {
   position: absolute;
   bottom: -35px;
   left: -10px;
+  z-index: 1;
+  /* outline: 2px solid black; */
+}
+
+.chatDetailsSendImage {
+  max-width: 18em;
+  height: auto;
+  margin-bottom: 1em;
 }
 
 .chatReceiverSendingMessagesContainer {
@@ -82,41 +90,30 @@
 }
 
 .chatDetailsUserUsername {
-  width: 13%;
-  text-align: center;
+  width: 100%;
+  text-align: left;
+  margin-left: 5em;
   margin-bottom: 0.3em;
+  /* outline: 2px solid black; */
 }
 
 .chatDetailsReceiverUserMessages {
   display: flex;
   gap: 0.5em;
   align-items: center;
-}
-
-.chatDetailsSendImage {
-  max-width: 35%;
-  height: auto;
-  margin-bottom: 1em;
-}
-
-.chatDetailsUserDefaultProfilePicture {
-  width: 40px;
-}
-
-.chatMessageDetailsBottomHr {
-  width: 72.5%;
-  position: fixed;
-  bottom: 9%;
+  margin: 0em 1em 1em 1em;
 }
 
 .chatDetailsSendMessageOrImageContainer {
   margin-top: auto;
   position: sticky;
   bottom: 0%;
+
+  outline: 2px solid black;
 }
 
 .chatDetailsSendMessageInput {
-  width: 100%;
+  width: 92.5%;
 }
 
 .chatDetailsSendImageInput,

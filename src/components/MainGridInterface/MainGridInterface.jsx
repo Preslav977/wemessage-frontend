@@ -17,10 +17,6 @@ function MainGridInterface({
 
   const [isUserLoggedIn, setIsUserLoggedIn] = useContext(UserLoggedInContext);
 
-  const [mainGridInterfaceStyles, setMainGridInterfaceStyles] = useState([
-    styles.mainGridContainer,
-  ]);
-
   const useDeviceSize = () => {
     const [width, setWidth] = useState(0);
 
@@ -46,14 +42,6 @@ function MainGridInterface({
   }
 
   const [width] = useDeviceSize();
-
-  console.log(width);
-
-  if (currentPath === "/chats") {
-    console.log("You are currently on /chats path");
-  } else {
-    console.log(`You are not on /chats path, ${currentPath}`);
-  }
 
   return (
     <>
@@ -148,6 +136,8 @@ function MainGridInterface({
           style={{
             display:
               currentPath === "/chats" ||
+              currentPath === "/groups" ||
+              (currentPath !== "/groups" && width >= 640) ||
               (currentPath !== "/chats" && width >= 640)
                 ? "block"
                 : "none",
@@ -156,7 +146,22 @@ function MainGridInterface({
         >
           {leftGridComponent}
         </section>
-        <section className={styles.secondaryGridSection}>
+        <section
+          style={{
+            display:
+              (currentPath === "/chats" && width >= 640) ||
+              currentPath === "/chats/" ||
+              (currentPath === "/groups" && width >= 640) ||
+              currentPath === "/groups/" ||
+              currentPath === "/profile/" ||
+              currentPath === "/profile/edit/" ||
+              currentPath === "/profile/change_passwords/" ||
+              currentPath === "/globalChat/"
+                ? "flex"
+                : "none",
+          }}
+          className={styles.secondaryGridSection}
+        >
           {rightGridComponent}
         </section>
       </main>

@@ -29,7 +29,7 @@ const routes = [
         element: (
           <ProtectedRoute>
             <MainGridInterface
-              // currentPath={"/profile/"}
+              currentPath={"/profile/"}
               leftGridComponent={<ManageUserProfile />}
               rightGridComponent={<UserProfile />}
             ></MainGridInterface>
@@ -41,6 +41,7 @@ const routes = [
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/profile/edit/"}
               leftGridComponent={<ManageUserProfile />}
               rightGridComponent={<EditUserProfile />}
             ></MainGridInterface>
@@ -52,6 +53,7 @@ const routes = [
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/profile/change_passwords/"}
               leftGridComponent={<ManageUserProfile />}
               rightGridComponent={<UpdateUserPasswords />}
             ></MainGridInterface>
@@ -81,6 +83,7 @@ const routes = [
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/chats/"}
               leftGridComponent={
                 <ToggleBetweenChatsOrSearchForUser
                   renderChatsOrGlobalChat={false}
@@ -98,6 +101,7 @@ const routes = [
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/groups"}
               leftGridComponent={<RenderAllGroups />}
               rightGridComponent={<RenderGroupDetailsMessages />}
             ></MainGridInterface>
@@ -109,6 +113,7 @@ const routes = [
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/groups/"}
               leftGridComponent={<RenderAllGroups />}
               rightGridComponent={<RenderGroupDetailsMessages />}
             ></MainGridInterface>
@@ -131,6 +136,7 @@ const routes = [
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/globalChat/"}
               leftGridComponent={
                 <ToggleBetweenChatsOrSearchForUser
                   renderChatsOrGlobalChat={true}

@@ -16,13 +16,13 @@ function RenderAllChats({ onClick }) {
   }
 
   if (error) {
-    return <p>A network error was encountered</p>;
+    return <p>Failed to fetch chats!</p>;
   }
 
   return (
     <>
       <header className={styles.flexedChatHeaderContainer}>
-        <h4>Chats</h4>
+        <h6>Chats</h6>
         <img
           className={styles.openSearchForAUserSvg}
           src="/open.svg"
@@ -36,6 +36,7 @@ function RenderAllChats({ onClick }) {
         <ul>
           {chats.map((chat) => (
             <Fragment key={chat.id}>
+              {/* If the senderId is equal to the loggedIn user ID that render his details else render the other user */}
               {chat.senderChatId === userLogInObj.id ? (
                 <Link to={`/chats/${chat.id}`} key={chat.id}>
                   <li className={styles.flexedNestedLiUserContainer}>
@@ -43,7 +44,7 @@ function RenderAllChats({ onClick }) {
                       <img
                         className={styles.usersProfilePicture}
                         src="/default_user_pfp.svg"
-                        alt="default user profile picture"
+                        alt="user default profile picture"
                       />
                     ) : (
                       <img
@@ -68,7 +69,7 @@ function RenderAllChats({ onClick }) {
                       <img
                         className={styles.usersProfilePicture}
                         src="/default_user_pfp.svg"
-                        alt="default user profile picture"
+                        alt="user default profile picture"
                       />
                     ) : (
                       <img

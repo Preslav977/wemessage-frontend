@@ -1,20 +1,24 @@
 .globalChatMessagesDetailsContainer {
-  max-height: 93vh;
+  max-height: 96vh;
   overflow: scroll;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  scroll-behavior: smooth;
 }
 
 .globalChatMessageDetailsHeader {
   position: sticky;
   top: 0%;
+  z-index: 1;
+  padding: 1em;
+  outline: 2px solid black;
 }
 
-.globalChatMessageDetailsTopHr {
-  width: 72.5%;
-  position: fixed;
-  top: 7%;
+.globalChatMessageDetailsFlexedAnchor {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .globalChatNoMessagesContainer {
@@ -24,13 +28,8 @@
   justify-content: center;
 }
 
-.globalChatMessageDetailsFlexedAnchor {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.globalChatDetailsUserProfilePicture {
+.globalChatDetailsUserProfilePicture,
+.globalChatDetailsUserDefaultProfilePicture {
   width: 40px;
 }
 
@@ -48,9 +47,7 @@
   hyphens: auto;
   line-break: anywhere;
   text-align: center;
-  margin-top: 1.5em;
-  margin-right: 1em;
-  margin-bottom: 1em;
+  margin: 1.5em 1em 1em 0;
 }
 
 .globalChatDetailsMessageDropDownMenu {
@@ -68,22 +65,33 @@
 .globalChatDetailsSendMessage {
   max-width: 22em;
   outline: 2px solid black;
-  padding: 0.5em;
+  padding: 0.5em 1em;
   margin-left: 0.25em;
+  border-radius: 1em;
 }
 
 .globalChatDetailsMessageDropDownButtonWrapper {
   display: flex;
   flex-direction: column;
-
   align-items: center;
   justify-content: center;
 }
 
 .globalChatDetailsDropDownMenuButtons {
   position: absolute;
-  bottom: -35px;
-  left: -10px;
+  left: -15px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  margin-top: 4em;
+}
+
+.globalChatDetailsSendImage {
+  max-width: 18em;
+  height: auto;
+  margin-bottom: 1em;
+  position: relative;
 }
 
 .globalChatReceiverSendingMessagesContainer {
@@ -91,8 +99,9 @@
 }
 
 .globalChatDetailsUserUsername {
-  width: 13%;
-  text-align: center;
+  width: 100%;
+  text-align: left;
+  margin-left: 5em;
   margin-bottom: 0.3em;
 }
 
@@ -100,23 +109,7 @@
   display: flex;
   gap: 0.5em;
   align-items: center;
-}
-
-.globalChatDetailsSendImage {
-  max-width: 35%;
-  height: auto;
-  margin-bottom: 1em;
-  position: relative;
-}
-
-.globalChatDetailsUserDefaultProfilePicture {
-  width: 40px;
-}
-
-.globalChatMessageDetailsBottomHr {
-  width: 72.5%;
-  position: fixed;
-  bottom: 9%;
+  margin: 0em 1em 1em 1em;
 }
 
 .globalChatDetailsSendMessageOrImageContainer {
@@ -126,7 +119,7 @@
 }
 
 .globalChatDetailsSendMessageInput {
-  width: 100%;
+  width: 92.5%;
 }
 
 .globalChatDetailsSendImageInput,
