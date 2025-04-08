@@ -245,6 +245,20 @@ function RenderGlobalChatDetailsMessages() {
             <ul className={styles.globalChatDetailsMessagesContainer}>
               {globalChatDetails.messagesGGChat.map((message, index) => (
                 <Fragment key={message.id}>
+                  {/* if the first element index is 0 or the date of that 
+                message is not equal to the first one render the date 
+                otherwise  don't
+                 */}
+                  {index === 0 ||
+                  format(message.createdAt, "MM/dd/yy") !==
+                    format(
+                      globalChatDetails.messagesGGChat[0].createdAt,
+                      "MM/dd/yy",
+                    ) ? (
+                    <p>{format(message.createdAt, "MM/dd/yy")}</p>
+                  ) : (
+                    ""
+                  )}
                   {message.userId === userLogInObj.id ? (
                     <ul className={styles.globalChatDetailsUserMessage}>
                       {message.message_text ? (
@@ -293,22 +307,12 @@ function RenderGlobalChatDetailsMessages() {
                               <button type="submit">Save</button>
                             </form>
                           ) : (
-                            <li
-                              className={styles.globalChatDetailsSendImage}
+                            <p
+                              className={styles.globalChatDetailsSendMessage}
                               key={message.id}
                             >
                               {message.message_text}
-                            </li>
-                            // <div>
-                            //   {index === 0 ? (
-                            //     <>
-                            //       <p>{format(message.createdAt, "dd/MM/yy")}</p>
-                            //       <p>{message.message_text}</p>
-                            //     </>
-                            //   ) : (
-                            //     <p>{message.message_text}</p>
-                            //   )}
-                            // </div>
+                            </p>
                           )}
                           {showDropDownMenu ? (
                             <div

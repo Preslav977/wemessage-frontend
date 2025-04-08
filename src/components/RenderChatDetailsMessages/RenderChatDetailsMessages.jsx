@@ -1,7 +1,6 @@
 import styles from "./RenderChatDetailsMessages.module.css";
 import { Link } from "react-router-dom";
 import { useContext, useState, useRef, Fragment } from "react";
-import PropTypes from "prop-types";
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import useFetchSingleChatURL from "../api/custom hooks/useFetchSingleChatURL";
 import { format } from "date-fns";
@@ -258,8 +257,19 @@ function RenderChatDetailsMessages() {
           </div>
         ) : (
           <ul className={styles.chatDetailsMessagesContainer}>
-            {chatDetails.messages.map((message) => (
+            {chatDetails.messages.map((message, index) => (
               <Fragment key={message.id}>
+                {/* if the first element index is 0 or the date of that 
+                message is not equal to the first one render the date 
+                otherwise  don't
+                 */}
+                {index === 0 ||
+                format(message.createdAt, "MM/dd/yy") !==
+                  format(chatDetails.messages[0].createdAt, "MM/dd/yy") ? (
+                  <p>{format(message.createdAt, "MM/dd/yy")}</p>
+                ) : (
+                  ""
+                )}
                 {/* if the messageId equal the loggedIn userId render the message of that user  */}
                 {message.senderMessageId === userLogInObj.id ? (
                   <li
@@ -303,13 +313,14 @@ function RenderChatDetailsMessages() {
                             <button type="submit">Save</button>
                           </form>
                         ) : (
-                          <li
+                          <p
                             key={message.id}
                             className={styles.chatDetailsSendMessage}
                           >
                             {message.message_text}
-                          </li>
+                          </p>
                         )}
+
                         {showDropDownMenu ? (
                           <div
                             className={styles.chatDetailsDropDownMenuButtons}
@@ -347,22 +358,51 @@ function RenderChatDetailsMessages() {
                     ) : (
                       <>
                         {message.senderMessageId === userLogInObj.id ? (
-                          <div
-                            className={styles.chatDetailsMessageDropDownMenu}
-                          >
-                            <img
-                              className={styles.chatDetailsMessageDropDownImg}
-                              onClick={() => toggleMessageDropDown(message)}
-                              src="/three_dots.svg"
-                              alt="message drop-down menu"
-                            />
-                            <img
-                              key={message.id}
-                              className={styles.chatDetailsSendImage}
-                              src={message.message_imageURL}
-                              alt="send image in chat"
-                            />
-                          </div>
+                          <>
+                            <div
+                              className={styles.chatDetailsMessageDropDownMenu}
+                            >
+                              <div
+                                className={
+                                  styles.chatDetailsMessageDropDownButtonWrapper
+                                }
+                              >
+                                <img
+                                  className={
+                                    styles.chatDetailsMessageDropDownImg
+                                  }
+                                  onClick={() => toggleMessageDropDown(message)}
+                                  src="/three_dots.svg"
+                                  alt="message drop-down menu"
+                                />
+                                {showDropDownMenu ? (
+                                  <div className={styles.deleteMessageBtn}>
+                                    <button
+                                      onClick={() =>
+                                        removeMessageFromChat(message)
+                                      }
+                                      style={{
+                                        display:
+                                          message.id === clickedMessage
+                                            ? "block"
+                                            : "none",
+                                      }}
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <img
+                                key={message.id}
+                                className={styles.chatDetailsSendImage}
+                                src={message.message_imageURL}
+                                alt="send image in chat"
+                              />
+                            </div>
+                          </>
                         ) : (
                           <img
                             key={message.id}
@@ -455,9 +495,5 @@ function RenderChatDetailsMessages() {
     );
   }
 }
-
-RenderChatDetailsMessages.propTypes = {
-  renderChatsOrChatDetails: PropTypes.bool,
-};
 
 export default RenderChatDetailsMessages;

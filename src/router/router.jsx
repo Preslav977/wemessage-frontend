@@ -73,9 +73,7 @@ const router = createBrowserRouter([
                   renderChatsOrGlobalChat={false}
                 />
               }
-              rightGridComponent={
-                <RenderChatDetailsMessages renderChatsOrChatDetails={false} />
-              }
+              rightGridComponent={<RenderChatDetailsMessages />}
             ></MainGridInterface>
           </ProtectedRoute>
         ),
@@ -91,9 +89,7 @@ const router = createBrowserRouter([
                   renderChatsOrGlobalChat={false}
                 />
               }
-              rightGridComponent={
-                <RenderChatDetailsMessages renderChatsOrChatDetails={true} />
-              }
+              rightGridComponent={<RenderChatDetailsMessages />}
             ></MainGridInterface>
           </ProtectedRoute>
         ),

@@ -71,12 +71,21 @@
   border-radius: 1em;
 }
 
+.chatDetailsMessageDropDownButtonWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .chatDetailsDropDownMenuButtons {
   position: absolute;
-  bottom: -35px;
-  left: -10px;
+  left: -15px;
   z-index: 1;
-  /* outline: 2px solid black; */
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  margin-top: 4em;
 }
 
 .chatDetailsSendImage {

@@ -1,15 +1,16 @@
 import styles from "./CreateGroup.module.css";
 import { useContext, useRef, useState } from "react";
-import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { GroupsContext } from "../../contexts/GroupsContext";
 import { useNavigate } from "react-router-dom";
+import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
+import { GroupMembersContext } from "../../contexts/GroupsContext";
 
 function CreateGroup() {
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
   const [groups, setGroups] = useContext(GroupsContext);
 
-  const [groupFriends, setGroupFriends] = useState();
+  const [groupMembers, setGroupMembers] = useContext(GroupMembersContext);
 
   const [groupsName, setGroupName] = useState("");
 
@@ -43,7 +44,7 @@ function CreateGroup() {
         (obj) => obj.id !== userLogInObj.id,
       );
 
-      setGroupFriends(filterTheLoggedInUser);
+      setGroupMembers(filterTheLoggedInUser);
     } catch (err) {
       console.log(err);
     }
@@ -152,9 +153,9 @@ function CreateGroup() {
               id="group_member"
               onChange={searchForGroupFriends}
             />
-            {groupFriends !== undefined ? (
+            {groupMembers !== undefined ? (
               <ul className={styles.ulDropDownGroupUserMembers}>
-                {groupFriends.map((friend) => (
+                {groupMembers.map((friend) => (
                   <li
                     data-testid="select_member"
                     style={{

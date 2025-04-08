@@ -246,6 +246,7 @@ function MainGridInterface({
 MainGridInterface.propTypes = {
   leftGridComponent: PropTypes.object,
   rightGridComponent: PropTypes.object,
+  currentPath: PropTypes.string,
 };
 
 export default MainGridInterface;

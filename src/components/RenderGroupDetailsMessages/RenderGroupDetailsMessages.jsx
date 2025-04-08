@@ -412,10 +412,24 @@ function RenderGroupDetailsMessages() {
               <ul className={styles.groupDetailsMessagesContainer}>
                 {groupDetails.messagesGGChat.map((message, index) => (
                   <Fragment key={message.id}>
+                    {/* if the first element index is 0 or the date of that 
+                message is not equal to the first one render the date 
+                otherwise  don't
+                 */}
+                    {index === 0 ||
+                    format(message.createdAt, "MM/dd/yy") !==
+                      format(
+                        groupDetails.messagesGGChat[0].createdAt,
+                        "MM/dd/yy",
+                      ) ? (
+                      <p>{format(message.createdAt, "MM/dd/yy")}</p>
+                    ) : (
+                      ""
+                    )}
                     {message.userId === userLogInObj.id ? (
                       <div className={styles.groupDetailsUserMessage}>
                         {message.message_text ? (
-                          <ul
+                          <li
                             className={styles.groupDetailsMessageDropDownMenu}
                           >
                             <img
@@ -456,24 +470,12 @@ function RenderGroupDetailsMessages() {
                                 <button type="submit">Save</button>
                               </form>
                             ) : (
-                              <li
+                              <p
                                 className={styles.groupDetailsSendMessage}
                                 key={message.id}
                               >
                                 {message.message_text}
-                              </li>
-                              // <div>
-                              //   {index === 0 ? (
-                              //     <>
-                              //       <p>
-                              //         {format(message.createdAt, "dd/MM/yy")}
-                              //       </p>
-                              //       <p>{message.message_text}</p>
-                              //     </>
-                              //   ) : (
-                              //     <p>{message.message_text}</p>
-                              //   )}
-                              // </div>
+                              </p>
                             )}
                             {showDropDownMenu ? (
                               <div
@@ -512,7 +514,7 @@ function RenderGroupDetailsMessages() {
                             ) : (
                               ""
                             )}
-                          </ul>
+                          </li>
                         ) : (
                           <>
                             {message.userId === userLogInObj.id ? (
@@ -538,7 +540,11 @@ function RenderGroupDetailsMessages() {
                                       alt="message drop-down menu"
                                     />
                                     {showDropDownMenu ? (
-                                      <div className={styles.btn}>
+                                      <div
+                                        className={
+                                          styles.deleteGroupMessageButton
+                                        }
+                                      >
                                         <button
                                           onClick={() =>
                                             removeMessageFromGroup(message)

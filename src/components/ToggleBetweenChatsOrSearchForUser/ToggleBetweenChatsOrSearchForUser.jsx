@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
-import FetchAndSearchForUsers from "../api/FetchAndSearchForUsers";
 import { UsersContext } from "../../contexts/UsersContext";
+import FetchAndSearchForUsers from "../api/FetchAndSearchForUsers";
+import PropTypes from "prop-types";
 import RenderAllChats from "../RenderAllChats/RenderAllChats";
 
 function ToggleBetweenChatsOrSearchForUser({ renderChatsOrGlobalChat }) {
@@ -48,5 +49,9 @@ function ToggleBetweenChatsOrSearchForUser({ renderChatsOrGlobalChat }) {
     </>
   );
 }
+
+ToggleBetweenChatsOrSearchForUser.propTypes = {
+  renderChatsOrGlobalChat: PropTypes.bool,
+};
 
 export default ToggleBetweenChatsOrSearchForUser;
