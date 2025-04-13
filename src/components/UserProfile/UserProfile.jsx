@@ -5,7 +5,6 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { BackgroundPictureContext } from "../../contexts/UserRegistrationContext";
-import { GroupMembersContext } from "../../contexts/GroupsContext";
 
 import useFetchSingleUserURL from "../api/custom hooks/useFetchSingleUserURL";
 import PopUpModal from "../PopUpModal/PopUpModal";
@@ -24,8 +23,6 @@ function UserProfile() {
     useState(false);
 
   const { userGetById } = useFetchSingleUserURL();
-
-  const [groupMembers, setGroupMembers] = useContext(GroupMembersContext);
 
   const hideSaveBtnRef = useRef(null);
 
@@ -104,10 +101,7 @@ function UserProfile() {
 
       const result = await response.json();
 
-      // console.log(result);
-
-      //add the person who you had chat with in this state
-      setGroupMembers([...groupMembers, result.receiverChat]);
+      console.log(result);
 
       navigate(`/chats/${result.id}`);
     } catch (err) {

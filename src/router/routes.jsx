@@ -121,6 +121,7 @@ const routes = [
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/groups/"}
               leftGridComponent={<RenderAllGroups />}
               rightGridComponent={<CreateGroup />}
             ></MainGridInterface>

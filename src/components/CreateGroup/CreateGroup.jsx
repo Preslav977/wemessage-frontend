@@ -1,22 +1,63 @@
 import styles from "./CreateGroup.module.css";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import { GroupsContext } from "../../contexts/GroupsContext";
 import { useNavigate } from "react-router-dom";
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
-import { GroupMembersContext } from "../../contexts/GroupsContext";
+import useFetchChatsURL from "../api/custom hooks/useFetchChatsURL";
+import { FilterGroupMembers } from "../FilterGroupMembers";
+import SearchBarGroupMembers from "../SearchBarGroupMembers";
+import GroupMembersList from "../GroupMembersList";
 
 function CreateGroup() {
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
   const [groups, setGroups] = useContext(GroupsContext);
 
-  const [groupMembers, setGroupMembers] = useContext(GroupMembersContext);
+  const { chats } = useFetchChatsURL();
+
+  // console.log("Fetching the chats", chats);
+
+  // console.log(groupMembers);
+
+  // console.log(groupMembers);
 
   const [groupsName, setGroupName] = useState("");
 
   const [error, setError] = useState(null);
 
-  const [selectedGroupMember, setSelectedGroupMember] = useState();
+  const saveTheUsersThatHadChatWithTheUserArray = [];
+
+  chats.map((chat) =>
+    saveTheUsersThatHadChatWithTheUserArray.push(chat.receiverChat),
+  );
+
+  // console.log(
+  //   "Pushed the users in the array, which the user had a chat with",
+  //   array,
+  // );
+
+  const [groupMembers, setGroupMembers] = useState(
+    saveTheUsersThatHadChatWithTheUserArray,
+  );
+
+  // console.log("Setting the groupMembers state to the array", groupMembers);
+
+  const [selectedGroupMember, setSelectedGroupMember] = useState(groupMembers);
+
+  // console.log(selectedGroupMember);
+
+  const [searchForFriend, setSearchForFriend] = useState("");
+
+  // console.log("Search for a user by typing", searchForFriend);
+
+  const filterGroupFriendsResult = FilterGroupMembers(
+    groupMembers,
+    searchForFriend,
+  );
+
+  console.log("Filtering the users based on typing", filterGroupFriendsResult);
+
+  // console.log(searchForFriend);
 
   const [showSelectedGroupMember, setShowSelectedGroupMember] = useState(false);
 
@@ -24,30 +65,8 @@ function CreateGroup() {
 
   const navigate = useNavigate();
 
-  async function searchForGroupFriends(e) {
-    try {
-      const fetchGroupFriends = await fetch(
-        `http://localhost:5000/groups/search/?query=${e.target.value}`,
-        {
-          mode: "cors",
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        },
-      );
-
-      const getGroupMembers = await fetchGroupFriends.json();
-
-      // console.log(groupFriends);
-
-      const filterTheLoggedInUser = getGroupMembers.filter(
-        (obj) => obj.id !== userLogInObj.id,
-      );
-
-      setGroupMembers(filterTheLoggedInUser);
-    } catch (err) {
-      console.log(err);
-    }
+  function searchForFriendInput(e) {
+    setSearchForFriend(e.target.value);
   }
 
   function onClick(friend) {
@@ -57,8 +76,8 @@ function CreateGroup() {
 
     // console.log(selectedGroupUserMemberRef.current);
 
-    if (selectedGroupUserMemberRef.current.style.display === "flex") {
-      selectedGroupUserMemberRef.current.style.display = "none";
+    if (selectedGroupUserMemberRef.current.style.display === "none") {
+      selectedGroupUserMemberRef.current.style.display = "flex";
     }
   }
 
@@ -67,7 +86,7 @@ function CreateGroup() {
 
     const formData = new FormData(e.target);
 
-    formData.append("userId", selectedGroupMember.id);
+    // formData.append("userId", selectedGroupMember.id);
 
     formData.append("group_creatorId", userLogInObj.id);
 
@@ -145,49 +164,15 @@ function CreateGroup() {
             {error && <span className={styles.error}>{error}</span>}
           </div>
           <div className={styles.formGroupContent}>
-            <label htmlFor="group_member">Select members:</label>
-            <input
-              data-testid="group_member"
-              type="text"
-              name="group_member"
-              id="group_member"
-              onChange={searchForGroupFriends}
+            <SearchBarGroupMembers
+              query={searchForFriend}
+              onChange={searchForFriendInput}
             />
-            {groupMembers !== undefined ? (
+            {groupMembers.length !== 0 ? (
               <ul className={styles.ulDropDownGroupUserMembers}>
-                {groupMembers.map((friend) => (
-                  <li
-                    data-testid="select_member"
-                    style={{
-                      display: "flex",
-                    }}
-                    ref={selectedGroupUserMemberRef}
-                    onClick={() => onClick(friend)}
-                    key={friend.id}
-                    className={styles.flexedLiDropDownUsersContainer}
-                  >
-                    {friend.profile_picture === "" ? (
-                      <img
-                        className={styles.dropDownUserMemberImg}
-                        src="/default_user_pfp.svg"
-                        alt="default user profile picture"
-                      />
-                    ) : (
-                      <img
-                        className={styles.userProfilePicture}
-                        src={friend.profile_picture}
-                        alt="user profile picture"
-                      />
-                    )}
-                    <div>
-                      <p>
-                        {friend.first_name} {friend.last_name}
-                      </p>
-
-                      <p>{"@" + friend.username}</p>
-                    </div>
-                  </li>
-                ))}
+                <GroupMembersList
+                  groupMembers={filterGroupFriendsResult}
+                ></GroupMembersList>
                 {showSelectedGroupMember ? (
                   <li className={styles.flexedLiDropDownSelectedUserContainer}>
                     {selectedGroupMember.profile_picture === "" ? (

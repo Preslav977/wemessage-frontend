@@ -123,6 +123,7 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MainGridInterface
+              currentPath={"/groups/"}
               leftGridComponent={<RenderAllGroups />}
               rightGridComponent={<CreateGroup />}
             ></MainGridInterface>
