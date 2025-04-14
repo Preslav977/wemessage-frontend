@@ -30,6 +30,7 @@
 .liFlexedImgAnchorContainer:hover {
   cursor: pointer;
   background-color: blue;
+  /* outline: 2px solid black; */
 }
 
 .anchorFlexedImgContainer {

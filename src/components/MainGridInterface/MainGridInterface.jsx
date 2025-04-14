@@ -47,6 +47,7 @@ function MainGridInterface({
     <>
       <main className={styles.mainGridContainer}>
         <aside
+          // if the width is smaller or equal to the 640 hide the aside; otherwise show it
           style={{
             display: width <= 640 ? "none" : "block",
           }}
@@ -54,7 +55,12 @@ function MainGridInterface({
         >
           <nav className={styles.mainNavigation}>
             <ul className={styles.ulLinkContainer}>
-              <li className={styles.liFlexedImgAnchorContainer}>
+              <li
+                style={{
+                  backgroundColor: currentPath === "/globalChat/" ? "blue" : "",
+                }}
+                className={styles.liFlexedImgAnchorContainer}
+              >
                 <Link
                   data-testid="global_chat"
                   className={styles.anchorFlexedImgContainer}
@@ -68,7 +74,12 @@ function MainGridInterface({
                   <span className={styles.anchorFlexedSpan}>Global</span>
                 </Link>
               </li>
-              <li className={styles.liFlexedImgAnchorContainer}>
+              <li
+                style={{
+                  backgroundColor: currentPath === "/chats" ? "blue" : "",
+                }}
+                className={styles.liFlexedImgAnchorContainer}
+              >
                 <Link
                   data-testid="chats"
                   className={styles.anchorFlexedImgContainer}
@@ -82,7 +93,12 @@ function MainGridInterface({
                   <span className={styles.anchorFlexedSpan}>Chats</span>
                 </Link>
               </li>
-              <li className={styles.liFlexedImgAnchorContainer}>
+              <li
+                style={{
+                  backgroundColor: currentPath === "/groups" ? "blue" : "",
+                }}
+                className={styles.liFlexedImgAnchorContainer}
+              >
                 <Link
                   data-testid="groups"
                   className={styles.anchorFlexedImgContainer}
@@ -98,7 +114,12 @@ function MainGridInterface({
               </li>
             </ul>
             <ul>
-              <li className={styles.liFlexedImgAnchorContainer}>
+              <li
+                style={{
+                  backgroundColor: currentPath === "/profile/" ? "blue" : "",
+                }}
+                className={styles.liFlexedImgAnchorContainer}
+              >
                 <Link
                   data-testid="profile"
                   className={styles.anchorFlexedImgContainer}
@@ -113,6 +134,9 @@ function MainGridInterface({
                 </Link>
               </li>
               <li
+                style={{
+                  backgroundColor: currentPath === "/logout" ? "blue" : "",
+                }}
                 onClick={userLogOut}
                 className={styles.liFlexedImgAnchorContainer}
               >
@@ -133,6 +157,9 @@ function MainGridInterface({
           </nav>
         </aside>
         <section
+          //if the current prop is chats or groups or groups
+          // and the width is bigger than equal to 640px show this section
+          //otherwise hide it
           style={{
             display:
               currentPath === "/chats" ||
@@ -147,6 +174,8 @@ function MainGridInterface({
           {leftGridComponent}
         </section>
         <section
+          // same thing here basically a way to show different grid on certain path
+          // using conditionals
           style={{
             display:
               (currentPath === "/chats" && width >= 640) ||

@@ -5,7 +5,7 @@ import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-function ManageUserProfile() {
+function ManageUserProfile({ currentPath }) {
   const [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
   const { id } = useParams();
@@ -29,12 +29,22 @@ function ManageUserProfile() {
         <h3 className={styles.manageProfileHeader}>Manage Profile</h3>
         <nav>
           <ul className={styles.ulFlexedLiContainer}>
-            <li className={styles.liFlexedContent}>
+            <li
+              style={{
+                backgroundColor: currentPath === "/profile/" ? "blue" : "",
+              }}
+              className={styles.liFlexedContent}
+            >
               <Link data-testid="profile" to={`/profile/${userLogInObj.id}`}>
                 Profile
               </Link>
             </li>
-            <li className={styles.liFlexedContent}>
+            <li
+              style={{
+                backgroundColor: currentPath === "/profile/edit/" ? "blue" : "",
+              }}
+              className={styles.liFlexedContent}
+            >
               <Link
                 data-testid="edit_profile"
                 to={`/profile/edit/${userLogInObj.id}`}
@@ -42,7 +52,13 @@ function ManageUserProfile() {
                 Edit Profile
               </Link>
             </li>
-            <li className={styles.liFlexedContent}>
+            <li
+              style={{
+                backgroundColor:
+                  currentPath === "/profile/change_passwords/" ? "blue" : "",
+              }}
+              className={styles.liFlexedContent}
+            >
               <Link
                 data-testid="change_password"
                 to={`/profile/change_passwords/${userLogInObj.id}`}

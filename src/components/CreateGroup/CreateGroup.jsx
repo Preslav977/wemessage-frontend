@@ -55,7 +55,7 @@ function CreateGroup() {
     searchForFriend,
   );
 
-  console.log("Filtering the users based on typing", filterGroupFriendsResult);
+  // console.log("Filtering the users based on typing", filterGroupFriendsResult);
 
   // console.log(searchForFriend);
 

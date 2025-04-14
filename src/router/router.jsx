@@ -32,7 +32,9 @@ const router = createBrowserRouter([
           <ProtectedRoute>
             <MainGridInterface
               currentPath={"/profile/"}
-              leftGridComponent={<ManageUserProfile />}
+              leftGridComponent={
+                <ManageUserProfile currentPath={"/profile/"} />
+              }
               rightGridComponent={<UserProfile />}
             ></MainGridInterface>
           </ProtectedRoute>
@@ -44,7 +46,9 @@ const router = createBrowserRouter([
           <ProtectedRoute>
             <MainGridInterface
               currentPath={"/profile/edit/"}
-              leftGridComponent={<ManageUserProfile />}
+              leftGridComponent={
+                <ManageUserProfile currentPath={"/profile/edit/"} />
+              }
               rightGridComponent={<EditUserProfile />}
             ></MainGridInterface>
           </ProtectedRoute>
@@ -56,7 +60,9 @@ const router = createBrowserRouter([
           <ProtectedRoute>
             <MainGridInterface
               currentPath={"/profile/change_passwords/"}
-              leftGridComponent={<ManageUserProfile />}
+              leftGridComponent={
+                <ManageUserProfile currentPath={"/profile/change_passwords/"} />
+              }
               rightGridComponent={<UpdateUserPasswords />}
             ></MainGridInterface>
           </ProtectedRoute>
