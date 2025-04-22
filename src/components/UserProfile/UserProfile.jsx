@@ -12,6 +12,8 @@ import PopUpModal from "../PopUpModal/PopUpModal";
 function UserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
+  console.log(userLogInObj);
+
   const { backgroundPicture, setBackgroundPicture } = useContext(
     BackgroundPictureContext,
   );
@@ -20,6 +22,9 @@ function UserProfile() {
     useState(false);
 
   const [showPopUpModalProfileUpdate, setShowPopUpModalProfileUpdate] =
+    useState(false);
+
+  const [showPopUpModalOnExpiredToken, setShowPopUpModalOnExpiredToken] =
     useState(false);
 
   const { userGetById } = useFetchSingleUserURL();
@@ -65,6 +70,17 @@ function UserProfile() {
           setShowPopUpModalProfileUpdate(false);
         }, 3000);
       }
+
+      if (response.status === 403) {
+        setShowPopUpModalOnExpiredToken(true);
+
+        //reset the state in order to popup the modal again
+        setTimeout(() => {
+          setShowPopUpModalOnExpiredToken(false);
+        }, 3000);
+      }
+
+      console.log(response);
 
       const result = await response.json();
 
@@ -171,7 +187,11 @@ function UserProfile() {
             <p className={styles.usersBioParagraph}>{userGetById.bio}</p>
           </div>
           <form onSubmit={startConversation}>
-            <button className={styles.sendMessageBtn} type="submit">
+            <button
+              disabled={userLogInObj.role === "GUEST" ? true : false}
+              className={styles.sendMessageBtn}
+              type="submit"
+            >
               Send Message
             </button>
           </form>
@@ -224,6 +244,7 @@ function UserProfile() {
               name="file"
               id="file"
               data-testid="background_image"
+              disabled={userLogInObj.role === "GUEST" ? true : false}
             />
             <button
               style={{
@@ -305,8 +326,16 @@ function UserProfile() {
           }
         />
       )}
+      {showPopUpModalOnExpiredToken && (
+        <PopUpModal
+          popUpModalBackgroundColor={"red"}
+          popUpModalContentColor={"white"}
+          popUpModalBorderColor={"red"}
+          popUpModalContentHeader={"Token expired"}
+          popUpModalContentText={"Token has expired login again to continue!"}
+        />
+      )}
     </>
   );
 }
-
 export default UserProfile;

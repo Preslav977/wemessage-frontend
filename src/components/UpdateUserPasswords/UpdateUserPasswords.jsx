@@ -6,7 +6,6 @@ import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { PasswordContext } from "../../contexts/UserRegistrationContext";
 import { useState, useContext } from "react";
 import { passwordRegex } from "../../utility/passwordRegex";
-import { useNavigate } from "react-router-dom";
 
 import PopUpModal from "../PopUpModal/PopUpModal";
 
@@ -24,7 +23,8 @@ function UpdateUserPasswords() {
   const [showPopUpModalUpdatedPasswords, setShowPopUpModalUpdatedPasswords] =
     useState(false);
 
-  const navigate = useNavigate();
+  const [showPopUpModalOnExpiredToken, setShowPopUpModalOnExpiredToken] =
+    useState(false);
 
   async function userUserPasswords(e) {
     e.preventDefault();
@@ -61,10 +61,14 @@ function UpdateUserPasswords() {
         },
       );
 
-      // if (response.status === 403) {
-      //   navigate("/login");
-      // }
+      if (response.status === 403) {
+        setShowPopUpModalOnExpiredToken(true);
 
+        //reset the state in order to popup the modal again
+        setTimeout(() => {
+          setShowPopUpModalOnExpiredToken(false);
+        }, 3000);
+      }
       if (response.status === 400) {
         setOldPasswordErr("Old password doesn't match.");
       } else {
@@ -108,7 +112,11 @@ function UpdateUserPasswords() {
       <hr className={styles.sectionWrapperTopHr} />
       <header className={styles.sectionWrapperHeaderContainer}>
         <h3 className={styles.sectionWrapperHeader}>Change Password</h3>
-        <button className={styles.sectionWrapperSaveBtn} type="submit">
+        <button
+          disabled={userLogInObj.role === "GUEST" ? true : false}
+          className={styles.sectionWrapperSaveBtn}
+          type="submit"
+        >
           Save
         </button>
       </header>
@@ -173,6 +181,15 @@ function UpdateUserPasswords() {
           popUpModalBorderColor={"white"}
           popUpModalContentHeader={"Profile updated"}
           popUpModalContentText={"Your passwords has been updated successfully"}
+        />
+      )}
+      {showPopUpModalOnExpiredToken && (
+        <PopUpModal
+          popUpModalBackgroundColor={"red"}
+          popUpModalContentColor={"white"}
+          popUpModalBorderColor={"red"}
+          popUpModalContentHeader={"Token expired"}
+          popUpModalContentText={"Token has expired login again to continue!"}
         />
       )}
     </form>

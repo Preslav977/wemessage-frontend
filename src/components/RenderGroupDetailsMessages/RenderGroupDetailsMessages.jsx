@@ -44,6 +44,9 @@ function RenderGroupDetailsMessages() {
     setShowPopUpWhenDeletingOrEditingMessage,
   ] = useState(false);
 
+  const [showPopUpModalOnExpiredToken, setShowPopUpModalOnExpiredToken] =
+    useState(false);
+
   const navigate = useNavigate();
 
   if (loading) {
@@ -142,6 +145,15 @@ L82,35.7z"
         },
       );
 
+      if (response.status === 403) {
+        setShowPopUpModalOnExpiredToken(true);
+
+        //reset the state in order to popup the modal again
+        setTimeout(() => {
+          setShowPopUpModalOnExpiredToken(false);
+        }, 3000);
+      }
+
       const result = await response.json();
 
       console.log(result);
@@ -175,6 +187,15 @@ L82,35.7z"
           body: formData,
         },
       );
+
+      if (response.status === 403) {
+        setShowPopUpModalOnExpiredToken(true);
+
+        //reset the state in order to popup the modal again
+        setTimeout(() => {
+          setShowPopUpModalOnExpiredToken(false);
+        }, 3000);
+      }
 
       const result = await response.json();
 
@@ -238,6 +259,15 @@ L82,35.7z"
         },
       );
 
+      if (response.status === 403) {
+        setShowPopUpModalOnExpiredToken(true);
+
+        //reset the state in order to popup the modal again
+        setTimeout(() => {
+          setShowPopUpModalOnExpiredToken(false);
+        }, 3000);
+      }
+
       if (response.status === 200) {
         setShowPopUpWhenDeletingOrEditingMessage(true);
 
@@ -291,6 +321,15 @@ L82,35.7z"
           }),
         },
       );
+
+      if (response.status === 403) {
+        setShowPopUpModalOnExpiredToken(true);
+
+        //reset the state in order to popup the modal again
+        setTimeout(() => {
+          setShowPopUpModalOnExpiredToken(false);
+        }, 3000);
+      }
 
       if (response.status === 200) {
         setShowPopUpWhenDeletingOrEditingMessage(true);
@@ -470,7 +509,11 @@ L82,35.7z"
               </div>
             ) : (
               <form onSubmit={joinGroup}>
-                <button className={styles.joinGroupBtn} type="submit">
+                <button
+                  disabled={userLogInObj.role === "GUEST" ? true : false}
+                  className={styles.joinGroupBtn}
+                  type="submit"
+                >
                   Join
                 </button>
               </form>
@@ -531,7 +574,11 @@ L82,35.7z"
                                 className={
                                   styles.groupDetailsMessageDropDownImg
                                 }
-                                onClick={() => toggleMessageDropDown(message)}
+                                onClick={() =>
+                                  userLogInObj.role === "GUEST"
+                                    ? ""
+                                    : toggleMessageDropDown(message)
+                                }
                                 src="/three_dots.svg"
                                 alt="message drop-down menu"
                               />
@@ -640,7 +687,9 @@ L82,35.7z"
                                           styles.groupDetailsMessageDropDownImg
                                         }
                                         onClick={() =>
-                                          toggleMessageDropDown(message)
+                                          userLogInObj.role === "GUEST"
+                                            ? ""
+                                            : toggleMessageDropDown(message)
                                         }
                                         src="/three_dots.svg"
                                         alt="message drop-down menu"
@@ -800,6 +849,7 @@ L82,35.7z"
                       type="file"
                       name="file"
                       id="file"
+                      disabled={userLogInObj.role === "GUEST" ? true : false}
                     />
                   </div>
                   <div className={styles.groupDetailsSendMessageContainer}>
@@ -811,6 +861,7 @@ L82,35.7z"
                     <button
                       className={styles.groupDetailsSendMessageOrImageButton}
                       type="submit"
+                      disabled={userLogInObj.role === "GUEST" ? true : false}
                     >
                       Send
                     </button>
@@ -836,6 +887,15 @@ L82,35.7z"
             popUpModalContentColor={"black"}
             popUpModalBorderColor={"white"}
             popUpModalContentText={"Message deleted!"}
+          />
+        )}
+        {showPopUpModalOnExpiredToken && (
+          <PopUpModal
+            popUpModalBackgroundColor={"red"}
+            popUpModalContentColor={"white"}
+            popUpModalBorderColor={"red"}
+            popUpModalContentHeader={"Token expired"}
+            popUpModalContentText={"Token has expired login again to continue!"}
           />
         )}
       </>

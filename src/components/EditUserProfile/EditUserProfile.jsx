@@ -14,6 +14,8 @@ import {
   ProfilePictureContext,
 } from "../../contexts/UserRegistrationContext";
 
+import PopUpModal from "../PopUpModal/PopUpModal";
+
 function EditUserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
@@ -34,6 +36,9 @@ function EditUserProfile() {
   const [lastNameError, setLastNameError] = useState("");
 
   const [usernameError, setUsernameError] = useState("");
+
+  const [showPopUpModalOnExpiredToken, setShowPopUpModalOnExpiredToken] =
+    useState(false);
 
   const hideSendBtnRef = useRef(null);
 
@@ -64,6 +69,15 @@ function EditUserProfile() {
           body: formData,
         },
       );
+
+      if (response.status === 403) {
+        setShowPopUpModalOnExpiredToken(true);
+
+        //reset the state in order to popup the modal again
+        setTimeout(() => {
+          setShowPopUpModalOnExpiredToken(false);
+        }, 3000);
+      }
 
       const result = await response.json();
 
@@ -119,6 +133,15 @@ function EditUserProfile() {
         },
       );
 
+      if (response.status === 403) {
+        setShowPopUpModalOnExpiredToken(true);
+
+        //reset the state in order to popup the modal again
+        setTimeout(() => {
+          setShowPopUpModalOnExpiredToken(false);
+        }, 3000);
+      }
+
       if (response.status === 200) {
         setFirstName("");
         setLastName("");
@@ -162,176 +185,193 @@ function EditUserProfile() {
   }
 
   return (
-    <div className={styles.sectionWrapper}>
-      <Link
-        className={styles.userProfileAnchor}
-        to={`/profile/${userLogInObj.id}`}
-      >
-        <img
-          className={styles.useProfileAnchorImg}
-          src="/back-arrow.svg"
-          alt="go back to user profile"
-        />
-      </Link>
-      <hr className={styles.userProfileTopHr} />
-
-      <div className={styles.changeProfilePictureContainer}>
-        <h3 className={styles.changeProfilePictureHeader}>Profile Picture</h3>
-        <form
-          className={styles.formChangeProfilePicture}
-          onSubmit={changeProfileImage}
+    <>
+      <div className={styles.sectionWrapper}>
+        <Link
+          className={styles.userProfileAnchor}
+          to={`/profile/${userLogInObj.id}`}
         >
-          <label className={styles.editUserProfileLabel}>
-            Edit
-            <img
-              className={styles.editUserProfileImage}
-              src="/edit_profile.svg"
-              alt="update user profile picture"
-            />
-            <input
-              onClick={showSendBtn}
-              className={styles.editInputProfileImage}
-              type="file"
-              name="file"
-              id="file"
-              data-testid="profile_image"
-            />
-          </label>
-          <div className={styles.submitProfilePictureContainer}>
+          <img
+            className={styles.useProfileAnchorImg}
+            src="/back-arrow.svg"
+            alt="go back to user profile"
+          />
+        </Link>
+        <hr className={styles.userProfileTopHr} />
+
+        <div className={styles.changeProfilePictureContainer}>
+          <h3 className={styles.changeProfilePictureHeader}>Profile Picture</h3>
+          <form
+            className={styles.formChangeProfilePicture}
+            onSubmit={changeProfileImage}
+          >
+            <label className={styles.editUserProfileLabel}>
+              Edit
+              <img
+                className={styles.editUserProfileImage}
+                src="/edit_profile.svg"
+                alt="update user profile picture"
+              />
+              <input
+                onClick={showSendBtn}
+                className={styles.editInputProfileImage}
+                type="file"
+                name="file"
+                id="file"
+                data-testid="profile_image"
+                disabled={userLogInObj.role === "GUEST" ? true : false}
+              />
+            </label>
+            <div className={styles.submitProfilePictureContainer}>
+              <button
+                style={{
+                  display: "none",
+                }}
+                ref={hideSendBtnRef}
+                className={styles.submitProfilePicture}
+                type="submit"
+              >
+                Send
+              </button>
+            </div>
+          </form>
+        </div>
+        <div className={styles.userProfileContainer}>
+          <div className={styles.flexedUserProfileContent}>
+            {userLogInObj.profile_picture === "" ? (
+              <img
+                className={styles.userProfileImage}
+                src="/default_pfp.svg"
+                alt="user profile picture"
+              />
+            ) : (
+              <img
+                className={styles.updatedUserProfileImage}
+                src={userLogInObj.profile_picture}
+                alt="user profile picture"
+              />
+            )}
+          </div>
+        </div>
+        <hr className={styles.userProfileBottomHr} />
+        <form onSubmit={updateUserProfile}>
+          <div className={styles.formGroup}>
+            <div className={styles.formGroupContent}>
+              <div className={styles.formInputGroup}>
+                <label htmlFor="first_name">
+                  First name: <span className={styles.error}>*</span>
+                </label>
+                <input
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  minLength={1}
+                  maxLength={30}
+                  type="text"
+                  name="first_name"
+                  id="first_name"
+                  data-testid="first_name"
+                  required
+                />
+                {firstName.length < 1 && (
+                  <span className={styles.error}>
+                    First name must be between 1 and 30 characters
+                  </span>
+                )}
+                {firstNameError && (
+                  <span className={styles.error}>{firstNameError}</span>
+                )}
+              </div>
+              <div className={styles.formInputGroup}>
+                <label htmlFor="last_name">
+                  Last name: <span className={styles.error}>*</span>
+                </label>
+                <input
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  minLength={1}
+                  maxLength={30}
+                  type="text"
+                  name="last_name"
+                  id="last_name"
+                  data-testid="last_name"
+                  required
+                />
+                {lastName.length < 1 && (
+                  <span className={styles.error}>
+                    Last name must be between 1 and 30 characters
+                  </span>
+                )}
+                {lastNameError && (
+                  <span className={styles.error}>{lastNameError}</span>
+                )}
+              </div>
+              <div className={styles.formInputGroup}>
+                <label htmlFor="username">
+                  Username: <span className={styles.error}>*</span>
+                </label>
+                <input
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  minLength={1}
+                  maxLength={30}
+                  type="text"
+                  name="username"
+                  id="username"
+                  data-testid="username"
+                  required
+                />
+                {username.length < 1 && (
+                  <span className={styles.error}>
+                    Username must be between 1 and 30 characters
+                  </span>
+                )}
+                {usernameError && (
+                  <span className={styles.error}>{usernameError}</span>
+                )}
+              </div>
+            </div>
+            <div className={styles.formTextareaGroup}>
+              <label htmlFor="bio">
+                Bio: <span className={styles.error}>*</span>
+              </label>
+              <textarea
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                minLength={1}
+                maxLength={150}
+                // rows={13}
+                name="bio"
+                id="bio"
+                data-testid="bio"
+                required
+              ></textarea>
+              {bio.length < 1 && (
+                <span className={styles.error}>
+                  Bio must be between 1 and 150 characters
+                </span>
+              )}
+            </div>
+          </div>
+          <div className={styles.submitBtnContainer}>
             <button
-              style={{
-                display: "none",
-              }}
-              ref={hideSendBtnRef}
-              className={styles.submitProfilePicture}
-              type="submit"
+              disabled={userLogInObj.role === "GUEST" ? true : false}
+              className={styles.submitBtn}
             >
-              Send
+              save changes
             </button>
           </div>
         </form>
       </div>
-      <div className={styles.userProfileContainer}>
-        <div className={styles.flexedUserProfileContent}>
-          {userLogInObj.profile_picture === "" ? (
-            <img
-              className={styles.userProfileImage}
-              src="/default_pfp.svg"
-              alt="user profile picture"
-            />
-          ) : (
-            <img
-              className={styles.updatedUserProfileImage}
-              src={userLogInObj.profile_picture}
-              alt="user profile picture"
-            />
-          )}
-        </div>
-      </div>
-      <hr className={styles.userProfileBottomHr} />
-      <form onSubmit={updateUserProfile}>
-        <div className={styles.formGroup}>
-          <div className={styles.formGroupContent}>
-            <div className={styles.formInputGroup}>
-              <label htmlFor="first_name">
-                First name: <span className={styles.error}>*</span>
-              </label>
-              <input
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                minLength={1}
-                maxLength={30}
-                type="text"
-                name="first_name"
-                id="first_name"
-                data-testid="first_name"
-                required
-              />
-              {firstName.length < 1 && (
-                <span className={styles.error}>
-                  First name must be between 1 and 30 characters
-                </span>
-              )}
-              {firstNameError && (
-                <span className={styles.error}>{firstNameError}</span>
-              )}
-            </div>
-            <div className={styles.formInputGroup}>
-              <label htmlFor="last_name">
-                Last name: <span className={styles.error}>*</span>
-              </label>
-              <input
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                minLength={1}
-                maxLength={30}
-                type="text"
-                name="last_name"
-                id="last_name"
-                data-testid="last_name"
-                required
-              />
-              {lastName.length < 1 && (
-                <span className={styles.error}>
-                  Last name must be between 1 and 30 characters
-                </span>
-              )}
-              {lastNameError && (
-                <span className={styles.error}>{lastNameError}</span>
-              )}
-            </div>
-            <div className={styles.formInputGroup}>
-              <label htmlFor="username">
-                Username: <span className={styles.error}>*</span>
-              </label>
-              <input
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                minLength={1}
-                maxLength={30}
-                type="text"
-                name="username"
-                id="username"
-                data-testid="username"
-                required
-              />
-              {username.length < 1 && (
-                <span className={styles.error}>
-                  Username must be between 1 and 30 characters
-                </span>
-              )}
-              {usernameError && (
-                <span className={styles.error}>{usernameError}</span>
-              )}
-            </div>
-          </div>
-          <div className={styles.formTextareaGroup}>
-            <label htmlFor="bio">
-              Bio: <span className={styles.error}>*</span>
-            </label>
-            <textarea
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              minLength={1}
-              maxLength={150}
-              // rows={13}
-              name="bio"
-              id="bio"
-              data-testid="bio"
-              required
-            ></textarea>
-            {bio.length < 1 && (
-              <span className={styles.error}>
-                Bio must be between 1 and 150 characters
-              </span>
-            )}
-          </div>
-        </div>
-        <div className={styles.submitBtnContainer}>
-          <button className={styles.submitBtn}>save changes</button>
-        </div>
-      </form>
-    </div>
+      {showPopUpModalOnExpiredToken && (
+        <PopUpModal
+          popUpModalBackgroundColor={"red"}
+          popUpModalContentColor={"white"}
+          popUpModalBorderColor={"red"}
+          popUpModalContentHeader={"Token expired"}
+          popUpModalContentText={"Token has expired login again to continue!"}
+        />
+      )}
+    </>
   );
 }
 

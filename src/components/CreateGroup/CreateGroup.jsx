@@ -4,9 +4,10 @@ import { GroupsContext } from "../../contexts/GroupsContext";
 import { useNavigate } from "react-router-dom";
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { ChatsContext } from "../../contexts/ChatsContext";
-import { FilterGroupMembers } from "../FilterGroupMembers";
-import SearchBarGroupMembers from "../SearchBarGroupMembers";
-import GroupMembersList from "../GroupMembersList";
+import { FilterGroupMembers } from "../FilterGroupMembers/FilterGroupMembers";
+import SearchBarGroupMembers from "../SearchBarGroupMembers/SearchBarGroupMembers";
+import GroupMembersList from "../GroupMembersList/GroupMembersList";
+import PopUpModal from "../PopUpModal/PopUpModal";
 
 function CreateGroup() {
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
@@ -18,6 +19,9 @@ function CreateGroup() {
   const [groupsName, setGroupName] = useState("");
 
   const [error, setError] = useState(null);
+
+  const [showPopUpModalOnExpiredToken, setShowPopUpModalOnExpiredToken] =
+    useState(false);
 
   const saveTheUsersThatHadChatWithTheUserArray = [];
 
@@ -74,6 +78,15 @@ function CreateGroup() {
 
       // console.log(response.status);
 
+      if (response.status === 403) {
+        setShowPopUpModalOnExpiredToken(true);
+
+        //reset the state in order to popup the modal again
+        setTimeout(() => {
+          setShowPopUpModalOnExpiredToken(false);
+        }, 3000);
+      }
+
       const result = await response.json();
 
       // console.log(result);
@@ -115,6 +128,7 @@ function CreateGroup() {
               type="file"
               name="file"
               id="file"
+              disabled={userLogInObj.role === "GUEST" ? true : false}
             />
           </label>
         </div>
@@ -195,11 +209,24 @@ function CreateGroup() {
           </div>
         </div>
         <div className={styles.createGroupButtonContainer}>
-          <button className={styles.createGroupButton} type="submit">
+          <button
+            disabled={userLogInObj.role === "GUEST" ? true : false}
+            className={styles.createGroupButton}
+            type="submit"
+          >
             Create Group
           </button>
         </div>
       </form>
+      {showPopUpModalOnExpiredToken && (
+        <PopUpModal
+          popUpModalBackgroundColor={"red"}
+          popUpModalContentColor={"white"}
+          popUpModalBorderColor={"red"}
+          popUpModalContentHeader={"Token expired"}
+          popUpModalContentText={"Token has expired login again to continue!"}
+        />
+      )}
     </div>
   );
 }

@@ -20,5 +20,4 @@ SearchBarGroupMembers.propTypes = {
   query: PropTypes.string,
   onChange: PropTypes.func,
 };
-
 export default SearchBarGroupMembers;

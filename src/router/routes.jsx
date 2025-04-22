@@ -21,9 +21,9 @@ const routes = [
   {
     path: "/",
     element: (
-      <ProtectedAppRoute>
-        <App />
-      </ProtectedAppRoute>
+      // <ProtectedAppRoute>
+      <App />
+      // </ProtectedAppRoute>
     ),
     errorElement: <ErrorPage />,
     children: [
