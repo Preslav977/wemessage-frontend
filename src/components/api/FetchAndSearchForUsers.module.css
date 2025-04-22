@@ -1,3 +1,7 @@
+.errorParagraph {
+  color: white;
+}
+
 .fetchUsersHeader {
   /* outline: 2px solid black; */
   display: flex;
@@ -6,23 +10,88 @@
   margin-bottom: 0.5rem;
 }
 
+.fetchUsersSubHeader {
+  color: white;
+  font-size: 1.3rem;
+}
+
+@keyframes rotateTo45deg {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(45deg);
+  }
+}
+
 .closeSearchForUsersSvg {
-  width: 30px;
+  width: 40px;
   cursor: pointer;
+  border-radius: 50%;
+  transition: background-color 0.5s ease-in-out;
+  animation-duration: 0.15s;
+  animation-name: rotateTo45deg;
+  animation-timing-function: ease-in;
+  transform: rotate(45deg);
+}
+
+.closeSearchForUsersSvg:hover {
+  background-color: #393a3b;
 }
 
 .searchForUsersInput {
-  outline: 2px solid black;
+  /* outline: 2px solid black; */
   width: 100%;
+  padding: 0.4em 0;
+  border-radius: 1em;
+  border: 0;
+  background-color: #3a3b3c;
+  color: white;
+  margin-bottom: 1em;
 }
 
 .flexedNestedLiUsersContainer {
-  margin-top: 0.5rem;
+  padding: 0.25em;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
+.flexedNestedLiUsersContainer:hover {
+  background-color: #3a3b3c;
+}
+
+.userProfilePictureAndOnlinePresenceContainer {
+  display: flex;
+  align-items: center;
+  /* outline: 2px solid white; */
+}
+
 .userProfilePicture {
   width: 40px;
+}
+
+.userPresenceStatus {
+  position: absolute;
+  /* z-index: 1; */
+  outline: 2px solid white;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: -1em;
+  margin-top: 0.5em;
+}
+
+.userFirstAndLastName {
+  text-transform: capitalize;
+}
+
+.userFirstAndLastName,
+.userUsername {
+  color: white;
+}
+
+.userUsername {
+  font-size: 0.75rem;
 }

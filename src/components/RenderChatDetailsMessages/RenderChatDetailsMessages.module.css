@@ -1,36 +1,70 @@
+.errorParagraph {
+  color: white;
+}
+
+.chatDetailsHeader {
+  color: white;
+  font-size: 2.5rem;
+}
+
 .chatMessagesDetailsContainer {
-  max-height: 96vh;
-  overflow: scroll;
+  height: 90vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  /* outline: 2px solid black; */
-  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  scrollbar-width: thin;
+}
+
+.chatDetailsSendMessageDate {
+  color: white;
+  text-align: center;
+  margin-top: 1.5em;
+  font-size: 0.75rem;
 }
 
 .chatMessageDetailsHeader {
   position: sticky;
   top: 0%;
   z-index: 1;
-  /* background-color: black; */
-  outline: 2px solid black;
-  padding: 1em;
+  background-color: #242526;
+}
+
+.chatDetailsHeaderBottomHr {
+  margin-top: 0.5em;
 }
 
 .chatMessageDetailsFlexedAnchor {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  color: white;
+}
+
+.chatMessageDetailsFlexedAnchor:visited {
+  color: white;
+}
+
+.chatMessageDetailsFlexedAnchor:hover {
+  text-decoration: underline;
 }
 
 .chatDetailsUserProfilePicture,
 .chatDetailsUserDefaultProfilePicture {
   width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
 .chatMessageDetailsUserFirstAndLastName {
   text-align: center;
   margin-bottom: 0.3em;
+  text-transform: capitalize;
 }
 
 .chatNoMessagesContainer {
@@ -38,6 +72,11 @@
   height: 100vh;
   align-items: center;
   justify-content: center;
+  /* outline: 2px solid white; */
+}
+
+.chatNoMessagesPara {
+  color: white;
 }
 
 .chatDetailsUserMessage {
@@ -49,7 +88,7 @@
   hyphens: auto;
   line-break: anywhere;
   text-align: center;
-  margin: 1.5em 1em 1em 0;
+  margin: 1.5em 0 1em 0;
 }
 
 .chatDetailsMessageDropDownMenu {
@@ -65,10 +104,12 @@
 
 .chatDetailsSendMessage {
   max-width: 22em;
-  outline: 2px solid black;
+  /* outline: 2px solid black; */
   padding: 0.5em 1em;
   margin-left: 0.25em;
   border-radius: 1em;
+  background-color: #3a3b3c;
+  color: white;
 }
 
 .chatDetailsMessageDropDownButtonWrapper {
@@ -80,52 +121,139 @@
 
 .chatDetailsDropDownMenuButtons {
   position: absolute;
-  left: -15px;
+  left: -20px;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-self: center;
-  margin-top: 4em;
+  margin-top: 5.5em;
+}
+
+.dropDownEditMessageForm {
+  background-color: #3a3b3c;
+  color: white;
+  border: 0;
+  padding: 0.4rem 0;
+}
+
+.dropDownMenuCancelBtn,
+.dropDownMenuSaveBtn,
+.dropDownMenuEditBtn,
+.dropDownMenuDeleteBtn {
+  background-color: #3a3b3c;
+  color: white;
+  border: 0;
+  padding: 0.5em;
+}
+
+.dropDownMenuCancelBtn:hover,
+.dropDownMenuSaveBtn:hover,
+.dropDownMenuEditBtn:hover,
+.dropDownMenuDeleteBtn:hover {
+  cursor: pointer;
+}
+
+.dropDownMenuSaveBtn,
+.dropDownMenuCancelBtn {
+  margin-left: 0.25rem;
 }
 
 .chatDetailsSendImage {
-  max-width: 18em;
+  max-width: 16rem;
   height: auto;
   margin-bottom: 1em;
 }
 
 .chatReceiverSendingMessagesContainer {
+  display: flex;
+  flex-direction: column;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  line-break: anywhere;
+  text-align: center;
+  margin: 1.5em 0 1em 0;
   margin-top: 1.5em;
 }
 
 .chatDetailsUserUsername {
   width: 100%;
   text-align: left;
-  margin-left: 5em;
+  margin-left: 5.5em;
   margin-bottom: 0.3em;
-  /* outline: 2px solid black; */
+  color: white;
+  font-size: 0.75rem;
 }
 
 .chatDetailsReceiverUserMessages {
   display: flex;
   gap: 0.5em;
   align-items: center;
-  margin: 0em 1em 1em 1em;
+  margin: 0em 1em 1em 0;
+}
+
+.chatMessageDetailsBottomHr {
+  /* color: red; */
+  /* outline: 2px solid white; */
+  margin-bottom: 0.5em;
 }
 
 .chatDetailsSendMessageOrImageContainer {
   margin-top: auto;
   position: sticky;
   bottom: 0%;
-
-  outline: 2px solid black;
+  margin-bottom: 0.1em;
+  background-color: #242526;
+  /* display: flex; */
 }
 
-.chatDetailsSendMessageInput {
-  width: 92.5%;
+.flexChatDetailsSendMessageOrImageForm {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.15em 0.15em;
+  /* outline: 2px solid red; */
+  /* width: 400px; */
+  /* width: max-content; */
+}
+
+.flexChatDetailsSendMessageOrImageForm > input {
+  width: 100%;
+  padding: 0.9em 0;
+  border-radius: 1.5em;
+  border: 0;
+  background-color: #242526;
+  /* outline: 1px solid white; */
+  border: 1px solid white;
+  color: white;
+}
+
+.chatDetailsSendImageContainer,
+.chatDetailsSendMessageContainer {
+  outline: 2px solid white;
+  /* width: 43px;
+  height: 43px; */
+  padding: 0.3em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.chatDetailsSendImageSvg,
+.chatDetailsSendMessageSvg {
+  width: 30px;
+  cursor: pointer;
 }
 
 .chatDetailsSendImageInput,
 .chatDetailsSendMessageOrImageButton {
-  width: 50px;
+  position: absolute;
+  top: 10px;
+  left: 4px;
+  width: 25px;
+  opacity: 0;
+  cursor: pointer;
 }

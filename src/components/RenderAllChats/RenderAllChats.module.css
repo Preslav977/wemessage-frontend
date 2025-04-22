@@ -1,20 +1,87 @@
+.errorParagraph {
+  color: white;
+}
+
 .flexedChatHeaderContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.flexChatHeader {
+  color: white;
+  font-size: 1.3rem;
+}
+
 .flexedNestedLiUserContainer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0.25em;
+  /* outline: 2px solid black; */
+  flex-wrap: wrap;
+}
+
+.flexedNestedLiUserContainer:hover {
+  background-color: #3a3b3c;
+}
+
+.userProfilePictureAndOnlinePresenceContainer {
+  display: flex;
+  align-items: center;
+  /* outline: 2px solid white; */
+}
+
+@keyframes rotateFrom45degTo0deg {
+  0% {
+    transform: rotate(45deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 .openSearchForAUserSvg {
   width: 40px;
+  border-radius: 50%;
   cursor: pointer;
+  transition: background-color 0.5s ease-in-out;
+  animation-duration: 0.3s;
+  animation-name: rotateFrom45degTo0deg;
+  transform: rotate(0deg);
+  animation-timing-function: ease-in;
+}
+
+.openSearchForAUserSvg:hover {
+  background-color: #393a3b;
 }
 
 .usersProfilePicture {
   width: 50px;
+  position: relative;
+}
+
+.userPresenceStatus {
+  position: absolute;
+  /* z-index: 1; */
+  outline: 2px solid white;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: -1em;
+  margin-top: 0.5em;
+}
+
+.userFirstAndLastName {
+  text-transform: capitalize;
+}
+
+.userFirstAndLastName,
+.userUsername {
+  color: white;
+}
+
+.userUsername {
+  font-size: 0.75rem;
 }

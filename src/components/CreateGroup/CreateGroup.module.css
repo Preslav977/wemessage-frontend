@@ -1,7 +1,52 @@
+.createGroupHeader {
+  font-size: 1.5rem;
+}
+
+.createGroupHeader,
+.flexedGroupProfilePara {
+  color: white;
+}
+
+.createGroupHeaderBottomHr {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
 .flexedGroupProfileAndChangeBtn {
   display: flex;
   justify-content: space-between;
   margin-top: 0.5em;
+}
+
+.changeGroupImageLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: 2px solid black;
+  padding: 0.5em 0.6em;
+  gap: 0.2rem;
+  background-color: white;
+  border-radius: 5px;
+  position: relative;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.changeGroupImageLabel:hover {
+  cursor: pointer;
+}
+
+.changeGroupImage {
+  width: 15px;
+}
+
+.changeGroupImageInput {
+  opacity: 0;
+  width: 90px;
+  position: absolute;
+  cursor: pointer;
+  /* left: 0; */
+  /* background-color: aqua; */
 }
 
 .groupPreviewImgContainer {
@@ -30,6 +75,11 @@
   border-radius: 50%;
 }
 
+.groupPreviewBottomHr {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
 .formGroup {
   display: flex;
   flex-direction: column;
@@ -37,15 +87,45 @@
   margin-top: 0.5em;
 }
 
+.formGroupContent > label {
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.formGroupContent > input {
+  padding: 0.4rem 0;
+  background-color: #3a3b3c;
+  color: white;
+  border: 0;
+}
+
 .formGroupContent {
   display: flex;
   flex-direction: column;
 }
 
-.createGroupButton {
+.error {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: red;
+}
+
+.createGroupButtonContainer {
   display: flex;
   justify-content: flex-end;
   margin-top: 1em;
+  /* padding: 0.5em 0.6em; */
+}
+
+.createGroupButton {
+  padding: 0.5em 0.9em;
+  transition: opacity 1s ease-in-out;
+  font-size: 0.85rem;
+}
+
+.createGroupButton:hover {
+  cursor: pointer;
+  opacity: 0.75;
 }
 
 .ulDropDownGroupUserMembers {
@@ -57,7 +137,7 @@
   display: flex;
   align-items: center;
   gap: 0.5em;
-  background-color: gray;
+  background-color: #3e4042;
   color: white;
   cursor: pointer;
 }

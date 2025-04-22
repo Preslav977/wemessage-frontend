@@ -1,7 +1,9 @@
+import PropTypes from "prop-types";
+
 function SearchBarGroupMembers({ query, onChange }) {
   return (
     <>
-      <label htmlFor="group_member">Select members:</label>
+      <label htmlFor="group_member">Select Members:</label>
       <input
         data-testid="group_member"
         type="text"
@@ -13,5 +15,10 @@ function SearchBarGroupMembers({ query, onChange }) {
     </>
   );
 }
+
+SearchBarGroupMembers.propTypes = {
+  query: PropTypes.string,
+  onChange: PropTypes.func,
+};
 
 export default SearchBarGroupMembers;

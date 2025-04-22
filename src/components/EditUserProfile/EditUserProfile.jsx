@@ -125,8 +125,6 @@ function EditUserProfile() {
         setUsername("");
         setBio("");
 
-        setPopUpModal(true);
-
         const result = await response.json();
 
         const userLoggedInInformation = {
@@ -175,10 +173,10 @@ function EditUserProfile() {
           alt="go back to user profile"
         />
       </Link>
-      <hr />
+      <hr className={styles.userProfileTopHr} />
 
       <div className={styles.changeProfilePictureContainer}>
-        <h4>Profile Picture</h4>
+        <h3 className={styles.changeProfilePictureHeader}>Profile Picture</h3>
         <form
           className={styles.formChangeProfilePicture}
           onSubmit={changeProfileImage}
@@ -230,7 +228,7 @@ function EditUserProfile() {
           )}
         </div>
       </div>
-      <hr />
+      <hr className={styles.userProfileBottomHr} />
       <form onSubmit={updateUserProfile}>
         <div className={styles.formGroup}>
           <div className={styles.formGroupContent}>
@@ -316,7 +314,7 @@ function EditUserProfile() {
               onChange={(e) => setBio(e.target.value)}
               minLength={1}
               maxLength={150}
-              rows={14}
+              // rows={13}
               name="bio"
               id="bio"
               data-testid="bio"

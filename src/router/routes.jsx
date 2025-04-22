@@ -1,6 +1,7 @@
 import App from "../App";
 
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
+import ProtectedAppRoute from "../components/ProtectAppRoute/ProtectAppRoute";
 import ErrorPage from "../components/ErrorPage/ErrorPage";
 import SignUpForm from "../components/SignUpForm/SignUpForm";
 import LogInForm from "../components/LogInForm/LogInForm";
@@ -19,7 +20,11 @@ import RenderGlobalChatDetailsMessages from "../components/RenderGlobalChatDetai
 const routes = [
   {
     path: "/",
-    element: <App />,
+    element: (
+      <ProtectedAppRoute>
+        <App />
+      </ProtectedAppRoute>
+    ),
     errorElement: <ErrorPage />,
     children: [
       { path: "/login", element: <LogInForm /> },

@@ -1,9 +1,10 @@
 import styles from "./RenderGroupDetailsMessages.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState, useRef, Fragment } from "react";
+import { format } from "date-fns";
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import useFetchSingleGroupURL from "../api/custom hooks/useFetchSingleGroupURL";
-import { format } from "date-fns";
+import PopUpModal from "../PopUpModal/PopUpModal";
 
 function RenderGroupDetailsMessages() {
   const { groupDetails, setGroupDetails, loading, error } =
@@ -38,14 +39,82 @@ function RenderGroupDetailsMessages() {
 
   const [groupName, setGroupName] = useState("");
 
+  const [
+    showPopUpWhenDeletingOrEditingMessage,
+    setShowPopUpWhenDeletingOrEditingMessage,
+  ] = useState(false);
+
   const navigate = useNavigate();
 
   if (loading) {
-    return <img src="./loading_spinner.svg" alt="Loading..." />;
+    // return <img src="./loading_spinner.svg" alt="Loading..." />;
+
+    return (
+      <svg
+        version="1.1"
+        id="L7"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 100 100"
+        enableBackground="new 0 0 100 100"
+        xmlSpace="preserve"
+      >
+        Loading...
+        <path
+          fill="#fff"
+          d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3
+c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z"
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            dur="2s"
+            from="0 50 50"
+            to="360 50 50"
+            repeatCount="indefinite"
+          />
+        </path>
+        <path
+          fill="#fff"
+          d="M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7
+c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z"
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            dur="1s"
+            from="0 50 50"
+            to="-360 50 50"
+            repeatCount="indefinite"
+          />
+        </path>
+        <path
+          fill="#fff"
+          d="M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5
+L82,35.7z"
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            dur="2s"
+            from="0 50 50"
+            to="360 50 50"
+            repeatCount="indefinite"
+          />
+        </path>
+      </svg>
+    );
   }
 
   if (error) {
-    return <p>Failed to fetch groups details!</p>;
+    return (
+      <p className={styles.errorParagraph}>Failed to fetch groups details!</p>
+    );
   }
 
   async function sendMessageInGroup(e) {
@@ -169,6 +238,14 @@ function RenderGroupDetailsMessages() {
         },
       );
 
+      if (response.status === 200) {
+        setShowPopUpWhenDeletingOrEditingMessage(true);
+
+        setTimeout(() => {
+          setShowPopUpWhenDeletingOrEditingMessage(false);
+        }, 3000);
+      }
+
       const result = await response.json();
 
       console.log(result);
@@ -214,6 +291,14 @@ function RenderGroupDetailsMessages() {
           }),
         },
       );
+
+      if (response.status === 200) {
+        setShowPopUpWhenDeletingOrEditingMessage(true);
+
+        setTimeout(() => {
+          setShowPopUpWhenDeletingOrEditingMessage(false);
+        }, 3000);
+      }
 
       const result = await response.json();
 
@@ -337,361 +422,423 @@ function RenderGroupDetailsMessages() {
   }
 
   if (groupDetails === null) {
-    return <h5>Groups</h5>;
+    return <h5 className={styles.groupDetailsHeader}>Groups</h5>;
   } else {
     return (
-      <div className={styles.groupMessagesDetailsContainer}>
-        <header className={styles.groupMessageDetailsHeader}>
-          {!showDropDownMenuGroupName ? (
-            <Link
-              className={styles.groupMessageDetailsFlexedAnchor}
-              to={`/groups/${groupDetails.id}`}
-            >
-              <img
-                className={styles.groupDetailsUserProfilePicture}
-                src={groupDetails.group_image}
-                alt="group image"
-              />
-              <h6 className={styles.groupNameMessageDetails}>
-                {groupDetails.group_name}
-              </h6>
-            </Link>
-          ) : (
-            <div>
-              <img
-                className={styles.groupDetailsUserProfilePicture}
-                src={groupDetails.group_image}
-                alt="group image"
-              />
-              <form onSubmit={editGroupName}>
-                <label htmlFor="group_name"></label>
-                <input
-                  data-testid="group_name"
-                  type="text"
-                  name="group_name"
-                  id="group_name"
-                  value={groupName}
-                  onChange={(e) => setGroupName(e.target.value)}
+      <>
+        <div className={styles.groupMessagesDetailsContainer}>
+          <header className={styles.groupMessageDetailsHeader}>
+            {!showDropDownMenuGroupName ? (
+              <Link
+                className={styles.groupMessageDetailsFlexedAnchor}
+                to={`/groups/${groupDetails.id}`}
+              >
+                <img
+                  className={styles.groupDetailsUserProfilePicture}
+                  src={groupDetails.group_image}
+                  alt="group image"
                 />
-                <button type="submit">Send</button>
-              </form>
-            </div>
-          )}
-          {/* check if the users array of the group contains the loggedIn userId */}
-          {groupDetails.users.some((obj) => obj.id === userLogInObj.id) ? (
-            <button>Joined</button>
-          ) : (
-            <form onSubmit={joinGroup}>
-              <button type="submit">Join</button>
-            </form>
-          )}
-        </header>
-
-        {/* if the groupCreatorId is the loggedIn userId render this form */}
-        {groupDetails.group_creatorId === userLogInObj.id ? (
-          <div>
-            {/* <button onClick={() => setShowDropDownMenuGroupName(true)}>
-              Edit
-            </button> */}
-            {/* <form onSubmit={deleteGroup}>
-              <button type="submit">Delete</button>
-            </form> */}
-          </div>
-        ) : (
-          ""
-        )}
-
-        {/* if the users array of the group contains the userId then he is joined the group */}
-        {groupDetails.users.some((obj) => obj.id === userLogInObj.id) ? (
-          <>
-            {groupDetails.messagesGGChat.length === 0 ? (
-              <div className={styles.groupNoMessagesContainer}>
-                <p>Start a conversation, say Hi!</p>
+                <h6 className={styles.groupNameMessageDetails}>
+                  {groupDetails.group_name}
+                </h6>
+              </Link>
+            ) : (
+              <div>
+                <img
+                  className={styles.groupDetailsUserProfilePicture}
+                  src={groupDetails.group_image}
+                  alt="group image"
+                />
+                <form onSubmit={editGroupName}>
+                  <label htmlFor="group_name"></label>
+                  <input
+                    data-testid="group_name"
+                    type="text"
+                    name="group_name"
+                    id="group_name"
+                    value={groupName}
+                    onChange={(e) => setGroupName(e.target.value)}
+                  />
+                  <button type="submit">Send</button>
+                </form>
+              </div>
+            )}
+            {/* check if the users array of the group contains the loggedIn userId */}
+            {groupDetails.users.some((obj) => obj.id === userLogInObj.id) ? (
+              <div>
+                <button className={styles.joinedGroupBtn}>Joined</button>
               </div>
             ) : (
-              <ul className={styles.groupDetailsMessagesContainer}>
-                {groupDetails.messagesGGChat.map((message, index) => (
-                  <Fragment key={message.id}>
-                    {/* if the first element index is 0 or the date of that 
+              <form onSubmit={joinGroup}>
+                <button className={styles.joinGroupBtn} type="submit">
+                  Join
+                </button>
+              </form>
+            )}
+          </header>
+          <hr className={styles.groupDetailsHeaderBottomHr} />
+          {/* if the groupCreatorId is the loggedIn userId render this form */}
+          {groupDetails.group_creatorId === userLogInObj.id ? (
+            <div>
+              {/* <button onClick={() => setShowDropDownMenuGroupName(true)}>
+              Edit
+            </button> */}
+              {/* <form onSubmit={deleteGroup}>
+              <button type="submit">Delete</button>
+            </form> */}
+            </div>
+          ) : (
+            ""
+          )}
+
+          {/* if the users array of the group contains the userId then he is joined the group */}
+          {groupDetails.users.some((obj) => obj.id === userLogInObj.id) ? (
+            <>
+              {groupDetails.messagesGGChat.length === 0 ? (
+                <div className={styles.groupNoMessagesContainer}>
+                  <p className={styles.groupNoMessagesPara}>
+                    Start a conversation, say Hi!
+                  </p>
+                </div>
+              ) : (
+                <ul className={styles.groupDetailsMessagesContainer}>
+                  {groupDetails.messagesGGChat.map((message, index) => (
+                    <Fragment key={message.id}>
+                      {/* if the first element index is 0 or the date of that 
                 message is not equal to the first one render the date 
                 otherwise  don't
                  */}
-                    {index === 0 ||
-                    format(message.createdAt, "MM/dd/yy") !==
-                      format(
-                        groupDetails.messagesGGChat[0].createdAt,
-                        "MM/dd/yy",
-                      ) ? (
-                      <p>{format(message.createdAt, "MM/dd/yy")}</p>
-                    ) : (
-                      ""
-                    )}
-                    {message.userId === userLogInObj.id ? (
-                      <div className={styles.groupDetailsUserMessage}>
-                        {message.message_text ? (
-                          <li
-                            className={styles.groupDetailsMessageDropDownMenu}
-                          >
-                            <img
-                              className={styles.groupDetailsMessageDropDownImg}
-                              onClick={() => toggleMessageDropDown(message)}
-                              src="/three_dots.svg"
-                              alt="message drop-down menu"
-                            />
-                            {showDropDownFormOMessage &&
-                            message.id === clickedGroupMessage ? (
-                              <form
-                                style={{
-                                  display: "block",
-                                }}
-                                ref={dropDownFormRef}
-                                onSubmit={showEditGroupMessageForm}
-                              >
-                                <input
-                                  type="text"
-                                  data-testid="message_text"
-                                  name="message_text"
-                                  id="message_text"
-                                  value={editTheSelectedGroupMessage}
-                                  onChange={(e) =>
-                                    setEditTheSelectedGroupMessage(
-                                      e.target.value,
-                                    )
-                                  }
-                                />
-                                <button
-                                  onClick={() => {
-                                    setShowDropDownMenu(false);
-                                    setShowDropDownFormOMessage(false);
-                                  }}
-                                >
-                                  Cancel
-                                </button>
-                                <button type="submit">Save</button>
-                              </form>
-                            ) : (
-                              <p
-                                className={styles.groupDetailsSendMessage}
-                                key={message.id}
-                              >
-                                {message.message_text}
-                              </p>
-                            )}
-                            {showDropDownMenu ? (
-                              <div
+                      {index === 0 ||
+                      format(message.createdAt, "MM/dd/yy") !==
+                        format(
+                          groupDetails.messagesGGChat[0].createdAt,
+                          "MM/dd/yy",
+                        ) ? (
+                        <p className={styles.groupDetailsSendMessageDate}>
+                          {" "}
+                          {format(message.createdAt, "MM/dd/yy")}
+                        </p>
+                      ) : (
+                        ""
+                      )}
+                      {message.userId === userLogInObj.id ? (
+                        <div className={styles.groupDetailsUserMessage}>
+                          {message.message_text ? (
+                            <li
+                              className={styles.groupDetailsMessageDropDownMenu}
+                            >
+                              <img
                                 className={
-                                  styles.groupDetailsDropDownMenuButtons
+                                  styles.groupDetailsMessageDropDownImg
                                 }
-                              >
-                                <button
-                                  onClick={() => {
-                                    setShowDropDownFormOMessage(true);
-                                    setShowDropDownMenu(false);
-                                  }}
+                                onClick={() => toggleMessageDropDown(message)}
+                                src="/three_dots.svg"
+                                alt="message drop-down menu"
+                              />
+                              {showDropDownFormOMessage &&
+                              message.id === clickedGroupMessage ? (
+                                <form
                                   style={{
-                                    display:
-                                      message.id === clickedGroupMessage
-                                        ? "block"
-                                        : "none",
+                                    display: "block",
                                   }}
+                                  ref={dropDownFormRef}
+                                  onSubmit={showEditGroupMessageForm}
                                 >
-                                  Edit
-                                </button>
-                                <button
-                                  onClick={() =>
-                                    removeMessageFromGroup(message)
-                                  }
-                                  style={{
-                                    display:
-                                      message.id === clickedGroupMessage
-                                        ? "block"
-                                        : "none",
-                                  }}
+                                  <input
+                                    className={styles.dropDownEditMessageForm}
+                                    type="text"
+                                    data-testid="message_text"
+                                    name="message_text"
+                                    id="message_text"
+                                    value={editTheSelectedGroupMessage}
+                                    onChange={(e) =>
+                                      setEditTheSelectedGroupMessage(
+                                        e.target.value,
+                                      )
+                                    }
+                                  />
+                                  <button
+                                    className={styles.dropDownMenuCancelBtn}
+                                    onClick={() => {
+                                      setShowDropDownMenu(false);
+                                      setShowDropDownFormOMessage(false);
+                                    }}
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    className={styles.dropDownMenuSaveBtn}
+                                    type="submit"
+                                  >
+                                    Save
+                                  </button>
+                                </form>
+                              ) : (
+                                <p
+                                  className={styles.groupDetailsSendMessage}
+                                  key={message.id}
                                 >
-                                  Delete
-                                </button>
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </li>
-                        ) : (
-                          <>
-                            {message.userId === userLogInObj.id ? (
-                              <>
+                                  {message.message_text}
+                                </p>
+                              )}
+                              {showDropDownMenu ? (
                                 <div
                                   className={
-                                    styles.groupDetailsMessageDropDownMenu
+                                    styles.groupDetailsDropDownMenuButtons
                                   }
                                 >
+                                  <button
+                                    className={styles.dropDownMenuEditBtn}
+                                    onClick={() => {
+                                      setShowDropDownFormOMessage(true);
+                                      setShowDropDownMenu(false);
+                                    }}
+                                    style={{
+                                      display:
+                                        message.id === clickedGroupMessage
+                                          ? "block"
+                                          : "none",
+                                    }}
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    className={styles.dropDownMenuDeleteBtn}
+                                    onClick={() =>
+                                      removeMessageFromGroup(message)
+                                    }
+                                    style={{
+                                      display:
+                                        message.id === clickedGroupMessage
+                                          ? "block"
+                                          : "none",
+                                    }}
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                            </li>
+                          ) : (
+                            <>
+                              {message.userId === userLogInObj.id ? (
+                                <>
                                   <div
                                     className={
-                                      styles.groupDetailsMessageDropDownButtonWrapper
+                                      styles.groupDetailsMessageDropDownMenu
                                     }
                                   >
-                                    <img
+                                    <div
                                       className={
-                                        styles.groupDetailsMessageDropDownImg
+                                        styles.groupDetailsMessageDropDownButtonWrapper
                                       }
-                                      onClick={() =>
-                                        toggleMessageDropDown(message)
-                                      }
-                                      src="/three_dots.svg"
-                                      alt="message drop-down menu"
-                                    />
-                                    {showDropDownMenu ? (
-                                      <div
-                                        className={
-                                          styles.deleteGroupMessageButton
-                                        }
-                                      >
-                                        <button
-                                          onClick={() =>
-                                            removeMessageFromGroup(message)
-                                          }
-                                          style={{
-                                            display:
-                                              message.id === clickedGroupMessage
-                                                ? "block"
-                                                : "none",
-                                          }}
-                                        >
-                                          Delete
-                                        </button>
-                                      </div>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </div>
-
-                                  <img
-                                    key={message.id}
-                                    className={styles.groupDetailsSendImage}
-                                    src={message.message_imageURL}
-                                    alt="send image in chat"
-                                  />
-                                </div>
-                              </>
-                            ) : (
-                              <img
-                                key={message.id}
-                                className={styles.groupDetailsSendImage}
-                                src={message.message_imageURL}
-                                alt="send image in chat"
-                              />
-                            )}
-                          </>
-                        )}
-                      </div>
-                    ) : (
-                      <>
-                        {groupDetails.users.map((user) => (
-                          <Fragment key={user.id}>
-                            {user.id !== userLogInObj.id ? (
-                              <div
-                                className={
-                                  styles.groupReceiverSendingMessagesContainer
-                                }
-                              >
-                                <div
-                                  className={styles.groupDetailsUserUsername}
-                                >
-                                  <p>{"@" + user.username}</p>
-                                </div>
-                                <div
-                                  className={
-                                    styles.groupDetailsReceiverUserMessages
-                                  }
-                                >
-                                  <Link to={`/profile/${user.id}`}>
-                                    {user.profile_picture === "" ? (
-                                      <img
-                                        className={
-                                          styles.groupDetailsUserDefaultProfilePicture
-                                        }
-                                        src="/default_users_pfp.jpg"
-                                        alt="user default profile picture"
-                                      />
-                                    ) : (
-                                      <img
-                                        src={user.profile_picture}
-                                        alt="user profile picture"
-                                      />
-                                    )}
-                                  </Link>
-                                  {message.message_text ? (
-                                    <li
-                                      key={message.id}
-                                      className={styles.groupDetailsSendMessage}
                                     >
-                                      {message.message_text}
-                                    </li>
-                                  ) : (
+                                      <img
+                                        className={
+                                          styles.groupDetailsMessageDropDownImg
+                                        }
+                                        onClick={() =>
+                                          toggleMessageDropDown(message)
+                                        }
+                                        src="/three_dots.svg"
+                                        alt="message drop-down menu"
+                                      />
+                                      {showDropDownMenu ? (
+                                        <div
+                                          className={
+                                            styles.deleteGroupMessageButton
+                                          }
+                                        >
+                                          <button
+                                            className={
+                                              styles.dropDownMenuDeleteBtn
+                                            }
+                                            onClick={() =>
+                                              removeMessageFromGroup(message)
+                                            }
+                                            style={{
+                                              display:
+                                                message.id ===
+                                                clickedGroupMessage
+                                                  ? "block"
+                                                  : "none",
+                                            }}
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+
                                     <img
+                                      key={message.id}
                                       className={styles.groupDetailsSendImage}
                                       src={message.message_imageURL}
                                       alt="send image in chat"
                                     />
-                                  )}
+                                  </div>
+                                </>
+                              ) : (
+                                <img
+                                  key={message.id}
+                                  className={styles.groupDetailsSendImage}
+                                  src={message.message_imageURL}
+                                  alt="send image in chat"
+                                />
+                              )}
+                            </>
+                          )}
+                        </div>
+                      ) : (
+                        <>
+                          {groupDetails.users.map((user) => (
+                            <Fragment key={user.id}>
+                              {user.id !== userLogInObj.id ? (
+                                <div
+                                  className={
+                                    styles.groupReceiverSendingMessagesContainer
+                                  }
+                                >
+                                  <div
+                                    className={styles.groupDetailsUserUsername}
+                                  >
+                                    <p>{"@" + user.username}</p>
+                                  </div>
+                                  <div
+                                    className={
+                                      styles.groupDetailsReceiverUserMessages
+                                    }
+                                  >
+                                    <Link to={`/profile/${user.id}`}>
+                                      {user.profile_picture === "" ? (
+                                        <img
+                                          className={
+                                            styles.groupDetailsUserDefaultProfilePicture
+                                          }
+                                          src="/default_users_pfp.jpg"
+                                          alt="user default profile picture"
+                                        />
+                                      ) : (
+                                        <img
+                                          src={user.profile_picture}
+                                          alt="user profile picture"
+                                        />
+                                      )}
+                                    </Link>
+                                    {message.message_text ? (
+                                      <li
+                                        key={message.id}
+                                        className={
+                                          styles.groupDetailsSendMessage
+                                        }
+                                      >
+                                        {message.message_text}
+                                      </li>
+                                    ) : (
+                                      <img
+                                        className={styles.groupDetailsSendImage}
+                                        src={message.message_imageURL}
+                                        alt="send image in chat"
+                                      />
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </Fragment>
-                        ))}
-                      </>
-                    )}
-                  </Fragment>
-                ))}
-              </ul>
-            )}
-          </>
-        ) : (
-          <p>You must join a group first before sending a message!</p>
-        )}
+                              ) : (
+                                ""
+                              )}
+                            </Fragment>
+                          ))}
+                        </>
+                      )}
+                    </Fragment>
+                  ))}
+                </ul>
+              )}
+            </>
+          ) : (
+            <p className={styles.groupDetailsJoinFirstPara}>
+              You must join a group first before sending a message!
+            </p>
+          )}
 
-        {groupDetails.users.some((obj) => obj.id === userLogInObj.id) ? (
-          <>
-            <div className={styles.groupDetailsSendMessageOrImageContainer}>
-              <form
-                encType="multipart/form"
-                onSubmit={
-                  sendAGroupMessageState !== ""
-                    ? sendMessageInGroup
-                    : sendImageInGroup
-                }
-              >
-                <input
-                  className={styles.groupDetailsSendMessageInput}
-                  data-testid="message_text"
-                  type="text"
-                  name="message_text"
-                  id="message_text"
-                  maxLength={200}
-                  value={sendAGroupMessageState}
-                  onChange={(e) => setSendAGroupMessageState(e.target.value)}
-                />
-                <input
-                  className={styles.groupDetailsSendImageInput}
-                  data-testid="message_image"
-                  type="file"
-                  name="file"
-                  id="file"
-                />
-                <button
-                  className={styles.groupDetailsSendMessageOrImageButton}
-                  type="submit"
+          {groupDetails.users.some((obj) => obj.id === userLogInObj.id) ? (
+            <>
+              <div className={styles.groupDetailsSendMessageOrImageContainer}>
+                <hr className={styles.groupMessageDetailsBottomHr} />
+                <form
+                  className={styles.flexGroupDetailsSendMessageOrImageForm}
+                  encType="multipart/form"
+                  onSubmit={
+                    sendAGroupMessageState !== ""
+                      ? sendMessageInGroup
+                      : sendImageInGroup
+                  }
                 >
-                  Send
-                </button>
-              </form>
-            </div>
-          </>
-        ) : (
-          ""
+                  <input
+                    className={styles.groupDetailsSendMessageInput}
+                    data-testid="message_text"
+                    type="text"
+                    name="message_text"
+                    id="message_text"
+                    maxLength={200}
+                    value={sendAGroupMessageState}
+                    onChange={(e) => setSendAGroupMessageState(e.target.value)}
+                  />
+                  <div className={styles.groupDetailsSendImageContainer}>
+                    <img
+                      className={styles.groupDetailsSendImageSvg}
+                      src="/send_image.svg"
+                      alt=""
+                    />
+                    <input
+                      className={styles.groupDetailsSendImageInput}
+                      data-testid="message_image"
+                      type="file"
+                      name="file"
+                      id="file"
+                    />
+                  </div>
+                  <div className={styles.groupDetailsSendMessageContainer}>
+                    <img
+                      className={styles.groupDetailsSendMessageSvg}
+                      src="/send_message.svg"
+                      alt=""
+                    />
+                    <button
+                      className={styles.groupDetailsSendMessageOrImageButton}
+                      type="submit"
+                    >
+                      Send
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
+        </div>
+        {showPopUpWhenDeletingOrEditingMessage && (
+          <PopUpModal
+            popUpModalBackgroundColor={"white"}
+            popUpModalContentColor={"black"}
+            popUpModalBorderColor={"white"}
+            popUpModalContentText={"Message edited!"}
+          />
         )}
-      </div>
+        {showPopUpWhenDeletingOrEditingMessage && (
+          <PopUpModal
+            popUpModalBackgroundColor={"white"}
+            popUpModalContentColor={"black"}
+            popUpModalBorderColor={"white"}
+            popUpModalContentText={"Message deleted!"}
+          />
+        )}
+      </>
     );
   }
 }

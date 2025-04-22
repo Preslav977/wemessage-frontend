@@ -223,9 +223,9 @@ describe("should render SignUpForm", () => {
       /first name:/i,
     );
 
-    await user.type(screen.getByTestId("first_name"), "test_user");
+    await user.type(screen.getByTestId("first_name"), "preslaw");
 
-    expect(screen.getByTestId("first_name").value).toBe("test_user");
+    expect(screen.getByTestId("first_name").value).toBe("preslaw");
 
     expect(
       screen.queryByText("First name must be between 1 and 30 characters"),
@@ -233,9 +233,9 @@ describe("should render SignUpForm", () => {
 
     expect(screen.queryByText("Last name:").textContent).toMatch(/last name:/i);
 
-    await user.type(screen.getByTestId("last_name"), "test_user");
+    await user.type(screen.getByTestId("last_name"), "preslaw");
 
-    expect(screen.getByTestId("last_name")).toHaveValue("test_user");
+    expect(screen.getByTestId("last_name")).toHaveValue("preslaw");
 
     expect(
       screen.queryByText("Last name must be between 1 and 30 characters"),
@@ -243,9 +243,9 @@ describe("should render SignUpForm", () => {
 
     expect(screen.queryByText("Username:").textContent).toMatch(/username:/i);
 
-    await user.type(screen.getByTestId("username"), "test_user");
+    await user.type(screen.getByTestId("username"), "preslaw");
 
-    expect(screen.getByTestId("username")).toHaveValue("test_user");
+    expect(screen.getByTestId("username")).toHaveValue("preslaw");
 
     expect(
       screen.queryByText("Username must be between 1 and 30 characters"),
@@ -282,7 +282,7 @@ describe("should render SignUpForm", () => {
     });
 
     server.use(
-      http.post("http://localhost:5000/users/signup", () => {
+      http.post("http://localhost:5000/users/signup", async ({ request }) => {
         return HttpResponse.json(
           [
             { msg: "First name is already taken" },

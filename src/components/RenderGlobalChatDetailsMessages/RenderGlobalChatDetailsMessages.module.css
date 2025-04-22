@@ -1,18 +1,49 @@
+.errorParagraph {
+  color: white;
+}
+
+.groupDetailsHeader {
+  color: white;
+}
+
 .globalChatMessagesDetailsContainer {
-  max-height: 96vh;
-  overflow: scroll;
+  height: 90vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  scrollbar-width: thin;
+}
+.globalChatDetailsSendMessageDate {
+  color: white;
+  text-align: center;
+  margin-top: 1.5em;
+  font-size: 0.75rem;
 }
 
 .globalChatMessageDetailsHeader {
   position: sticky;
   top: 0%;
   z-index: 1;
-  padding: 1em;
-  outline: 2px solid black;
+  /* padding: 1em; */
+  background-color: #242526;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.globalChatSubHeaderName {
+  color: white;
+  font-size: 0.85rem;
+}
+
+.globalChatDetailsHeaderBottomHr {
+  margin-top: 0.5em;
 }
 
 .globalChatMessageDetailsFlexedAnchor {
@@ -28,14 +59,25 @@
   justify-content: center;
 }
 
+.globalChatNoMessagePara {
+  color: white;
+}
+
+.globalChatDetailsProfilePicture,
 .globalChatDetailsUserProfilePicture,
 .globalChatDetailsUserDefaultProfilePicture {
   width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
 .globalChatNameMessageDetails {
-  text-align: center;
+  /* text-align: center; */
   margin-bottom: 0.3em;
+}
+
+.globalChatNoMessagesPara {
+  color: white;
 }
 
 .globalChatDetailsUserMessage {
@@ -47,7 +89,7 @@
   hyphens: auto;
   line-break: anywhere;
   text-align: center;
-  margin: 1.5em 1em 1em 0;
+  margin: 1.5em 0 1em 0;
 }
 
 .globalChatDetailsMessageDropDownMenu {
@@ -64,10 +106,12 @@
 
 .globalChatDetailsSendMessage {
   max-width: 22em;
-  outline: 2px solid black;
+  /* outline: 2px solid black; */
   padding: 0.5em 1em;
   margin-left: 0.25em;
   border-radius: 1em;
+  background-color: #3a3b3c;
+  color: white;
 }
 
 .globalChatDetailsMessageDropDownButtonWrapper {
@@ -87,42 +131,126 @@
   margin-top: 4em;
 }
 
+.dropDownEditMessageForm {
+  background-color: #3a3b3c;
+  color: white;
+  border: 0;
+  padding: 0.4rem 0;
+}
+
+.dropDownMenuCancelBtn,
+.dropDownMenuSaveBtn,
+.dropDownMenuEditBtn,
+.dropDownMenuDeleteBtn {
+  background-color: #3a3b3c;
+  color: white;
+  border: 0;
+  padding: 0.5em;
+}
+
+.dropDownMenuCancelBtn:hover,
+.dropDownMenuSaveBtn:hover,
+.dropDownMenuEditBtn:hover,
+.dropDownMenuDeleteBtn:hover {
+  cursor: pointer;
+}
+
+.dropDownMenuSaveBtn,
+.dropDownMenuCancelBtn {
+  margin-left: 0.25rem;
+}
+
 .globalChatDetailsSendImage {
-  max-width: 18em;
+  max-width: 16rem;
   height: auto;
   margin-bottom: 1em;
-  position: relative;
 }
 
 .globalChatReceiverSendingMessagesContainer {
+  display: flex;
+  flex-direction: column;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  line-break: anywhere;
+  text-align: center;
+  margin: 1.5em 0 1em 0;
   margin-top: 1.5em;
 }
 
 .globalChatDetailsUserUsername {
   width: 100%;
   text-align: left;
-  margin-left: 5em;
+  margin-left: 5.5em;
   margin-bottom: 0.3em;
+  color: white;
+  font-size: 0.75rem;
+  /* outline: 2px solid white; */
 }
 
 .globalChatDetailsReceiverUserMessages {
   display: flex;
   gap: 0.5em;
   align-items: center;
-  margin: 0em 1em 1em 1em;
+  margin: 0em 1em 1em 0;
+}
+
+.globalChatMessageDetailsBottomHr {
+  /* color: red; */
+  /* outline: 2px solid white; */
+  margin-bottom: 0.5em;
 }
 
 .globalChatDetailsSendMessageOrImageContainer {
   margin-top: auto;
   position: sticky;
   bottom: 0%;
+  margin-bottom: 0.1em;
+  background-color: #242526;
 }
 
-.globalChatDetailsSendMessageInput {
-  width: 92.5%;
+.flexGlobalChatDetailsSendMessageOrImageForm {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.15em 0.15em;
+}
+
+.flexGlobalChatDetailsSendMessageOrImageForm > input {
+  width: 100%;
+  padding: 0.9em 0;
+  border-radius: 1.5em;
+  border: 0;
+  background-color: #242526;
+  /* outline: 1px solid white; */
+  border: 1px solid white;
+  color: white;
+}
+
+.globalChatDetailsSendImageContainer,
+.globalChatDetailsSendMessageContainer {
+  outline: 2px solid white;
+  padding: 0.3em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.globalChatDetailsSendImageSvg,
+.globalChatDetailsSendMessageSvg {
+  width: 30px;
+  cursor: pointer;
 }
 
 .globalChatDetailsSendImageInput,
 .globalChatDetailsSendMessageOrImageButton {
-  width: 50px;
+  position: absolute;
+  top: 10px;
+  left: 4px;
+  width: 25px;
+  opacity: 0;
+  cursor: pointer;
 }

@@ -9,8 +9,6 @@ const useFetchGlobalChatURL = () => {
     GlobalChatDetailsContext,
   );
 
-  console.log(globalChatDetails);
-
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);

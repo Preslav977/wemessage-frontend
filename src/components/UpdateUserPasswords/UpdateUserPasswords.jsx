@@ -61,9 +61,9 @@ function UpdateUserPasswords() {
         },
       );
 
-      if (response.status === 403) {
-        navigate("/login");
-      }
+      // if (response.status === 403) {
+      //   navigate("/login");
+      // }
 
       if (response.status === 400) {
         setOldPasswordErr("Old password doesn't match.");
@@ -105,12 +105,14 @@ function UpdateUserPasswords() {
           alt="go back to user profile"
         />
       </Link>
-      <hr />
-      <header>
-        <h5>Change Passwords</h5>
-        <button type="submit">Save</button>
+      <hr className={styles.sectionWrapperTopHr} />
+      <header className={styles.sectionWrapperHeaderContainer}>
+        <h3 className={styles.sectionWrapperHeader}>Change Password</h3>
+        <button className={styles.sectionWrapperSaveBtn} type="submit">
+          Save
+        </button>
       </header>
-      <hr />
+      <hr className={styles.sectionWrapperBottomHr} />
       <div className={styles.formGroup}>
         <div className={styles.formGroupContent}>
           <label htmlFor="old_password">Enter old password:</label>

@@ -1,34 +1,73 @@
+.errorParagraph {
+  color: white;
+}
+
+.groupDetailsHeader {
+  color: white;
+  font-size: 2.5rem;
+}
+
 .groupMessagesDetailsContainer {
-  max-height: 96vh;
-  overflow: scroll;
+  height: 90vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.groupDetailsSendMessageDate {
+  color: white;
+  text-align: center;
+  margin-top: 1.5em;
+  font-size: 0.75rem;
 }
 
 .groupMessageDetailsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: sticky;
   top: 0%;
   z-index: 1;
-  padding: 1em;
-  outline: 2px solid black;
+  text-transform: capitalize;
+  /* outline: 2px solid white; */
+}
+
+.groupDetailsHeaderBottomHr {
+  margin-top: 0.5em;
 }
 
 .groupMessageDetailsFlexedAnchor {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  color: white;
 }
 
-.groupDetailsUserProfilePicture {
+.groupMessageDetailsFlexedAnchor:visited {
+  color: white;
+}
+
+.groupDetailsUserProfilePicture,
+.groupDetailsUserDefaultProfilePicture {
   width: 40px;
   height: 40px;
   border-radius: 50%;
 }
 
-.groupDetailsUserDefaultProfilePicture {
-  width: 40px;
+.joinedGroupBtn,
+.joinGroupBtn {
+  background-color: #3a3b3c;
+  color: white;
+  border: 0;
+  padding: 0.5em 0.8em;
+}
+
+.joinedGroupBtn:hover,
+.joinGroupBtn:hover {
+  cursor: pointer;
 }
 
 .groupNameMessageDetails {
@@ -43,6 +82,10 @@
   justify-content: center;
 }
 
+.groupNoMessagesPara {
+  color: white;
+}
+
 .groupDetailsUserMessage {
   display: flex;
   flex-direction: column;
@@ -52,7 +95,7 @@
   hyphens: auto;
   line-break: anywhere;
   text-align: center;
-  margin: 1.5em 1em 1em 0;
+  margin: 1.5em 0 1em 0;
 }
 
 .groupDetailsMessageDropDownMenu {
@@ -69,10 +112,12 @@
 
 .groupDetailsSendMessage {
   max-width: 22em;
-  outline: 2px solid black;
+  /* outline: 2px solid black; */
   padding: 0.5em 1em;
   margin-left: 0.25em;
   border-radius: 1em;
+  background-color: #3a3b3c;
+  color: white;
 }
 
 .groupDetailsMessageDropDownButtonWrapper {
@@ -92,6 +137,35 @@
   margin-top: 4em;
 }
 
+.dropDownEditMessageForm {
+  background-color: #3a3b3c;
+  color: white;
+  border: 0;
+  padding: 0.4rem 0;
+}
+
+.dropDownMenuCancelBtn,
+.dropDownMenuSaveBtn,
+.dropDownMenuEditBtn,
+.dropDownMenuDeleteBtn {
+  background-color: #3a3b3c;
+  color: white;
+  border: 0;
+  padding: 0.5em;
+}
+
+.dropDownMenuCancelBtn:hover,
+.dropDownMenuSaveBtn:hover,
+.dropDownMenuEditBtn:hover,
+.dropDownMenuDeleteBtn:hover {
+  cursor: pointer;
+}
+
+.dropDownMenuSaveBtn,
+.dropDownMenuCancelBtn {
+  margin-left: 0.25rem;
+}
+
 .groupDetailsSendImage {
   max-width: 18em;
   height: auto;
@@ -100,34 +174,91 @@
 }
 
 .groupReceiverSendingMessagesContainer {
+  display: flex;
+  flex-direction: column;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  line-break: anywhere;
+  text-align: center;
+  margin: 1.5em 0 1em 0;
   margin-top: 1.5em;
 }
 
 .groupDetailsUserUsername {
   width: 100%;
   text-align: left;
-  margin-left: 5em;
+  margin-left: 5.5em;
   margin-bottom: 0.3em;
+  color: white;
+  font-size: 0.75rem;
 }
 
 .groupDetailsReceiverUserMessages {
   display: flex;
   gap: 0.5em;
   align-items: center;
-  margin: 0em 1em 1em 1em;
+  margin: 0em 1em 1em 0;
+}
+
+.groupMessageDetailsBottomHr {
+  /* color: red; */
+  /* outline: 2px solid white; */
+  margin-bottom: 0.5em;
 }
 
 .groupDetailsSendMessageOrImageContainer {
   margin-top: auto;
   position: sticky;
   bottom: 0%;
+  margin-bottom: 0.1em;
 }
 
-.groupDetailsSendMessageInput {
-  width: 92.5%;
+.flexGroupDetailsSendMessageOrImageForm {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.15em;
+  overflow: hidden;
+}
+
+.flexGroupDetailsSendMessageOrImageForm > input {
+  width: 100%;
+  padding: 0.9em 0;
+  border-radius: 1.5em;
+  border: 0;
+  background-color: #242526;
+  /* outline: 1px solid white; */
+  border: 1px solid white;
+  color: white;
+}
+
+.groupDetailsSendImageContainer,
+.groupDetailsSendMessageContainer {
+  outline: 2px solid white;
+  /* width: 43px;
+  height: 43px; */
+  padding: 0.3em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.groupDetailsSendImageSvg,
+.groupDetailsSendMessageSvg {
+  width: 30px;
+  cursor: pointer;
 }
 
 .groupDetailsSendImageInput,
 .groupDetailsSendMessageOrImageButton {
-  width: 50px;
+  position: absolute;
+  top: 10px;
+  left: 4px;
+  width: 25px;
+  opacity: 0;
+  cursor: pointer;
 }

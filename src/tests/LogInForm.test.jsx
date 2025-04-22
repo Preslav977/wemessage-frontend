@@ -178,7 +178,9 @@ describe("should render LogInForm", () => {
     });
 
     server.use(
-      http.post("http://localhost:5000/users/login", () => {
+      http.post("http://localhost:5000/users/login", async ({ request }) => {
+        const result = await request.json();
+
         return HttpResponse.json(
           { msg: "Wrong username or password" },
           {

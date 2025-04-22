@@ -3,13 +3,13 @@ export function FilterGroupMembers(groupMembers, query) {
   return groupMembers.filter(
     (groupMember) =>
       groupMember.first_name
-        .split("")
+        .split(" ")
         .some((word) => word.toLowerCase().startsWith(query)) ||
       groupMember.last_name
-        .split("")
+        .split(" ")
         .some((word) => word.toLowerCase().startsWith(query)) ||
       groupMember.username
-        .split("")
+        .split(" ")
         .some((word) => word.toLowerCase().startsWith(query)),
   );
 }

@@ -164,14 +164,16 @@ function UserProfile() {
         </div>
         <div className={styles.userCredentials}>
           <div>
-            <p>
+            <p className={styles.userFirstAndLastName}>
               {userGetById.first_name} {userGetById.last_name}
             </p>
-            <p>@{userGetById.username}</p>
+            <p className={styles.userUsername}> @{userGetById.username}</p>
             <p className={styles.usersBioParagraph}>{userGetById.bio}</p>
           </div>
           <form onSubmit={startConversation}>
-            <button type="Submit">Send Message</button>
+            <button className={styles.sendMessageBtn} type="submit">
+              Send Message
+            </button>
           </form>
         </div>
       </>
@@ -256,10 +258,10 @@ function UserProfile() {
       </div>
       <div className={styles.userCredentials}>
         <div>
-          <p>
+          <p className={styles.userFirstAndLastName}>
             {userLogInObj.first_name} {userLogInObj.last_name}
           </p>
-          <p>@{userLogInObj.username}</p>
+          <p className={styles.userUsername}>@{userLogInObj.username}</p>
         </div>
         <ul className={styles.ulProfileAndPasswordsAnchorContainer}>
           <li>

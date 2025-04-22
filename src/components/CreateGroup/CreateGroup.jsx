@@ -1,9 +1,9 @@
 import styles from "./CreateGroup.module.css";
-import { useContext, useRef, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { GroupsContext } from "../../contexts/GroupsContext";
 import { useNavigate } from "react-router-dom";
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
-import useFetchChatsURL from "../api/custom hooks/useFetchChatsURL";
+import { ChatsContext } from "../../contexts/ChatsContext";
 import { FilterGroupMembers } from "../FilterGroupMembers";
 import SearchBarGroupMembers from "../SearchBarGroupMembers";
 import GroupMembersList from "../GroupMembersList";
@@ -13,13 +13,7 @@ function CreateGroup() {
 
   const [groups, setGroups] = useContext(GroupsContext);
 
-  const { chats } = useFetchChatsURL();
-
-  // console.log("Fetching the chats", chats);
-
-  // console.log(groupMembers);
-
-  // console.log(groupMembers);
+  const [chats, setChats] = useContext(ChatsContext);
 
   const [groupsName, setGroupName] = useState("");
 
@@ -31,54 +25,31 @@ function CreateGroup() {
     saveTheUsersThatHadChatWithTheUserArray.push(chat.receiverChat),
   );
 
-  // console.log(
-  //   "Pushed the users in the array, which the user had a chat with",
-  //   array,
-  // );
-
   const [groupMembers, setGroupMembers] = useState(
     saveTheUsersThatHadChatWithTheUserArray,
   );
 
-  // console.log("Setting the groupMembers state to the array", groupMembers);
-
   const [selectedGroupMember, setSelectedGroupMember] = useState(groupMembers);
 
-  // console.log(selectedGroupMember);
-
-  const [searchForFriend, setSearchForFriend] = useState("");
-
-  // console.log("Search for a user by typing", searchForFriend);
+  const [searchForGroupMembers, setSearchForGroupMembers] = useState("");
 
   const filterGroupFriendsResult = FilterGroupMembers(
     groupMembers,
-    searchForFriend,
+    searchForGroupMembers,
   );
-
-  // console.log("Filtering the users based on typing", filterGroupFriendsResult);
-
-  // console.log(searchForFriend);
 
   const [showSelectedGroupMember, setShowSelectedGroupMember] = useState(false);
 
-  const selectedGroupUserMemberRef = useRef(null);
-
   const navigate = useNavigate();
 
-  function searchForFriendInput(e) {
-    setSearchForFriend(e.target.value);
+  function searchForGroupMembersInput(e) {
+    setSearchForGroupMembers(e.target.value);
   }
 
   function onClick(friend) {
     setShowSelectedGroupMember(true);
 
     setSelectedGroupMember(friend);
-
-    // console.log(selectedGroupUserMemberRef.current);
-
-    if (selectedGroupUserMemberRef.current.style.display === "none") {
-      selectedGroupUserMemberRef.current.style.display = "flex";
-    }
   }
 
   async function createGroup(e) {
@@ -86,7 +57,7 @@ function CreateGroup() {
 
     const formData = new FormData(e.target);
 
-    // formData.append("userId", selectedGroupMember.id);
+    formData.append("userId", selectedGroupMember.id);
 
     formData.append("group_creatorId", userLogInObj.id);
 
@@ -124,14 +95,28 @@ function CreateGroup() {
   return (
     <div>
       <header>
-        <h5>Create Group</h5>
+        <h5 className={styles.createGroupHeader}>Create Group</h5>
       </header>
-      <hr />
+      <hr className={styles.createGroupHeaderBottomHr} />
       <form encType="multipart/formdata" onSubmit={createGroup}>
         <div className={styles.flexedGroupProfileAndChangeBtn}>
-          <p>Group Profile</p>
+          <p className={styles.flexedGroupProfilePara}>Group Profile</p>
           {/* <button>Change</button> */}
-          <input data-testid="group_image" type="file" name="file" id="file" />
+          <label className={styles.changeGroupImageLabel} htmlFor="group_image">
+            Change
+            <img
+              className={styles.changeGroupImage}
+              src="/edit_profile.svg"
+              alt="change group image"
+            />
+            <input
+              className={styles.changeGroupImageInput}
+              data-testid="group_image"
+              type="file"
+              name="file"
+              id="file"
+            />
+          </label>
         </div>
         <div className={styles.groupPreviewImgContainer}>
           <div className={styles.groupPreviewImgFlexedWrapper}>
@@ -142,7 +127,7 @@ function CreateGroup() {
             />
           </div>
         </div>
-        <hr />
+        <hr className={styles.groupPreviewBottomHr} />
         <div className={styles.formGroup}>
           <div className={styles.formGroupContent}>
             <label htmlFor="group_name">Group name:</label>
@@ -158,20 +143,23 @@ function CreateGroup() {
             />
 
             {groupsName.length < 3 && (
-              <span>Group name must be between 3 and 30 characters</span>
+              <span className={styles.error}>
+                Group name must be between 3 and 30 characters
+              </span>
             )}
 
             {error && <span className={styles.error}>{error}</span>}
           </div>
           <div className={styles.formGroupContent}>
             <SearchBarGroupMembers
-              query={searchForFriend}
-              onChange={searchForFriendInput}
+              query={searchForGroupMembers}
+              onChange={searchForGroupMembersInput}
             />
             {groupMembers.length !== 0 ? (
               <ul className={styles.ulDropDownGroupUserMembers}>
                 <GroupMembersList
                   groupMembers={filterGroupFriendsResult}
+                  onClick={onClick}
                 ></GroupMembersList>
                 {showSelectedGroupMember ? (
                   <li className={styles.flexedLiDropDownSelectedUserContainer}>
@@ -206,8 +194,10 @@ function CreateGroup() {
             )}
           </div>
         </div>
-        <div className={styles.createGroupButton}>
-          <button type="submit">Create Group</button>
+        <div className={styles.createGroupButtonContainer}>
+          <button className={styles.createGroupButton} type="submit">
+            Create Group
+          </button>
         </div>
       </form>
     </div>

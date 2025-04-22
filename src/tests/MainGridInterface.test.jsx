@@ -26,7 +26,7 @@ afterEach(() => {
 describe("should render MainGridInterface", () => {
   it("should render Login form then navigate to UserProfile", async () => {
     const router = createMemoryRouter(routes, {
-      initialEntries: ["/login", "/profile/4"],
+      initialEntries: ["/login", "/profile/1"],
       initialIndex: 0,
     });
 
@@ -44,15 +44,19 @@ describe("should render MainGridInterface", () => {
 
     expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
 
+    // screen.debug();
+
     const submitBtn = screen.queryAllByRole("button");
 
     await user.click(submitBtn[1]);
 
     // screen.debug();
 
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
+
+    screen.debug();
 
     expect(screen.queryByText("Global").textContent).toMatch(/global/i);
 
@@ -117,9 +121,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     expect(screen.queryAllByText("Edit Profile")[1].textContent).toMatch(
       /edit profile/i,
@@ -223,10 +227,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    // await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     expect(screen.queryByText("Global").textContent).toMatch(/global/i);
@@ -294,9 +297,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     expect(screen.queryByText("Global").textContent).toMatch(/global/i);
 
@@ -369,10 +372,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     expect(screen.queryAllByText("Edit Profile")[1].textContent).toMatch(
@@ -467,6 +469,7 @@ describe("should render MainGridInterface", () => {
       initialEntries: ["/login", "/profile/4", "/profile/edit/4"],
       initialIndex: 0,
     });
+
     server.use(
       http.put("http://localhost:5000/users/profile/edit/4", () => {
         return HttpResponse.json(
@@ -499,10 +502,9 @@ describe("should render MainGridInterface", () => {
     await user.click(submitBtn[1]);
 
     // screen.debug();
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     expect(screen.queryAllByText("Edit Profile")[1].textContent).toMatch(
@@ -615,6 +617,11 @@ describe("should render MainGridInterface", () => {
     const submitBtn = screen.queryAllByRole("button");
 
     await user.click(submitBtn[1]);
+
+    expect(screen.queryByAltText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
+
     // screen.debug();
     const changeUserProfilePasswords =
       await screen.findByText("Change Password");
@@ -687,6 +694,10 @@ describe("should render MainGridInterface", () => {
     const submitBtn = screen.queryAllByRole("button");
 
     await user.click(submitBtn[1]);
+
+    expect(screen.queryByAltText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     // screen.debug();
 
@@ -794,6 +805,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
+    expect(screen.queryByAltText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
     const changeUserProfilePasswords =
       await screen.findByText("Change Password");
@@ -903,9 +917,9 @@ describe("should render MainGridInterface", () => {
     await user.click(submitBtn[1]);
 
     // screen.debug();
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     await user.click(screen.queryByText("Chats"));
 
@@ -954,7 +968,7 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
     await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
@@ -1025,9 +1039,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Chats"));
@@ -1095,10 +1109,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Chats"));
@@ -1192,10 +1205,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Chats"));
@@ -1301,10 +1313,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Chats"));
@@ -1418,10 +1429,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Chats"));
@@ -1547,10 +1557,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(submitBtn[1]);
 
-    expect(screen.findByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.findByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Chats"));
@@ -1664,9 +1673,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     await user.click(screen.queryByText("Groups"));
 
@@ -1711,9 +1720,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     await user.click(screen.queryByText("Groups"));
 
@@ -1778,10 +1787,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Groups"));
@@ -1851,6 +1859,8 @@ describe("should render MainGridInterface", () => {
 
     expect(screen.queryByAltText("Loading..."));
 
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
+
     screen.debug();
 
     expect(screen.queryAllByText("group")[0].textContent).toMatch(/group/i);
@@ -1901,10 +1911,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Groups"));
@@ -2014,10 +2023,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Groups"));
@@ -2127,10 +2135,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Groups"));
@@ -2223,9 +2230,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     // screen.debug();
 
@@ -2346,10 +2353,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Groups"));
@@ -2417,7 +2423,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(screen.queryByRole("button", { name: "Create Group" }));
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.findByText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     // screen.debug();
 
@@ -2479,10 +2487,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Groups"));
@@ -2550,7 +2557,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(screen.queryByRole("button", { name: "Create Group" }));
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     // screen.debug();
 
@@ -2622,10 +2631,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Groups"));
@@ -2693,7 +2701,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(screen.queryByRole("button", { name: "Create Group" }));
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     // screen.debug();
 
@@ -2771,11 +2781,9 @@ describe("should render MainGridInterface", () => {
     await user.click(submitBtn[1]);
 
     // screen.debug();
+    expect(screen.queryByAltText("Loading..."));
 
-    expect(screen.queryByText("Loading..."));
-
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Groups"));
@@ -2843,7 +2851,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(screen.queryByRole("button", { name: "Create Group" }));
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     // screen.debug();
 
@@ -2956,10 +2966,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Groups"));
@@ -3064,10 +3073,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
-
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     await user.click(screen.queryByText("Groups"));
@@ -3135,7 +3143,9 @@ describe("should render MainGridInterface", () => {
 
     await user.click(screen.queryByRole("button", { name: "Create Group" }));
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
+
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     screen.debug();
 
@@ -3351,9 +3361,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     await user.click(screen.queryByTestId("global_chat"));
 
@@ -3408,9 +3418,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     await user.click(screen.queryByTestId("global_chat"));
 
@@ -3469,9 +3479,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     await user.click(screen.queryByTestId("global_chat"));
 
@@ -3538,9 +3548,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     await user.click(screen.queryByTestId("global_chat"));
 
@@ -3598,7 +3608,7 @@ describe("should render MainGridInterface", () => {
     await user.click(screen.getByRole("button", { name: "Send" }));
   });
 
-  it.only("should navigate to globalChat and delete a message", async () => {
+  it("should navigate to globalChat and delete a message", async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ["/login", "/profile/1", "/globalChat"],
       initialIndex: 0,
@@ -3622,9 +3632,9 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
 
-    expect(screen.queryByText("Loading..."));
+    expect(screen.queryByAltText("Loading..."));
 
-    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
     await user.click(screen.queryByTestId("global_chat"));
 

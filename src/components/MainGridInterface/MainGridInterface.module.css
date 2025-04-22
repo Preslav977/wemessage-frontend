@@ -1,21 +1,27 @@
 .mainGridContainer {
   display: grid;
   grid-template-columns: 150px 300px 1fr;
-  min-height: 100vh;
+  /* min-height: 100vh; */
+  height: 100vh;
   gap: 1rem;
   padding: 1rem 1rem 1rem 0;
   position: relative;
+  background-color: #1c1e21;
+  /* overflow: auto; */
 }
 
 .asideMainNavigationContainer {
-  background-color: aquamarine;
+  background-color: #1c1e21;
+  color: white;
 }
 
 .mainNavigation {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 96.5vh;
+  min-height: 96vh;
+  /* min-height: max-content; */
+  /* min-height: 100vh; */
 }
 
 .liFlexedImgAnchorContainer {
@@ -29,7 +35,7 @@
 
 .liFlexedImgAnchorContainer:hover {
   cursor: pointer;
-  background-color: blue;
+  background-color: #393a3b;
   /* outline: 2px solid black; */
 }
 
@@ -38,25 +44,36 @@
   display: flex;
   align-items: center;
   gap: 0.5em;
+  color: white;
+}
+
+.anchorFlexedImgContainer:visited {
+  color: white;
 }
 
 .mainNavigationSvg {
-  max-width: 30px;
+  max-width: 25px;
 }
 
 .mainGridSection {
-  background-color: beige;
+  background-color: #242526;
   /* outline: 2px solid bisque; */
-  /* padding: 1em; */
+  padding: 1em;
   /* outline: 2px solid black; */
+  /* min-height: 95.6vh; */
+  max-height: 96vh;
 }
 
 .secondaryGridSection {
-  background-color: blanchedalmond;
-  /* padding: 1em; */
+  background-color: #242526;
+  padding: 1em;
   /* outline: 2px solid black; */
   display: flex;
   flex-direction: column;
+  /* overflow: auto; */
+  /* overflow: scroll; */
+  /* max-height: 50vh; */
+  min-height: 96vh;
 }
 
 .footerMobileNavigation {

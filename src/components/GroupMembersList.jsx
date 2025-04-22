@@ -1,18 +1,18 @@
 import styles from "./GroupMembersList.module.css";
+import PropTypes from "prop-types";
 
-function GroupMembersList({ groupMembers, ref, onClick }) {
+function GroupMembersList({ groupMembers, onClick }) {
   return (
     <>
       {groupMembers.map((friend) => (
         <li
-          data-testid="select_member"
           style={{
-            display: "none",
+            display: "flex",
           }}
-          ref={ref}
-          //   onClick={() => onClick(onClick)}
           key={friend.id}
           className={styles.flexedLiDropDownUsersContainer}
+          data-testid="select_member"
+          onClick={() => onClick(friend)}
         >
           {friend.profile_picture === "" ? (
             <img
@@ -28,16 +28,21 @@ function GroupMembersList({ groupMembers, ref, onClick }) {
             />
           )}
           <div>
-            <p>
+            <p className={styles.userFirstAndLastName}>
               {friend.first_name} {friend.last_name}
             </p>
 
-            <p>{"@" + friend.username}</p>
+            <p className={styles.userUsername}>{"@" + friend.username}</p>
           </div>
         </li>
       ))}
     </>
   );
 }
+
+GroupMembersList.propTypes = {
+  groupMembers: PropTypes.array,
+  onClick: PropTypes.func,
+};
 
 export default GroupMembersList;

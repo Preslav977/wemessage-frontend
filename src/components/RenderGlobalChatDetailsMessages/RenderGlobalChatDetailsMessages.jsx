@@ -1,9 +1,10 @@
 import styles from "./RenderGlobalChatDetailsMessages.module.css";
 import { Link } from "react-router-dom";
-import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { useContext, useState, useRef, Fragment } from "react";
-import useFetchGlobalChatURL from "../api/custom hooks/useFetchGlobalChatURL";
 import { format } from "date-fns";
+import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
+import useFetchGlobalChatURL from "../api/custom hooks/useFetchGlobalChatURL";
+import PopUpModal from "../PopUpModal/PopUpModal";
 
 function RenderGlobalChatDetailsMessages() {
   const { globalChatDetails, setGlobalChatDetails, error, loading } =
@@ -35,12 +36,82 @@ function RenderGlobalChatDetailsMessages() {
 
   const [clickedGlobalChatMessage, setClickedGlobalChatMessage] = useState();
 
+  const [
+    showPopUpWhenDeletingOrEditingMessage,
+    setShowPopUpWhenDeletingOrEditingMessage,
+  ] = useState(false);
+
   if (loading) {
-    return <img src="/loading_spinner.svg" alt="Loading..." />;
+    // return <img src="/loading_spinner.svg" alt="Loading..." />;
+
+    return (
+      <svg
+        version="1.1"
+        id="L7"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 100 100"
+        enableBackground="new 0 0 100 100"
+        xmlSpace="preserve"
+      >
+        Loading...
+        <path
+          fill="#fff"
+          d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3
+c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z"
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            dur="2s"
+            from="0 50 50"
+            to="360 50 50"
+            repeatCount="indefinite"
+          />
+        </path>
+        <path
+          fill="#fff"
+          d="M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7
+c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z"
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            dur="1s"
+            from="0 50 50"
+            to="-360 50 50"
+            repeatCount="indefinite"
+          />
+        </path>
+        <path
+          fill="#fff"
+          d="M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5
+L82,35.7z"
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            dur="2s"
+            from="0 50 50"
+            to="360 50 50"
+            repeatCount="indefinite"
+          />
+        </path>
+      </svg>
+    );
   }
 
   if (error) {
-    return <p>Failed to fetch globalChat details!</p>;
+    return (
+      <p className={styles.errorParagraph}>
+        Failed to fetch globalChat details!
+      </p>
+    );
   }
 
   async function sendMessageInGlobalChat(e) {
@@ -164,6 +235,14 @@ function RenderGlobalChatDetailsMessages() {
         },
       );
 
+      if (response.status === 200) {
+        setShowPopUpWhenDeletingOrEditingMessage(true);
+
+        setTimeout(() => {
+          setShowPopUpWhenDeletingOrEditingMessage(false);
+        }, 3000);
+      }
+
       const result = await response.json();
 
       console.log(result);
@@ -210,6 +289,14 @@ function RenderGlobalChatDetailsMessages() {
         },
       );
 
+      if (response.status === 200) {
+        setShowPopUpWhenDeletingOrEditingMessage(true);
+
+        setTimeout(() => {
+          setShowPopUpWhenDeletingOrEditingMessage(false);
+        }, 3000);
+      }
+
       const result = await response.json();
 
       const retrieveNewMessagesAfterDeletingAMessage = {
@@ -225,244 +312,199 @@ function RenderGlobalChatDetailsMessages() {
 
   if (globalChatDetails !== null) {
     return (
-      <div className={styles.globalChatMessagesDetailsContainer}>
-        <header className={styles.globalChatMessageDetailsHeader}>
-          {/* <img
-            className={styles.globalChatDetailsUserProfilePicture}
-            src={globalChatDetails.globalChat_image}
-            alt="globalChat image"
-          /> */}
-          <h6 className={styles.globalChatNameMessageDetails}>
-            {"Global Chat"}
-          </h6>
-        </header>
-        <>
-          {globalChatDetails.messagesGGChat.length === 0 ? (
-            <div className={styles.globalChatNoMessagesContainer}>
-              <p>Start a conversation, say Hi!</p>
-            </div>
-          ) : (
-            <ul className={styles.globalChatDetailsMessagesContainer}>
-              {globalChatDetails.messagesGGChat.map((message, index) => (
-                <Fragment key={message.id}>
-                  {/* if the first element index is 0 or the date of that 
+      <>
+        <div className={styles.globalChatMessagesDetailsContainer}>
+          <header className={styles.globalChatMessageDetailsHeader}>
+            <img
+              className={styles.globalChatDetailsProfilePicture}
+              src="/wemessage_logo.jpg"
+              alt="globalChat image"
+            />
+            <h6 className={styles.globalChatSubHeaderName}>Global Chat</h6>
+          </header>
+          <hr className={styles.globalChatDetailsHeaderBottomHr} />
+          <>
+            {globalChatDetails.messagesGGChat.length === 0 ? (
+              <div className={styles.globalChatNoMessagesContainer}>
+                <p className={styles.globalChatNoMessagePara}>
+                  Start a conversation, say Hi!
+                </p>
+              </div>
+            ) : (
+              <ul className={styles.globalChatDetailsMessagesContainer}>
+                {globalChatDetails.messagesGGChat.map((message, index) => (
+                  <Fragment key={message.id}>
+                    {/* if the first element index is 0 or the date of that 
                 message is not equal to the first one render the date 
                 otherwise  don't
                  */}
-                  {index === 0 ||
-                  format(message.createdAt, "MM/dd/yy") !==
-                    format(
-                      globalChatDetails.messagesGGChat[0].createdAt,
-                      "MM/dd/yy",
-                    ) ? (
-                    <p>{format(message.createdAt, "MM/dd/yy")}</p>
-                  ) : (
-                    ""
-                  )}
-                  {message.userId === userLogInObj.id ? (
-                    <ul className={styles.globalChatDetailsUserMessage}>
-                      {message.message_text ? (
-                        <div
-                          className={
-                            styles.globalChatDetailsMessageDropDownMenu
-                          }
-                        >
-                          <img
+                    {index === 0 ||
+                    format(message.createdAt, "MM/dd/yy") !==
+                      format(
+                        globalChatDetails.messagesGGChat[0].createdAt,
+                        "MM/dd/yy",
+                      ) ? (
+                      <p className={styles.globalChatDetailsSendMessageDate}>
+                        {format(message.createdAt, "MM/dd/yy")}
+                      </p>
+                    ) : (
+                      ""
+                    )}
+                    {message.userId === userLogInObj.id ? (
+                      <ul className={styles.globalChatDetailsUserMessage}>
+                        {message.message_text ? (
+                          <div
                             className={
-                              styles.globalChatDetailsMessageDropDownImg
+                              styles.globalChatDetailsMessageDropDownMenu
                             }
-                            onClick={() => toggleMessageDropDown(message)}
-                            src="/three_dots.svg"
-                            alt="message drop-down menu"
-                          />
-                          {showDropDownFormOnMessage &&
-                          message.id === clickedGlobalChatMessage ? (
-                            <form
-                              style={{
-                                display: "block",
-                              }}
-                              ref={dropDownMenuRef}
-                              onSubmit={showEditGlobalChatMessageForm}
-                            >
-                              <input
-                                data-testid="message_text"
-                                type="text"
-                                name="message_text"
-                                id="message_text"
-                                value={editTheSelectedGlobalChatMessage}
-                                onChange={(e) =>
-                                  setEditTheSelectedGlobalChatMessage(
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                              <button
-                                onClick={() => {
-                                  setShowDropDownMenu(false);
-                                  setShowDropDownFormOnMessage(false);
-                                }}
-                              >
-                                Cancel
-                              </button>
-                              <button type="submit">Save</button>
-                            </form>
-                          ) : (
-                            <p
-                              className={styles.globalChatDetailsSendMessage}
-                              key={message.id}
-                            >
-                              {message.message_text}
-                            </p>
-                          )}
-                          {showDropDownMenu ? (
-                            <div
+                          >
+                            <img
                               className={
-                                styles.globalChatDetailsDropDownMenuButtons
+                                styles.globalChatDetailsMessageDropDownImg
                               }
-                            >
-                              <button
-                                onClick={() => {
-                                  setShowDropDownFormOnMessage(true);
-                                  setShowDropDownMenu(false);
-                                }}
+                              onClick={() => toggleMessageDropDown(message)}
+                              src="/three_dots.svg"
+                              alt="message drop-down menu"
+                            />
+                            {showDropDownFormOnMessage &&
+                            message.id === clickedGlobalChatMessage ? (
+                              <form
                                 style={{
-                                  display:
-                                    message.id === clickedGlobalChatMessage
-                                      ? "block"
-                                      : "none",
+                                  display: "block",
                                 }}
+                                ref={dropDownMenuRef}
+                                onSubmit={showEditGlobalChatMessageForm}
                               >
-                                Edit
-                              </button>
-                              <button
-                                onClick={() =>
-                                  removeMessageFromGlobalChat(message)
-                                }
-                                style={{
-                                  display:
-                                    message.id === clickedGlobalChatMessage
-                                      ? "block"
-                                      : "none",
-                                }}
+                                <input
+                                  className={styles.dropDownEditMessageForm}
+                                  data-testid="message_text"
+                                  type="text"
+                                  name="message_text"
+                                  id="message_text"
+                                  value={editTheSelectedGlobalChatMessage}
+                                  onChange={(e) =>
+                                    setEditTheSelectedGlobalChatMessage(
+                                      e.target.value,
+                                    )
+                                  }
+                                />
+                                <button
+                                  className={styles.dropDownMenuCancelBtn}
+                                  onClick={() => {
+                                    setShowDropDownMenu(false);
+                                    setShowDropDownFormOnMessage(false);
+                                  }}
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  className={styles.dropDownMenuSaveBtn}
+                                  type="submit"
+                                >
+                                  Save
+                                </button>
+                              </form>
+                            ) : (
+                              <p
+                                className={styles.globalChatDetailsSendMessage}
+                                key={message.id}
                               >
-                                Delete
-                              </button>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      ) : (
-                        <>
-                          {message.userId === userLogInObj.id ? (
-                            <>
+                                {message.message_text}
+                              </p>
+                            )}
+                            {showDropDownMenu ? (
                               <div
                                 className={
-                                  styles.globalChatDetailsMessageDropDownMenu
+                                  styles.globalChatDetailsDropDownMenuButtons
                                 }
                               >
+                                <button
+                                  className={styles.dropDownMenuEditBtn}
+                                  onClick={() => {
+                                    setShowDropDownFormOnMessage(true);
+                                    setShowDropDownMenu(false);
+                                  }}
+                                  style={{
+                                    display:
+                                      message.id === clickedGlobalChatMessage
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  className={styles.dropDownMenuDeleteBtn}
+                                  onClick={() =>
+                                    removeMessageFromGlobalChat(message)
+                                  }
+                                  style={{
+                                    display:
+                                      message.id === clickedGlobalChatMessage
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        ) : (
+                          <>
+                            {message.userId === userLogInObj.id ? (
+                              <>
                                 <div
                                   className={
-                                    styles.globalChatDetailsMessageDropDownButtonWrapper
+                                    styles.globalChatDetailsMessageDropDownMenu
                                   }
                                 >
-                                  <img
+                                  <div
                                     className={
-                                      styles.globalChatDetailsMessageDropDownImg
-                                    }
-                                    onClick={() =>
-                                      toggleMessageDropDown(message)
-                                    }
-                                    src="/three_dots.svg"
-                                    alt="message drop-down menu"
-                                  />
-                                  {showDropDownMenu ? (
-                                    <div className={styles.btn}>
-                                      <button
-                                        onClick={() =>
-                                          removeMessageFromGlobalChat(message)
-                                        }
-                                        style={{
-                                          display:
-                                            message.id ===
-                                            clickedGlobalChatMessage
-                                              ? "block"
-                                              : "none",
-                                        }}
-                                      >
-                                        Delete
-                                      </button>
-                                    </div>
-                                  ) : (
-                                    ""
-                                  )}
-                                </div>
-
-                                <img
-                                  key={message.id}
-                                  className={styles.globalChatDetailsSendImage}
-                                  src={message.message_imageURL}
-                                  alt="send image in chat"
-                                />
-                              </div>
-                            </>
-                          ) : (
-                            <img
-                              key={message.id}
-                              className={styles.globalChatDetailsSendImage}
-                              src={message.message_imageURL}
-                              alt="send image in chat"
-                            />
-                          )}
-                        </>
-                      )}
-                    </ul>
-                  ) : (
-                    <>
-                      {globalChatDetails.users.map((user) => (
-                        <Fragment key={user.id}>
-                          {user.id !== userLogInObj.id ? (
-                            <div
-                              className={
-                                styles.globalChatReceiverSendingMessagesContainer
-                              }
-                            >
-                              <div
-                                className={styles.globalChatDetailsUserUsername}
-                              >
-                                <p>{"@" + user.username}</p>
-                              </div>
-                              <div
-                                className={
-                                  styles.globalChatDetailsReceiverUserMessages
-                                }
-                              >
-                                <Link to={`/profile/${user.id}`}>
-                                  {user.profile_picture === "" ? (
-                                    <img
-                                      className={
-                                        styles.globalChatDetailsUserDefaultProfilePicture
-                                      }
-                                      src="/default_users_pfp.jpg"
-                                      alt="user default profile picture"
-                                    />
-                                  ) : (
-                                    <img
-                                      src={user.profile_picture}
-                                      alt="user profile picture"
-                                    />
-                                  )}
-                                </Link>
-                                {message.message_text ? (
-                                  <li
-                                    key={message.id}
-                                    className={
-                                      styles.globalChatDetailsSendMessage
+                                      styles.globalChatDetailsMessageDropDownButtonWrapper
                                     }
                                   >
-                                    {message.message_text}
-                                  </li>
-                                ) : (
+                                    <img
+                                      className={
+                                        styles.globalChatDetailsMessageDropDownImg
+                                      }
+                                      onClick={() =>
+                                        toggleMessageDropDown(message)
+                                      }
+                                      src="/three_dots.svg"
+                                      alt="message drop-down menu"
+                                    />
+                                    {showDropDownMenu ? (
+                                      <div
+                                        className={
+                                          styles.chatDetailsDropDownMenuButtons
+                                        }
+                                      >
+                                        <button
+                                          className={
+                                            styles.dropDownMenuDeleteBtn
+                                          }
+                                          onClick={() =>
+                                            removeMessageFromGlobalChat(message)
+                                          }
+                                          style={{
+                                            display:
+                                              message.id ===
+                                              clickedGlobalChatMessage
+                                                ? "block"
+                                                : "none",
+                                          }}
+                                        >
+                                          Delete
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      ""
+                                    )}
+                                  </div>
+
                                   <img
                                     key={message.id}
                                     className={
@@ -471,58 +513,161 @@ function RenderGlobalChatDetailsMessages() {
                                     src={message.message_imageURL}
                                     alt="send image in chat"
                                   />
-                                )}
+                                </div>
+                              </>
+                            ) : (
+                              <img
+                                key={message.id}
+                                className={styles.globalChatDetailsSendImage}
+                                src={message.message_imageURL}
+                                alt="send image in chat"
+                              />
+                            )}
+                          </>
+                        )}
+                      </ul>
+                    ) : (
+                      <>
+                        {globalChatDetails.users.map((user) => (
+                          <Fragment key={user.id}>
+                            {user.id !== userLogInObj.id ? (
+                              <div
+                                className={
+                                  styles.globalChatReceiverSendingMessagesContainer
+                                }
+                              >
+                                <div
+                                  className={
+                                    styles.globalChatDetailsUserUsername
+                                  }
+                                >
+                                  <p>{"@" + user.username}</p>
+                                </div>
+                                <div
+                                  className={
+                                    styles.globalChatDetailsReceiverUserMessages
+                                  }
+                                >
+                                  <Link to={`/profile/${user.id}`}>
+                                    {user.profile_picture === "" ? (
+                                      <img
+                                        className={
+                                          styles.globalChatDetailsUserDefaultProfilePicture
+                                        }
+                                        src="/default_users_pfp.jpg"
+                                        alt="user default profile picture"
+                                      />
+                                    ) : (
+                                      <img
+                                        src={user.profile_picture}
+                                        alt="user profile picture"
+                                      />
+                                    )}
+                                  </Link>
+                                  {message.message_text ? (
+                                    <li
+                                      key={message.id}
+                                      className={
+                                        styles.globalChatDetailsSendMessage
+                                      }
+                                    >
+                                      {message.message_text}
+                                    </li>
+                                  ) : (
+                                    <img
+                                      key={message.id}
+                                      className={
+                                        styles.globalChatDetailsSendImage
+                                      }
+                                      src={message.message_imageURL}
+                                      alt="send image in chat"
+                                    />
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </Fragment>
-                      ))}
-                    </>
-                  )}
-                </Fragment>
-              ))}
-            </ul>
-          )}
-        </>
+                            ) : (
+                              ""
+                            )}
+                          </Fragment>
+                        ))}
+                      </>
+                    )}
+                  </Fragment>
+                ))}
+              </ul>
+            )}
+          </>
 
-        <div className={styles.globalChatDetailsSendMessageOrImageContainer}>
-          <form
-            ref={formRef}
-            encType="multipart/form"
-            onSubmit={
-              sendAGlobalChatMessageState !== ""
-                ? sendMessageInGlobalChat
-                : sendImageInGlobalChat
-            }
-          >
-            <input
-              className={styles.globalChatDetailsSendMessageInput}
-              data-testid="message_text"
-              type="text"
-              name="message_text"
-              id="message_text"
-              maxLength={200}
-              value={sendAGlobalChatMessageState}
-              onChange={(e) => setSendAGlobalChatMessageState(e.target.value)}
-            />
-            <input
-              className={styles.globalChatDetailsSendImageInput}
-              data-testid="message_image"
-              type="file"
-              name="file"
-              id="file"
-            />
-            <button
-              className={styles.globalChatDetailsSendMessageOrImageButton}
-              type="submit"
+          <div className={styles.globalChatDetailsSendMessageOrImageContainer}>
+            <hr className={styles.globalChatMessageDetailsBottomHr} />
+            <form
+              className={styles.flexGlobalChatDetailsSendMessageOrImageForm}
+              ref={formRef}
+              encType="multipart/form"
+              onSubmit={
+                sendAGlobalChatMessageState !== ""
+                  ? sendMessageInGlobalChat
+                  : sendImageInGlobalChat
+              }
             >
-              Send
-            </button>
-          </form>
+              <input
+                className={styles.globalChatDetailsSendMessageInput}
+                data-testid="message_text"
+                type="text"
+                name="message_text"
+                id="message_text"
+                maxLength={200}
+                value={sendAGlobalChatMessageState}
+                onChange={(e) => setSendAGlobalChatMessageState(e.target.value)}
+              />
+              <div className={styles.globalChatDetailsSendImageContainer}>
+                <img
+                  className={styles.globalChatDetailsSendImageSvg}
+                  src="/send_image.svg"
+                  alt=""
+                />
+                <input
+                  className={styles.globalChatDetailsSendImageInput}
+                  data-testid="message_image"
+                  type="file"
+                  name="file"
+                  id="file"
+                />
+              </div>
+
+              <div className={styles.globalChatDetailsSendMessageContainer}>
+                <img
+                  className={styles.globalChatDetailsSendMessageSvg}
+                  src="/send_message.svg"
+                  alt=""
+                />
+                <button
+                  className={styles.globalChatDetailsSendMessageOrImageButton}
+                  type="submit"
+                >
+                  Send
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+        {showPopUpWhenDeletingOrEditingMessage && (
+          <PopUpModal
+            popUpModalBackgroundColor={"white"}
+            popUpModalContentColor={"black"}
+            popUpModalBorderColor={"white"}
+            popUpModalContentText={"Message edited!"}
+          />
+        )}
+        {showPopUpWhenDeletingOrEditingMessage && (
+          <PopUpModal
+            popUpModalBackgroundColor={"white"}
+            popUpModalContentColor={"black"}
+            popUpModalBorderColor={"white"}
+            popUpModalContentText={"Message deleted!"}
+          />
+        )}
+      </>
     );
   }
 }

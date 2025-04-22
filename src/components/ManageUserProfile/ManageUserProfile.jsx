@@ -1,9 +1,8 @@
 import styles from "./ManageUserProfile.module.css";
-import { Link } from "react-router-dom";
-
-import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
+import { Link, useParams } from "react-router-dom";
 import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import PropTypes from "prop-types";
+import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 
 function ManageUserProfile({ currentPath }) {
   const [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
@@ -26,12 +25,12 @@ function ManageUserProfile({ currentPath }) {
   } else {
     return (
       <>
-        <h3 className={styles.manageProfileHeader}>Manage Profile</h3>
+        <h2 className={styles.manageProfileHeader}>Manage Profile</h2>
         <nav>
           <ul className={styles.ulFlexedLiContainer}>
             <li
               style={{
-                backgroundColor: currentPath === "/profile/" ? "blue" : "",
+                backgroundColor: currentPath === "/profile/" ? "#393a3b" : "",
               }}
               className={styles.liFlexedContent}
             >
@@ -41,7 +40,8 @@ function ManageUserProfile({ currentPath }) {
             </li>
             <li
               style={{
-                backgroundColor: currentPath === "/profile/edit/" ? "blue" : "",
+                backgroundColor:
+                  currentPath === "/profile/edit/" ? "#393a3b" : "",
               }}
               className={styles.liFlexedContent}
             >
@@ -55,7 +55,7 @@ function ManageUserProfile({ currentPath }) {
             <li
               style={{
                 backgroundColor:
-                  currentPath === "/profile/change_passwords/" ? "blue" : "",
+                  currentPath === "/profile/change_passwords/" ? "#393a3b" : "",
               }}
               className={styles.liFlexedContent}
             >
@@ -72,5 +72,9 @@ function ManageUserProfile({ currentPath }) {
     );
   }
 }
+
+ManageUserProfile.propTypes = {
+  currentPath: PropTypes.string,
+};
 
 export default ManageUserProfile;

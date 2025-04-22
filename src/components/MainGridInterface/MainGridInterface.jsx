@@ -1,12 +1,12 @@
 import styles from "./MainGridInterface.module.css";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-
-import { globalChatId } from "../../utility/globalChatId";
-
-import { UserLoggedInContext } from "../../contexts/UserLoggedInContext";
-import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { useContext, useEffect, useState } from "react";
+import { globalChatId } from "../../utility/globalChatId";
+import {
+  UserLoggedInContext,
+  UserLogInObjectContext,
+} from "../../contexts/UserLoggedInContext";
 
 function MainGridInterface({
   leftGridComponent,
@@ -57,7 +57,8 @@ function MainGridInterface({
             <ul className={styles.ulLinkContainer}>
               <li
                 style={{
-                  backgroundColor: currentPath === "/globalChat/" ? "blue" : "",
+                  backgroundColor:
+                    currentPath === "/globalChat/" ? "#393a3b" : "",
                 }}
                 className={styles.liFlexedImgAnchorContainer}
               >
@@ -76,7 +77,7 @@ function MainGridInterface({
               </li>
               <li
                 style={{
-                  backgroundColor: currentPath === "/chats" ? "blue" : "",
+                  backgroundColor: currentPath === "/chats" ? "#393a3b" : "",
                 }}
                 className={styles.liFlexedImgAnchorContainer}
               >
@@ -95,7 +96,7 @@ function MainGridInterface({
               </li>
               <li
                 style={{
-                  backgroundColor: currentPath === "/groups" ? "blue" : "",
+                  backgroundColor: currentPath === "/groups" ? "#393a3b" : "",
                 }}
                 className={styles.liFlexedImgAnchorContainer}
               >
@@ -116,7 +117,7 @@ function MainGridInterface({
             <ul>
               <li
                 style={{
-                  backgroundColor: currentPath === "/profile/" ? "blue" : "",
+                  backgroundColor: currentPath === "/profile/" ? "#393a3b" : "",
                 }}
                 className={styles.liFlexedImgAnchorContainer}
               >
@@ -135,7 +136,7 @@ function MainGridInterface({
               </li>
               <li
                 style={{
-                  backgroundColor: currentPath === "/logout" ? "blue" : "",
+                  backgroundColor: currentPath === "/logout" ? "#393a3b" : "",
                 }}
                 onClick={userLogOut}
                 className={styles.liFlexedImgAnchorContainer}
@@ -164,8 +165,8 @@ function MainGridInterface({
             display:
               currentPath === "/chats" ||
               currentPath === "/groups" ||
-              (currentPath !== "/groups" && width >= 640) ||
-              (currentPath !== "/chats" && width >= 640)
+              (currentPath !== "/groups" && width > 640) ||
+              (currentPath !== "/chats" && width > 640)
                 ? "block"
                 : "none",
           }}
@@ -178,9 +179,9 @@ function MainGridInterface({
           // using conditionals
           style={{
             display:
-              (currentPath === "/chats" && width >= 640) ||
+              (currentPath === "/chats" && width > 640) ||
               currentPath === "/chats/" ||
-              (currentPath === "/groups" && width >= 640) ||
+              (currentPath === "/groups" && width > 640) ||
               currentPath === "/groups/" ||
               currentPath === "/profile/" ||
               currentPath === "/profile/edit/" ||

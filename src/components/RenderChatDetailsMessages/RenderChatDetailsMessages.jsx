@@ -1,9 +1,10 @@
 import styles from "./RenderChatDetailsMessages.module.css";
 import { Link } from "react-router-dom";
 import { useContext, useState, useRef, Fragment } from "react";
+import { format } from "date-fns";
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import useFetchSingleChatURL from "../api/custom hooks/useFetchSingleChatURL";
-import { format } from "date-fns";
+import PopUpModal from "../PopUpModal/PopUpModal";
 
 function RenderChatDetailsMessages() {
   const { chatDetails, setChatDetails, error, loading } =
@@ -29,12 +30,80 @@ function RenderChatDetailsMessages() {
 
   const [clickedMessage, setClickedMessage] = useState();
 
+  const [
+    showPopUpWhenDeletingOrEditingMessage,
+    setShowPopUpWhenDeletingOrEditingMessage,
+  ] = useState(false);
+
   if (loading) {
-    return <img src="./loading_spinner.svg" alt="Loading..." />;
+    // return <img src="./loading_spinner.svg" alt="Loading..." />;
+
+    return (
+      <svg
+        version="1.1"
+        id="L7"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 100 100"
+        enableBackground="new 0 0 100 100"
+        xmlSpace="preserve"
+      >
+        Loading...
+        <path
+          fill="#fff"
+          d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3
+c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z"
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            dur="2s"
+            from="0 50 50"
+            to="360 50 50"
+            repeatCount="indefinite"
+          />
+        </path>
+        <path
+          fill="#fff"
+          d="M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7
+c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z"
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            dur="1s"
+            from="0 50 50"
+            to="-360 50 50"
+            repeatCount="indefinite"
+          />
+        </path>
+        <path
+          fill="#fff"
+          d="M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5
+L82,35.7z"
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            dur="2s"
+            from="0 50 50"
+            to="360 50 50"
+            repeatCount="indefinite"
+          />
+        </path>
+      </svg>
+    );
   }
 
   if (error) {
-    return <p>Failed to fetch chat details!</p>;
+    return (
+      <p className={styles.errorParagraph}>Failed to fetch chat details!</p>
+    );
   }
 
   async function sendMessageInChat(e) {
@@ -164,6 +233,14 @@ function RenderChatDetailsMessages() {
         },
       );
 
+      if (response.status === 200) {
+        setShowPopUpWhenDeletingOrEditingMessage(true);
+
+        setTimeout(() => {
+          setShowPopUpWhenDeletingOrEditingMessage(false);
+        }, 3000);
+      }
+
       const result = await response.json();
 
       // console.log(result);
@@ -206,6 +283,14 @@ function RenderChatDetailsMessages() {
         },
       );
 
+      if (response.status === 200) {
+        setShowPopUpWhenDeletingOrEditingMessage(true);
+
+        setTimeout(() => {
+          setShowPopUpWhenDeletingOrEditingMessage(false);
+        }, 3000);
+      }
+
       const result = await response.json();
 
       // console.log(result)
@@ -222,276 +307,325 @@ function RenderChatDetailsMessages() {
   }
 
   if (chatDetails === null) {
-    return <h5>Chats</h5>;
+    return <h5 className={styles.chatDetailsHeader}>Chats</h5>;
   } else {
     return (
-      <div className={styles.chatMessagesDetailsContainer}>
-        <header className={styles.chatMessageDetailsHeader}>
-          <Link
-            className={styles.chatMessageDetailsFlexedAnchor}
-            to={`/profile/${chatDetails.id}`}
-          >
-            {chatDetails.receiverChat.profile_picture === "" ? (
-              <img
-                className={styles.chatDetailsUserProfilePicture}
-                src="/default_users_pfp.jpg"
-                alt="user default profile picture"
-              />
-            ) : (
-              <img
-                className={styles.chatDetailsUserProfilePicture}
-                src={chatDetails.receiverChat.profile_picture}
-                alt="user profile picture"
-              />
-            )}
-            <h6 className={styles.chatMessageDetailsUserFirstAndLastName}>
-              {chatDetails.receiverChat.first_name}{" "}
-              {chatDetails.receiverChat.last_name}
-            </h6>
-          </Link>
-        </header>
+      <>
+        <div className={styles.chatMessagesDetailsContainer}>
+          <header className={styles.chatMessageDetailsHeader}>
+            <Link
+              className={styles.chatMessageDetailsFlexedAnchor}
+              to={`/profile/${chatDetails.receiverChat.id}`}
+            >
+              {chatDetails.receiverChat.profile_picture === "" ? (
+                <img
+                  className={styles.chatDetailsUserProfilePicture}
+                  src="/default_users_pfp.jpg"
+                  alt="user default profile picture"
+                />
+              ) : (
+                <img
+                  className={styles.chatDetailsUserProfilePicture}
+                  src={chatDetails.receiverChat.profile_picture}
+                  alt="user profile picture"
+                />
+              )}
+              <h6 className={styles.chatMessageDetailsUserFirstAndLastName}>
+                {chatDetails.receiverChat.first_name}{" "}
+                {chatDetails.receiverChat.last_name}
+              </h6>
+            </Link>
+            <hr className={styles.chatDetailsHeaderBottomHr} />
+          </header>
 
-        {chatDetails.messages.length === 0 ? (
-          <div className={styles.chatNoMessagesContainer}>
-            <p>Start a conversation, say Hi!</p>
-          </div>
-        ) : (
-          <ul className={styles.chatDetailsMessagesContainer}>
-            {chatDetails.messages.map((message, index) => (
-              <Fragment key={message.id}>
-                {/* if the first element index is 0 or the date of that 
+          {chatDetails.messages.length === 0 ? (
+            <div className={styles.chatNoMessagesContainer}>
+              <p className={styles.chatNoMessagesPara}>
+                Start a conversation, say Hi!
+              </p>
+            </div>
+          ) : (
+            <ul className={styles.chatDetailsMessagesContainer}>
+              {chatDetails.messages.map((message, index) => (
+                <Fragment key={message.id}>
+                  {/* if the first element index is 0 or the date of that 
                 message is not equal to the first one render the date 
                 otherwise  don't
                  */}
-                {index === 0 ||
-                format(message.createdAt, "MM/dd/yy") !==
-                  format(chatDetails.messages[0].createdAt, "MM/dd/yy") ? (
-                  <p>{format(message.createdAt, "MM/dd/yy")}</p>
-                ) : (
-                  ""
-                )}
-                {/* if the messageId equal the loggedIn userId render the message of that user  */}
-                {message.senderMessageId === userLogInObj.id ? (
-                  <li
-                    // key={message.id}
-                    className={styles.chatDetailsUserMessage}
-                  >
-                    {message.message_text ? (
-                      <div className={styles.chatDetailsMessageDropDownMenu}>
-                        <img
-                          className={styles.chatDetailsMessageDropDownImg}
-                          onClick={() => toggleMessageDropDown(message)}
-                          src="/three_dots.svg"
-                          alt="message drop-down menu"
-                        />
-                        {showDropDownFormOnMessage &&
-                        message.id === clickedMessage ? (
-                          <form
-                            style={{
-                              display: "block",
-                            }}
-                            ref={dropDownMenuRef}
-                            onSubmit={showEditMessageForm}
-                          >
-                            <input
-                              type="text"
-                              name="message_text"
-                              id="message_text"
-                              value={editTheSelectedMessage}
-                              onChange={(e) =>
-                                setEditTheSelectedMessage(e.target.value)
-                              }
-                            />
-                            <button
-                              onClick={() => {
-                                setShowDropDownMenu(false);
-                                setShowDropDownFormOnMessage(false);
+                  {index === 0 ||
+                  format(message.createdAt, "MM/dd/yy") !==
+                    format(chatDetails.messages[0].createdAt, "MM/dd/yy") ? (
+                    <p className={styles.chatDetailsSendMessageDate}>
+                      {format(message.createdAt, "MM/dd/yy")}
+                    </p>
+                  ) : (
+                    ""
+                  )}
+                  {/* if the messageId equal the loggedIn userId render the message of that user  */}
+                  {message.senderMessageId === userLogInObj.id ? (
+                    <li className={styles.chatDetailsUserMessage}>
+                      {message.message_text ? (
+                        <div className={styles.chatDetailsMessageDropDownMenu}>
+                          <img
+                            className={styles.chatDetailsMessageDropDownImg}
+                            onClick={() => toggleMessageDropDown(message)}
+                            src="/three_dots.svg"
+                            alt="message drop-down menu"
+                          />
+                          {showDropDownFormOnMessage &&
+                          message.id === clickedMessage ? (
+                            <form
+                              style={{
+                                display: "block",
                               }}
+                              ref={dropDownMenuRef}
+                              onSubmit={showEditMessageForm}
                             >
-                              Cancel
-                            </button>
-                            <button type="submit">Save</button>
-                          </form>
-                        ) : (
-                          <p
-                            key={message.id}
-                            className={styles.chatDetailsSendMessage}
-                          >
-                            {message.message_text}
-                          </p>
-                        )}
+                              <input
+                                className={styles.dropDownEditMessageForm}
+                                type="text"
+                                name="message_text"
+                                id="message_text"
+                                value={editTheSelectedMessage}
+                                onChange={(e) =>
+                                  setEditTheSelectedMessage(e.target.value)
+                                }
+                              />
+                              <button
+                                className={styles.dropDownMenuCancelBtn}
+                                onClick={() => {
+                                  setShowDropDownMenu(false);
+                                  setShowDropDownFormOnMessage(false);
+                                }}
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                className={styles.dropDownMenuSaveBtn}
+                                type="submit"
+                              >
+                                Save
+                              </button>
+                            </form>
+                          ) : (
+                            <p
+                              key={message.id}
+                              className={styles.chatDetailsSendMessage}
+                            >
+                              {message.message_text}
+                            </p>
+                          )}
 
-                        {showDropDownMenu ? (
-                          <div
-                            className={styles.chatDetailsDropDownMenuButtons}
-                          >
-                            <button
-                              onClick={() => {
-                                setShowDropDownFormOnMessage(true);
-                                setShowDropDownMenu(false);
-                              }}
-                              style={{
-                                display:
-                                  message.id === clickedMessage
-                                    ? "block"
-                                    : "none",
-                              }}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              onClick={() => removeMessageFromChat(message)}
-                              style={{
-                                display:
-                                  message.id === clickedMessage
-                                    ? "block"
-                                    : "none",
-                              }}
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                    ) : (
-                      <>
-                        {message.senderMessageId === userLogInObj.id ? (
-                          <>
+                          {showDropDownMenu ? (
                             <div
-                              className={styles.chatDetailsMessageDropDownMenu}
+                              className={styles.chatDetailsDropDownMenuButtons}
                             >
+                              <button
+                                className={styles.dropDownMenuEditBtn}
+                                onClick={() => {
+                                  setShowDropDownFormOnMessage(true);
+                                  setShowDropDownMenu(false);
+                                }}
+                                style={{
+                                  display:
+                                    message.id === clickedMessage
+                                      ? "block"
+                                      : "none",
+                                }}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className={styles.dropDownMenuDeleteBtn}
+                                onClick={() => removeMessageFromChat(message)}
+                                style={{
+                                  display:
+                                    message.id === clickedMessage
+                                      ? "block"
+                                      : "none",
+                                }}
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      ) : (
+                        <>
+                          {message.senderMessageId === userLogInObj.id ? (
+                            <>
                               <div
                                 className={
-                                  styles.chatDetailsMessageDropDownButtonWrapper
+                                  styles.chatDetailsMessageDropDownMenu
                                 }
                               >
-                                <img
+                                <div
                                   className={
-                                    styles.chatDetailsMessageDropDownImg
+                                    styles.chatDetailsMessageDropDownButtonWrapper
                                   }
-                                  onClick={() => toggleMessageDropDown(message)}
-                                  src="/three_dots.svg"
-                                  alt="message drop-down menu"
+                                >
+                                  <img
+                                    className={
+                                      styles.chatDetailsMessageDropDownImg
+                                    }
+                                    onClick={() =>
+                                      toggleMessageDropDown(message)
+                                    }
+                                    src="/three_dots.svg"
+                                    alt="message drop-down menu"
+                                  />
+                                  {showDropDownMenu ? (
+                                    <div className={styles.deleteMessageBtn}>
+                                      <button
+                                        className={styles.dropDownMenuDeleteBtn}
+                                        onClick={() =>
+                                          removeMessageFromChat(message)
+                                        }
+                                        style={{
+                                          display:
+                                            message.id === clickedMessage
+                                              ? "block"
+                                              : "none",
+                                        }}
+                                      >
+                                        Delete
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <img
+                                  key={message.id}
+                                  className={styles.chatDetailsSendImage}
+                                  src={message.message_imageURL}
+                                  alt="send image in chat"
                                 />
-                                {showDropDownMenu ? (
-                                  <div className={styles.deleteMessageBtn}>
-                                    <button
-                                      onClick={() =>
-                                        removeMessageFromChat(message)
-                                      }
-                                      style={{
-                                        display:
-                                          message.id === clickedMessage
-                                            ? "block"
-                                            : "none",
-                                      }}
-                                    >
-                                      Delete
-                                    </button>
-                                  </div>
-                                ) : (
-                                  ""
-                                )}
                               </div>
-                              <img
-                                key={message.id}
-                                className={styles.chatDetailsSendImage}
-                                src={message.message_imageURL}
-                                alt="send image in chat"
-                              />
-                            </div>
-                          </>
-                        ) : (
-                          <img
-                            key={message.id}
-                            className={styles.chatDetailsSendImage}
-                            src={message.message_imageURL}
-                            alt="send image in chat"
-                          />
-                        )}
-                      </>
-                    )}
-                  </li>
-                ) : (
-                  <>
-                    <div
-                      className={styles.chatReceiverSendingMessagesContainer}
-                    >
-                      <div className={styles.chatDetailsUserUsername}>
-                        <p>{"@" + chatDetails.senderChat.username}</p>
-                      </div>
-                      <div className={styles.chatDetailsReceiverUserMessages}>
-                        <Link to={`/profile/${chatDetails.senderChat.id}`}>
-                          {chatDetails.senderChat.profile_picture === "" ? (
-                            <img
-                              className={
-                                styles.chatDetailsUserDefaultProfilePicture
-                              }
-                              src="/default_users_pfp.jpg"
-                              alt="user default profile picture"
-                            />
+                            </>
                           ) : (
                             <img
-                              src={chatDetails.senderChat.profile_picture}
-                              alt="user profile picture"
+                              key={message.id}
+                              className={styles.chatDetailsSendImage}
+                              src={message.message_imageURL}
+                              alt="send image in chat"
                             />
                           )}
-                        </Link>
-                        {message.message_text ? (
-                          <li className={styles.chatDetailsSendMessage}>
-                            {message.message_text}
-                          </li>
-                        ) : (
-                          <img
-                            className={styles.chatDetailsSendImage}
-                            src={message.message_imageURL}
-                          />
-                        )}
+                        </>
+                      )}
+                    </li>
+                  ) : (
+                    <>
+                      <div
+                        className={styles.chatReceiverSendingMessagesContainer}
+                      >
+                        <div className={styles.chatDetailsUserUsername}>
+                          <p>{"@" + chatDetails.senderChat.username}</p>
+                        </div>
+                        <div className={styles.chatDetailsReceiverUserMessages}>
+                          <Link to={`/profile/${chatDetails.senderChat.id}`}>
+                            {chatDetails.senderChat.profile_picture === "" ? (
+                              <img
+                                className={
+                                  styles.chatDetailsUserDefaultProfilePicture
+                                }
+                                src="/default_users_pfp.jpg"
+                                alt="user default profile picture"
+                              />
+                            ) : (
+                              <img
+                                src={chatDetails.senderChat.profile_picture}
+                                alt="user profile picture"
+                              />
+                            )}
+                          </Link>
+                          {message.message_text ? (
+                            <li className={styles.chatDetailsSendMessage}>
+                              {message.message_text}
+                            </li>
+                          ) : (
+                            <img
+                              className={styles.chatDetailsSendImage}
+                              src={message.message_imageURL}
+                            />
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </>
-                )}
-              </Fragment>
-            ))}
-          </ul>
-        )}
-        {/* <div className={styles.chatMessageDetailsBottomHr}>
-          <hr />
-        </div> */}
-        <div className={styles.chatDetailsSendMessageOrImageContainer}>
-          <form
-            encType="multipart/form"
-            onSubmit={
-              sendAMessageState !== "" ? sendMessageInChat : sendImageInChat
-            }
-          >
-            <input
-              className={styles.chatDetailsSendMessageInput}
-              data-testid="message_text"
-              type="text"
-              name="message_text"
-              id="message_text"
-              value={sendAMessageState}
-              onChange={(e) => setSendAMessageState(e.target.value)}
-            />
-            <input
-              className={styles.chatDetailsSendImageInput}
-              data-testid="message_image"
-              type="file"
-              name="file"
-              id="file"
-            />
-            <button
-              className={styles.chatDetailsSendMessageOrImageButton}
-              type="submit"
+                    </>
+                  )}
+                </Fragment>
+              ))}
+            </ul>
+          )}
+
+          <div className={styles.chatDetailsSendMessageOrImageContainer}>
+            <hr className={styles.chatMessageDetailsBottomHr} />
+            <form
+              className={styles.flexChatDetailsSendMessageOrImageForm}
+              encType="multipart/form"
+              onSubmit={
+                sendAMessageState !== "" ? sendMessageInChat : sendImageInChat
+              }
             >
-              Send
-            </button>
-          </form>
+              <input
+                className={styles.chatDetailsSendMessageInput}
+                data-testid="message_text"
+                type="text"
+                name="message_text"
+                id="message_text"
+                value={sendAMessageState}
+                onChange={(e) => setSendAMessageState(e.target.value)}
+              />
+
+              <div className={styles.chatDetailsSendImageContainer}>
+                <img
+                  className={styles.chatDetailsSendImageSvg}
+                  src="/send_image.svg"
+                  alt=""
+                />
+                <input
+                  className={styles.chatDetailsSendImageInput}
+                  data-testid="message_image"
+                  type="file"
+                  name="file"
+                  id="file"
+                />
+              </div>
+              <div className={styles.chatDetailsSendMessageContainer}>
+                <img
+                  className={styles.chatDetailsSendMessageSvg}
+                  src="/send_message.svg"
+                  alt=""
+                />
+                <button
+                  className={styles.chatDetailsSendMessageOrImageButton}
+                  type="submit"
+                >
+                  Send
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+        {showPopUpWhenDeletingOrEditingMessage && (
+          <PopUpModal
+            popUpModalBackgroundColor={"white"}
+            popUpModalContentColor={"black"}
+            popUpModalBorderColor={"white"}
+            popUpModalContentText={"Message edited!"}
+          />
+        )}
+        {showPopUpWhenDeletingOrEditingMessage && (
+          <PopUpModal
+            popUpModalBackgroundColor={"white"}
+            popUpModalContentColor={"black"}
+            popUpModalBorderColor={"white"}
+            popUpModalContentText={"Message deleted!"}
+          />
+        )}
+      </>
     );
   }
 }

@@ -1,6 +1,10 @@
 .sectionWrapper {
-  height: 400px;
-  /* outline: 2px solid black; */
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  scrollbar-width: none;
 }
 
 .changeProfilePictureContainer {
@@ -11,6 +15,11 @@
   align-items: first baseline;
 }
 
+.changeProfilePictureHeader {
+  color: white;
+  font-size: 1.5rem;
+}
+
 .userProfileAnchor {
   display: none;
 }
@@ -19,15 +28,26 @@
   width: 30px;
 }
 
+.userProfileTopHr {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  display: none;
+}
+
 .editUserProfileLabel {
   display: flex;
   align-items: center;
   justify-content: center;
-  outline: 2px solid black;
-  padding: 0.25em 0.25em 0.25em 0.5em;
+  /* outline: 2px solid black; */
+  padding: 0.4em 0.5em;
   gap: 0.2rem;
   background-color: white;
   border-radius: 5px;
+  font-size: 0.85rem;
+}
+
+.editUserProfileLabel:hover {
+  cursor: pointer;
 }
 
 .editUserProfileImage {
@@ -56,9 +76,9 @@
 }
 
 .flexedUserProfileContent {
-  outline: 2px solid black;
-  width: 120px;
-  height: 120px;
+  /* outline: 2px solid black; */
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -67,27 +87,31 @@
 }
 
 .userProfileImage {
-  width: 40px;
-  height: 40px;
+  width: 70px;
+  height: 70px;
   /* outline: 2px solid black; */
   border-radius: 50%;
 }
 
 .updatedUserProfileImage {
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   /* outline: 2px solid black; */
 }
 
-hr {
+.userProfileBottomHr {
   margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 .formGroup {
   display: flex;
   gap: 0.8em;
-  margin-top: 1em;
+  margin-top: 0.5em;
+  /* outline: 2px solid blue; */
+  max-height: fit-content;
+  padding: 0.5em;
 }
 
 .formInputGroup,
@@ -98,32 +122,51 @@ hr {
   margin-bottom: 0.5rem;
 }
 
+.formInputGroup > label,
+.formTextareaGroup > label {
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
 .formGroupContent,
 .formTextareaGroup {
   width: 100%;
 }
 
 .formGroupContent input {
-  padding: 0.2rem 0;
+  padding: 0.4rem 0;
+  background-color: #3a3b3c;
+  color: white;
+  border: 0;
 }
 
 .formTextareaGroup textarea {
   resize: none;
+  background-color: #3a3b3c;
+  color: white;
+  border: 0;
+  height: 100%;
 }
 
 .submitBtnContainer {
   display: flex;
   justify-content: flex-end;
-  margin-top: 0.5rem;
+  /* outline: 2px solid red; */
 }
 
 .submitBtn {
-  padding: 0.4em 0.7em;
+  padding: 0.6em 1em;
   text-transform: capitalize;
+  transition: opacity 1s ease-in-out;
+}
+
+.submitBtn:hover {
+  cursor: pointer;
+  opacity: 0.75;
 }
 
 .error {
-  margin-top: 0.3rem;
+  margin-top: 0.2rem;
   font-size: 0.8rem;
   color: crimson;
 }
@@ -132,11 +175,41 @@ hr {
   .formGroup {
     display: flex;
     flex-direction: column;
+    gap: 0;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .formTextareaGroup textarea {
+    height: 200px;
   }
 }
 
 @media screen and (max-width: 630px) {
   .userProfileAnchor {
     display: block;
+  }
+
+  .formGroup {
+    display: flex;
+    flex-direction: row;
+    gap: 0.8rem;
+    padding: 0;
+  }
+
+  .formGroup textarea {
+    height: 230px;
+  }
+
+  .userProfileTopHr {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 }

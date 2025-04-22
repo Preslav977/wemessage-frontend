@@ -2,11 +2,30 @@
   display: flex;
   align-items: center;
   gap: 0.5em;
-  background-color: gray;
+  background-color: #3e4042;
   color: white;
   cursor: pointer;
+  padding: 0.15em;
+}
+
+.flexedLiDropDownUsersContainer:hover {
+  background-color: #2d2e30;
+  /* opacity: 0.75; */
 }
 
 .dropDownUserMemberImg {
   width: 40px;
+}
+
+.userFirstAndLastName {
+  text-transform: capitalize;
+}
+
+.userFirstAndLastName,
+.userUsername {
+  color: white;
+}
+
+.userUsername {
+  font-size: 0.75rem;
 }

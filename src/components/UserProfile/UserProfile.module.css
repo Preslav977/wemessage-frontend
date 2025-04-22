@@ -1,15 +1,13 @@
 .userBgContainer {
   max-width: inherit;
-  /* padding: 0.8rem; */
   position: relative;
-  /* outline: 2px solid black; */
-  /* border-radius: 10px; */
 }
 
 .userBgImg {
   width: 100%;
   object-fit: cover;
   height: 16rem;
+  border-radius: 0.35em;
 }
 
 .userProfileContainer {
@@ -69,12 +67,17 @@
 
 .changeBgImgBtn {
   position: absolute;
-  bottom: -10px;
-  right: 8px;
+  bottom: -12px;
+  right: 2px;
+  padding: 0.15em 0.5em;
 }
 
 .changeBgImgInput:hover {
   overflow: hidden;
+}
+
+.changeBgImgBtn:hover {
+  cursor: pointer;
 }
 
 .changeBgImg {
@@ -94,9 +97,20 @@
 .userCredentials {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
   padding: 0.8rem;
   margin-top: 0.5em;
+}
+
+.userFirstAndLastName {
+  font-size: 1.25em;
+  text-transform: capitalize;
+  margin-bottom: 0.15em;
+}
+
+.userFirstAndLastName,
+.userUsername {
+  color: white;
 }
 
 .usersBioParagraph {
@@ -107,11 +121,23 @@
   padding: 0.8rem;
 }
 
+.sendMessageBtn {
+  padding: 0.7em 1em;
+  transition: opacity 1s ease-in-out;
+}
+
+.sendMessageBtn:hover {
+  cursor: pointer;
+  opacity: 0.75;
+}
+
 .editProfileAnchor,
 .updatePasswordsAnchor {
   padding: 0.5rem 0.8rem;
   border-radius: 0.3rem;
   background-color: white;
+  color: #232a3d;
+  font-size: 0.95rem;
 }
 
 .updatePasswordsAnchor {

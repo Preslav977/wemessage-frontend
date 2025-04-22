@@ -1,36 +1,68 @@
 import { http, HttpResponse } from "msw";
 
 export const handlers = [
-  http.post("http://localhost:5000/users/signup", async () => {
+  http.post("http://localhost:5000/users/signup", async ({ request }) => {
+    const result = await request.json();
+
+    const signUpObject = {
+      first_name: result.first_name,
+      last_name: result.last_name,
+      username: result.username,
+      password: result.password,
+      confirm_password: result.confirm_password,
+      role: "ADMIN",
+    };
+
+    // console.log(signUpObject);
+
+    return HttpResponse.json(signUpObject, { status: 200 });
+  }),
+
+  http.post("http://localhost:5000/users/login_guest", async ({ request }) => {
+    const result = await request.json();
+
+    const logInObject = {
+      username: "preslaw1",
+      password: result.password,
+    };
+
+    // console.log(logInObject);
+
+    return HttpResponse.json(logInObject, { status: 200 });
+  }),
+
+  http.post("http://localhost:5000/users/login", async ({ request }) => {
+    const result = await request.json();
+
+    const logInObject = {
+      username: "preslaw",
+      password: result.password,
+    };
+
+    // console.log(logInObject);
+
+    return HttpResponse.json(logInObject, { status: 200 });
+  }),
+
+  http.get("http://localhost:5000/users", async () => {
     return HttpResponse.json(
       {
+        id: 1,
         first_name: "preslaw",
         last_name: "preslaw",
         username: "preslaw",
         password: "12345678Bg@",
-        confirm_password: "12345678Bg@",
-        bio: "",
-        role: "ADMIN",
       },
       { status: 200 },
     );
   }),
 
-  http.post("http://localhost:5000/users/login_guest", async () => {
-    return HttpResponse.json(
-      {
-        username: "preslaw1",
-        password: "12345678Bg@",
-        role: "GUEST",
-      },
-      { status: 200 },
-    );
-  }),
-
-  http.post("http://localhost:5000/users/login", async () => {
+  http.get("http://localhost:5000/users/1", async () => {
     return HttpResponse.json(
       {
         id: 1,
+        first_name: "preslaw",
+        last_name: "preslaw",
         username: "preslaw",
         password: "12345678Bg@",
       },
