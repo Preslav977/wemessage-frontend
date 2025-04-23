@@ -235,7 +235,10 @@ function SignUpForm() {
               )}
             </div>
             <p className={styles.loginAnchorLink}>
-              Already have an account? <Link to="/login">Log In</Link>
+              Already have an account?{" "}
+              <Link className={styles.loginAnchor} to="/login">
+                Log In
+              </Link>
             </p>
             <div className={styles.submitBtnContainer}>
               <button className={styles.submitBtn}>Submit</button>
@@ -249,6 +252,13 @@ function SignUpForm() {
             />
           </div>
         </div>
+      </div>
+      <div className={styles.mainFlexedSlantedDivContainer}>
+        <div className={styles.leftSlantedDiv}></div>
+        <div className={styles.leftSlatedRotatedSquare}></div>
+        <div className={styles.RightSlantedDiv}></div>
+        <div className={styles.RightSlantedRotatedBottomSquare}></div>
+        <div className={styles.RightSlantedRotatedRightSquare}></div>
       </div>
     </main>
   );

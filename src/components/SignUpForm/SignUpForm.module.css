@@ -6,6 +6,8 @@
   flex-direction: column;
   justify-content: center;
   padding: 1.5rem;
+  position: relative;
+  z-index: 1;
 }
 
 .formContainerHeader {
@@ -21,6 +23,7 @@
 
 .formHeaderName {
   font-size: 1.25rem;
+  color: white;
 }
 
 .formContainer {
@@ -34,9 +37,15 @@
   border: 0;
 }
 
+.formContainer label {
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
 .formHeader {
   margin-bottom: 0.8rem;
   font-size: 1.75rem;
+  color: white;
 }
 
 .formFlexedContainer {
@@ -60,6 +69,16 @@
 
 .loginAnchorLink {
   font-size: 0.85rem;
+  color: white;
+}
+
+.loginAnchor {
+  text-decoration: underline;
+  color: white;
+}
+
+.loginAnchor:visited {
+  color: white;
 }
 
 .submitBtnContainer {
@@ -85,6 +104,58 @@
 .formRightSideFlexedImage {
   max-width: 100%;
   border-radius: 50%;
+}
+
+.mainFlexedSlantedDivContainer {
+  display: flex;
+  /* outline: 2px solid black; */
+  height: 100vh;
+  background-color: #1c1e21;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  overflow: hidden;
+}
+
+.leftSlantedDiv {
+  transform: skewX(45deg);
+  background-color: #242526;
+  width: 100%;
+}
+
+.rightSlantedDiv {
+  background-color: #1c1e21;
+  transform-origin: left top;
+  transform: skewX(45deg);
+}
+
+.leftSlatedRotatedSquare {
+  width: 10rem;
+  height: 10rem;
+  background-color: #1c1e21;
+  position: absolute;
+  transform: rotate(45deg);
+  top: 5em;
+}
+
+.RightSlantedRotatedBottomSquare {
+  width: 10rem;
+  height: 10rem;
+  background-color: #1c1e21;
+  position: absolute;
+  transform: rotate(45deg);
+  bottom: 7em;
+  left: 25em;
+}
+
+.RightSlantedRotatedRightSquare {
+  width: 10rem;
+  height: 10rem;
+  background-color: #242526;
+  position: absolute;
+  transform: rotate(45deg);
+  top: 5em;
+  right: 2em;
 }
 
 @media screen and (max-width: 1000px) {

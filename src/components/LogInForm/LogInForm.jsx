@@ -209,7 +209,10 @@ function LogInForm() {
               )}
             </div>
             <p className={styles.signUpAnchorLink}>
-              Don&apos;t have an account? <Link to="/signup">Sign Up</Link>
+              Don&apos;t have an account?{" "}
+              <Link className={styles.signUpAnchor} to="/signup">
+                Sign Up
+              </Link>
             </p>
             <div className={styles.submitBtnContainer}>
               {loading ? (
@@ -244,6 +247,7 @@ function LogInForm() {
           </div>
         </div>
       </div>
+
       {popUpModal ? (
         <PopUpModal
           popUpModalBackgroundColor={"crimson"}
@@ -254,6 +258,13 @@ function LogInForm() {
       ) : (
         ""
       )}
+      <div className={styles.mainFlexedSlantedDivContainer}>
+        <div className={styles.leftSlantedDiv}></div>
+        <div className={styles.leftSlatedRotatedSquare}></div>
+        <div className={styles.RightSlantedDiv}></div>
+        <div className={styles.RightSlantedRotatedBottomSquare}></div>
+        <div className={styles.RightSlantedRotatedRightSquare}></div>
+      </div>
     </main>
   );
 }

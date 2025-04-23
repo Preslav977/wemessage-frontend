@@ -191,12 +191,14 @@ function CreateGroup() {
                       />
                     )}
                     <div>
-                      <p>
+                      <p className={styles.userFirstAndLastName}>
                         {selectedGroupMember.first_name}{" "}
                         {selectedGroupMember.last_name}
                       </p>
 
-                      <p>{"@" + selectedGroupMember.username}</p>
+                      <p className={styles.userUsername}>
+                        {"@" + selectedGroupMember.username}
+                      </p>
                     </div>
                   </li>
                 ) : (

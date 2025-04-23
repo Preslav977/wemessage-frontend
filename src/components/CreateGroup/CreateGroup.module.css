@@ -152,3 +152,16 @@
   gap: 0.5em;
   cursor: pointer;
 }
+
+.userFirstAndLastName {
+  text-transform: capitalize;
+}
+
+.userFirstAndLastName,
+.userUsername {
+  color: white;
+}
+
+.userUsername {
+  font-size: 0.75rem;
+}
