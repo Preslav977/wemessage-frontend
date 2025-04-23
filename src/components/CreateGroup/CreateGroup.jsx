@@ -9,6 +9,8 @@ import SearchBarGroupMembers from "../SearchBarGroupMembers/SearchBarGroupMember
 import GroupMembersList from "../GroupMembersList/GroupMembersList";
 import PopUpModal from "../PopUpModal/PopUpModal";
 
+import localhostURL from "../../utility/localhostURL";
+
 function CreateGroup() {
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
@@ -68,7 +70,7 @@ function CreateGroup() {
     // console.log(formData);
 
     try {
-      const response = await fetch("http://localhost:5000/groups", {
+      const response = await fetch(`${localhostURL}/groups`, {
         method: "POST",
         headers: {
           Authorization: localStorage.getItem("token"),
@@ -114,7 +116,6 @@ function CreateGroup() {
       <form encType="multipart/formdata" onSubmit={createGroup}>
         <div className={styles.flexedGroupProfileAndChangeBtn}>
           <p className={styles.flexedGroupProfilePara}>Group Profile</p>
-          {/* <button>Change</button> */}
           <label className={styles.changeGroupImageLabel} htmlFor="group_image">
             Change
             <img
@@ -128,6 +129,7 @@ function CreateGroup() {
               type="file"
               name="file"
               id="file"
+              required
               disabled={userLogInObj.role === "GUEST" ? true : false}
             />
           </label>
@@ -154,6 +156,7 @@ function CreateGroup() {
               maxLength={30}
               value={groupsName}
               onChange={(e) => setGroupName(e.target.value)}
+              required
             />
 
             {groupsName.length < 3 && (

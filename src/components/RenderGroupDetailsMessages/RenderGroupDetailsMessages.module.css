@@ -35,6 +35,36 @@
   /* outline: 2px solid white; */
 }
 
+.editingAndDeletingGroupForm {
+  display: flex;
+  justify-content: space-between;
+}
+
+.editGroupBtn,
+.deleteGroupBtn,
+.saveGroupNameBtnForm {
+  margin-top: 0.5em;
+  background-color: #3a3b3c;
+  color: white;
+  border: 0;
+  padding: 0.5em 0.8em;
+}
+
+.dropDownEditGroupNameForm {
+  background-color: #3a3b3c;
+  color: white;
+  border: 0;
+  padding: 0.4rem 0;
+  margin-left: 0.05em;
+  margin-right: 0.5em;
+}
+
+.editGroupBtn:hover,
+.deleteGroupBtn:hover,
+.saveGroupNameBtnForm:hover {
+  cursor: pointer;
+}
+
 .groupDetailsHeaderBottomHr {
   margin-top: 0.5em;
 }

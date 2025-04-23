@@ -1,6 +1,8 @@
 import { useContext, useState, useEffect } from "react";
 import { GroupsContext } from "../../../contexts/GroupsContext";
 
+import localhostURL from "../../../utility/localhostURL";
+
 const useFetchGroupsURL = () => {
   const [groups, setGroups] = useContext(GroupsContext);
 
@@ -9,7 +11,7 @@ const useFetchGroupsURL = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/groups", {
+    fetch(`${localhostURL}/groups`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),

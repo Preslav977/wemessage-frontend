@@ -17,6 +17,8 @@ import {
   UserSignUpObjectContext,
 } from "../../contexts/UserRegistrationContext";
 
+import localhostURL from "../../utility/localhostURL";
+
 function SignUpForm() {
   const { firstName, setFirstName } = useContext(FirstNameContext);
 
@@ -64,7 +66,7 @@ function SignUpForm() {
     setUserSignUpObj(signUpAndCreateUser);
 
     try {
-      const response = await fetch("http://localhost:5000/users/signup", {
+      const response = await fetch(`${localhostURL}/users/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -8,6 +8,7 @@ import { useState, useContext } from "react";
 import { passwordRegex } from "../../utility/passwordRegex";
 
 import PopUpModal from "../PopUpModal/PopUpModal";
+import localhostURL from "../../utility/localhostURL";
 
 function UpdateUserPasswords() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
@@ -46,7 +47,7 @@ function UpdateUserPasswords() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/users/profile/change_passwords/${userLogInObj.id}`,
+        `${localhostURL}/users/profile/change_passwords/${userLogInObj.id}`,
         {
           method: "PUT",
           headers: {
@@ -112,13 +113,15 @@ function UpdateUserPasswords() {
       <hr className={styles.sectionWrapperTopHr} />
       <header className={styles.sectionWrapperHeaderContainer}>
         <h3 className={styles.sectionWrapperHeader}>Change Password</h3>
-        <button
-          disabled={userLogInObj.role === "GUEST" ? true : false}
-          className={styles.sectionWrapperSaveBtn}
-          type="submit"
-        >
-          Save
-        </button>
+        <div>
+          <button
+            disabled={userLogInObj.role === "GUEST" ? true : false}
+            className={styles.sectionWrapperSaveBtn}
+            type="submit"
+          >
+            Save
+          </button>
+        </div>
       </header>
       <hr className={styles.sectionWrapperBottomHr} />
       <div className={styles.formGroup}>

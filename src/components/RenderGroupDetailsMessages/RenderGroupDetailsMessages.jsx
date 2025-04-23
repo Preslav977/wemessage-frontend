@@ -6,6 +6,8 @@ import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import useFetchSingleGroupURL from "../api/custom hooks/useFetchSingleGroupURL";
 import PopUpModal from "../PopUpModal/PopUpModal";
 
+import localhostURL from "../../utility/localhostURL";
+
 function RenderGroupDetailsMessages() {
   const { groupDetails, setGroupDetails, loading, error } =
     useFetchSingleGroupURL();
@@ -131,7 +133,7 @@ L82,35.7z"
 
     try {
       const response = await fetch(
-        `http://localhost:5000/groups/${groupDetails.id}/message`,
+        `${localhostURL}/groups/${groupDetails.id}/message`,
         {
           method: "POST",
           headers: {
@@ -156,7 +158,7 @@ L82,35.7z"
 
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       const sendMessageObj = {
         ...groupDetails,
@@ -178,7 +180,7 @@ L82,35.7z"
 
     try {
       const response = await fetch(
-        `http://localhost:5000/groups/${groupDetails.id}/image`,
+        `${localhostURL}/groups/${groupDetails.id}/image`,
         {
           method: "POST",
           headers: {
@@ -199,7 +201,7 @@ L82,35.7z"
 
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       const sendImageObj = {
         ...groupDetails,
@@ -238,13 +240,13 @@ L82,35.7z"
 
     const getMessageTextFormData = formData.get("message_text");
 
-    console.log(getMessageTextFormData);
+    // console.log(getMessageTextFormData);
 
     setSendAGroupMessageState("");
 
     try {
       const response = await fetch(
-        `http://localhost:5000/groups/${groupDetails.id}/message/${clickedGroupMessage}`,
+        `${localhostURL}/groups/${groupDetails.id}/message/${clickedGroupMessage}`,
         {
           method: "PUT",
           headers: {
@@ -278,14 +280,14 @@ L82,35.7z"
 
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       const editAMessage = {
         ...groupDetails,
         messagesGGChat: result.messagesGGChat,
       };
 
-      console.log(groupDetails);
+      // console.log(groupDetails);
 
       setGroupDetails(editAMessage);
 
@@ -307,7 +309,7 @@ L82,35.7z"
 
     try {
       const response = await fetch(
-        `http://localhost:5000/groups/${groupDetails.id}/message/${message.id}`,
+        `${localhostURL}/groups/${groupDetails.id}/message/${message.id}`,
         {
           method: "DELETE",
           headers: {
@@ -357,7 +359,7 @@ L82,35.7z"
 
     try {
       const response = await fetch(
-        `http://localhost:5000/groups/${groupDetails.id}/join`,
+        `${localhostURL}/groups/${groupDetails.id}/join`,
         {
           method: "PUT",
           headers: {
@@ -371,7 +373,7 @@ L82,35.7z"
       );
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       const joinGroupObj = {
         ...groupDetails,
@@ -397,7 +399,7 @@ L82,35.7z"
 
     try {
       const response = await fetch(
-        `http://localhost:5000/groups/${groupDetails.id}`,
+        `${localhostURL}/groups/${groupDetails.id}`,
         {
           method: "PUT",
           headers: {
@@ -413,7 +415,7 @@ L82,35.7z"
 
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       const updateGroupNameObj = {
         ...groupDetails,
@@ -422,7 +424,7 @@ L82,35.7z"
 
       setGroupDetails(updateGroupNameObj);
 
-      navigate(`/groups/create`);
+      navigate(`/groups`);
     } catch (err) {
       console.log(err);
     }
@@ -433,7 +435,7 @@ L82,35.7z"
 
     try {
       const response = await fetch(
-        `http://localhost:5000/groups/${groupDetails.id}`,
+        `${localhostURL}/groups/${groupDetails.id}`,
         {
           method: "DELETE",
           headers: {
@@ -447,7 +449,7 @@ L82,35.7z"
       );
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       const deleteGroupObj = {
         ...groupDetails,
@@ -491,6 +493,7 @@ L82,35.7z"
                 <form onSubmit={editGroupName}>
                   <label htmlFor="group_name"></label>
                   <input
+                    className={styles.dropDownEditGroupNameForm}
                     data-testid="group_name"
                     type="text"
                     name="group_name"
@@ -498,7 +501,9 @@ L82,35.7z"
                     value={groupName}
                     onChange={(e) => setGroupName(e.target.value)}
                   />
-                  <button type="submit">Send</button>
+                  <button className={styles.saveGroupNameBtnForm} type="submit">
+                    Send
+                  </button>
                 </form>
               </div>
             )}
@@ -519,20 +524,31 @@ L82,35.7z"
               </form>
             )}
           </header>
+          {/* if the logged user is an admin render this form */}
+          <>
+            {groupDetails.users.map((user) => (
+              <>
+                {user.role === "ADMIN" ? (
+                  <div className={styles.editingAndDeletingGroupForm}>
+                    <button
+                      className={styles.editGroupBtn}
+                      onClick={() => setShowDropDownMenuGroupName(true)}
+                    >
+                      Edit
+                    </button>
+                    <form onSubmit={deleteGroup}>
+                      <button className={styles.deleteGroupBtn} type="submit">
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </>
+            ))}
+          </>
           <hr className={styles.groupDetailsHeaderBottomHr} />
-          {/* if the groupCreatorId is the loggedIn userId render this form */}
-          {groupDetails.group_creatorId === userLogInObj.id ? (
-            <div>
-              {/* <button onClick={() => setShowDropDownMenuGroupName(true)}>
-              Edit
-            </button> */}
-              {/* <form onSubmit={deleteGroup}>
-              <button type="submit">Delete</button>
-            </form> */}
-            </div>
-          ) : (
-            ""
-          )}
 
           {/* if the users array of the group contains the userId then he is joined the group */}
           {groupDetails.users.some((obj) => obj.id === userLogInObj.id) ? (
@@ -727,7 +743,7 @@ L82,35.7z"
                                       key={message.id}
                                       className={styles.groupDetailsSendImage}
                                       src={message.message_imageURL}
-                                      alt="send image in chat"
+                                      alt="send image in group"
                                     />
                                   </div>
                                 </>
@@ -736,7 +752,7 @@ L82,35.7z"
                                   key={message.id}
                                   className={styles.groupDetailsSendImage}
                                   src={message.message_imageURL}
-                                  alt="send image in chat"
+                                  alt="send image in group"
                                 />
                               )}
                             </>
@@ -791,7 +807,7 @@ L82,35.7z"
                                       <img
                                         className={styles.groupDetailsSendImage}
                                         src={message.message_imageURL}
-                                        alt="send image in chat"
+                                        alt="send image in group"
                                       />
                                     )}
                                   </div>
@@ -841,7 +857,7 @@ L82,35.7z"
                     <img
                       className={styles.groupDetailsSendImageSvg}
                       src="/send_image.svg"
-                      alt=""
+                      alt="send a image in group"
                     />
                     <input
                       className={styles.groupDetailsSendImageInput}
@@ -856,7 +872,7 @@ L82,35.7z"
                     <img
                       className={styles.groupDetailsSendMessageSvg}
                       src="/send_message.svg"
-                      alt=""
+                      alt="send a message in group"
                     />
                     <button
                       className={styles.groupDetailsSendMessageOrImageButton}

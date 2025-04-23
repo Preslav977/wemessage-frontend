@@ -6,6 +6,8 @@ import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import useFetchSingleChatURL from "../api/custom hooks/useFetchSingleChatURL";
 import PopUpModal from "../PopUpModal/PopUpModal";
 
+import localhostURL from "../../utility/localhostURL";
+
 function RenderChatDetailsMessages() {
   const { chatDetails, setChatDetails, error, loading } =
     useFetchSingleChatURL();
@@ -120,7 +122,7 @@ L82,35.7z"
 
     try {
       const response = await fetch(
-        `http://localhost:5000/chats/${chatDetails.id}/message`,
+        `${localhostURL}/chats/${chatDetails.id}/message`,
         {
           method: "POST",
           headers: {
@@ -153,7 +155,7 @@ L82,35.7z"
         messages: result.messages,
       };
 
-      console.log(chatDetails);
+      // console.log(chatDetails);
 
       setChatDetails(sendMessageObj);
     } catch (err) {
@@ -174,7 +176,7 @@ L82,35.7z"
 
     try {
       const response = await fetch(
-        `http://localhost:5000/chats/${chatDetails.id}/image`,
+        `${localhostURL}/chats/${chatDetails.id}/image`,
         {
           method: "POST",
           headers: {
@@ -195,7 +197,7 @@ L82,35.7z"
 
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       const sendImageObj = {
         ...chatDetails,
@@ -234,13 +236,13 @@ L82,35.7z"
 
     const getMessageTextFormData = formData.get("message_text");
 
-    console.log(getMessageTextFormData);
+    // console.log(getMessageTextFormData);
 
     setSendAMessageState("");
 
     try {
       const response = await fetch(
-        `http://localhost:5000/chats/${chatDetails.id}/message/${clickedMessage}`,
+        `${localhostURL}/chats/${chatDetails.id}/message/${clickedMessage}`,
         {
           method: "PUT",
           headers: {
@@ -300,7 +302,7 @@ L82,35.7z"
 
     try {
       const response = await fetch(
-        `http://localhost:5000/chats/${chatDetails.id}/message/${message.id}`,
+        `${localhostURL}/chats/${chatDetails.id}/message/${message.id}`,
         {
           method: "DELETE",
           headers: {
@@ -627,7 +629,7 @@ L82,35.7z"
                 <img
                   className={styles.chatDetailsSendImageSvg}
                   src="/send_image.svg"
-                  alt=""
+                  alt="send image in chat"
                 />
                 <input
                   className={styles.chatDetailsSendImageInput}
@@ -642,7 +644,7 @@ L82,35.7z"
                 <img
                   className={styles.chatDetailsSendMessageSvg}
                   src="/send_message.svg"
-                  alt=""
+                  alt="send a message in chat"
                 />
                 <button
                   className={styles.chatDetailsSendMessageOrImageButton}

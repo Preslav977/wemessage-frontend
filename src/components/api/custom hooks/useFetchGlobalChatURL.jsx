@@ -2,6 +2,8 @@ import { useContext, useState, useEffect } from "react";
 import { GlobalChatDetailsContext } from "../../../contexts/GlobalChatContext";
 import { useParams } from "react-router-dom";
 
+import localhostURL from "../../../utility/localhostURL";
+
 const useFetchGlobalChatURL = () => {
   const { id } = useParams();
 
@@ -14,7 +16,7 @@ const useFetchGlobalChatURL = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/globalChat/${id}`, {
+    fetch(`${localhostURL}/globalChat/${id}`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),

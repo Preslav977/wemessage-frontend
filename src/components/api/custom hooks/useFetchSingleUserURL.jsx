@@ -2,6 +2,8 @@ import { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { UserLoggedInGetByIdContext } from "../../../contexts/UserLoggedInContext";
 
+import localhostURL from "../../../utility/localhostURL";
+
 const useFetchSingleUserURL = () => {
   const { id } = useParams();
 
@@ -12,7 +14,7 @@ const useFetchSingleUserURL = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/users/${id}`, {
+    fetch(`${localhostURL}/users/${id}`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),

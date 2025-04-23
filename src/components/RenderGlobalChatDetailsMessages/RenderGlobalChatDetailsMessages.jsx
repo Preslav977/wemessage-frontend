@@ -6,6 +6,8 @@ import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import useFetchGlobalChatURL from "../api/custom hooks/useFetchGlobalChatURL";
 import PopUpModal from "../PopUpModal/PopUpModal";
 
+import localhostURL from "../../utility/localhostURL";
+
 function RenderGlobalChatDetailsMessages() {
   const { globalChatDetails, setGlobalChatDetails, error, loading } =
     useFetchGlobalChatURL();
@@ -128,7 +130,7 @@ L82,35.7z"
 
     try {
       const response = await fetch(
-        `http://localhost:5000/globalChat/${globalChatDetails.id}/message`,
+        `${localhostURL}/globalChat/${globalChatDetails.id}/message`,
         {
           method: "POST",
           headers: {
@@ -153,7 +155,7 @@ L82,35.7z"
 
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       const sendMessageObj = {
         ...globalChatDetails,
@@ -177,7 +179,7 @@ L82,35.7z"
 
     try {
       const response = await fetch(
-        `http://localhost:5000/globalChat/${globalChatDetails.id}/image`,
+        `${localhostURL}/globalChat/${globalChatDetails.id}/image`,
         {
           method: "POST",
           headers: {
@@ -198,7 +200,7 @@ L82,35.7z"
 
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       const sendImageObj = {
         ...globalChatDetails,
@@ -235,13 +237,13 @@ L82,35.7z"
 
     const getMessageTextFormData = formData.get("message_text");
 
-    console.log(getMessageTextFormData);
+    // console.log(getMessageTextFormData);
 
     setSendAGlobalChatMessageState("");
 
     try {
       const response = await fetch(
-        `http://localhost:5000/globalChat/${globalChatDetails.id}/message/${clickedGlobalChatMessage}`,
+        `${localhostURL}/globalChat/${globalChatDetails.id}/message/${clickedGlobalChatMessage}`,
         {
           method: "PUT",
           headers: {
@@ -275,14 +277,14 @@ L82,35.7z"
 
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       const editAMessage = {
         ...globalChatDetails,
         messagesGGChat: result.messagesGGChat,
       };
 
-      console.log(globalChatDetails);
+      // console.log(globalChatDetails);
 
       setGlobalChatDetails(editAMessage);
 
@@ -304,7 +306,7 @@ L82,35.7z"
 
     try {
       const response = await fetch(
-        `http://localhost:5000/globalChat/${globalChatDetails.id}/message/${message.id}`,
+        `${localhostURL}/globalChat/${globalChatDetails.id}/message/${message.id}`,
         {
           method: "DELETE",
           headers: {
@@ -556,7 +558,7 @@ L82,35.7z"
                                       styles.globalChatDetailsSendImage
                                     }
                                     src={message.message_imageURL}
-                                    alt="send image in chat"
+                                    alt="send image in globalChat"
                                   />
                                 </div>
                               </>
@@ -565,7 +567,7 @@ L82,35.7z"
                                 key={message.id}
                                 className={styles.globalChatDetailsSendImage}
                                 src={message.message_imageURL}
-                                alt="send image in chat"
+                                alt="send image in globalChat"
                               />
                             )}
                           </>
@@ -625,7 +627,7 @@ L82,35.7z"
                                         styles.globalChatDetailsSendImage
                                       }
                                       src={message.message_imageURL}
-                                      alt="send image in chat"
+                                      alt="send image in globalChat"
                                     />
                                   )}
                                 </div>
@@ -669,7 +671,7 @@ L82,35.7z"
                 <img
                   className={styles.globalChatDetailsSendImageSvg}
                   src="/send_image.svg"
-                  alt=""
+                  alt="send a image in globalChat"
                 />
                 <input
                   className={styles.globalChatDetailsSendImageInput}
@@ -685,7 +687,7 @@ L82,35.7z"
                 <img
                   className={styles.globalChatDetailsSendMessageSvg}
                   src="/send_message.svg"
-                  alt=""
+                  alt="send a message in globalChat"
                 />
                 <button
                   className={styles.globalChatDetailsSendMessageOrImageButton}

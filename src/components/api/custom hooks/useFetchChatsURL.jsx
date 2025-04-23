@@ -1,6 +1,8 @@
 import { useContext, useState, useEffect } from "react";
 import { ChatsContext } from "../../../contexts/ChatsContext";
 
+import localhostURL from "../../../utility/localhostURL";
+
 const useFetchChatsURL = () => {
   const [chats, setChats] = useContext(ChatsContext);
 
@@ -9,7 +11,7 @@ const useFetchChatsURL = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/chats", {
+    fetch(`${localhostURL}/chats`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),

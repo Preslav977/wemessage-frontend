@@ -17,6 +17,8 @@ function MainGridInterface({
 
   const [isUserLoggedIn, setIsUserLoggedIn] = useContext(UserLoggedInContext);
 
+  //this function will take the width depending if the screen is expanded or getting smaller save it in a state
+  //and the state is going to be used below to calculate the width and display the different grids
   const useDeviceSize = () => {
     const [width, setWidth] = useState(0);
 
@@ -198,7 +200,13 @@ function MainGridInterface({
       <footer className={styles.footerMobileNavigation}>
         <nav>
           <ul className={styles.ulLinkContainer}>
-            <li className={styles.liFlexedImgAnchorContainer}>
+            <li
+              style={{
+                backgroundColor:
+                  currentPath === "/globalChat/" ? "#393a3b" : "",
+              }}
+              className={styles.liFlexedImgAnchorContainer}
+            >
               <Link
                 data-testid="global_chat"
                 className={styles.anchorFlexedImgContainer}
@@ -211,7 +219,12 @@ function MainGridInterface({
                 />
               </Link>
             </li>
-            <li className={styles.liFlexedImgAnchorContainer}>
+            <li
+              style={{
+                backgroundColor: currentPath === "/chats" ? "#393a3b" : "",
+              }}
+              className={styles.liFlexedImgAnchorContainer}
+            >
               <Link
                 data-testid="chats"
                 className={styles.anchorFlexedImgContainer}
@@ -224,7 +237,12 @@ function MainGridInterface({
                 />
               </Link>
             </li>
-            <li className={styles.liFlexedImgAnchorContainer}>
+            <li
+              style={{
+                backgroundColor: currentPath === "/groups" ? "#393a3b" : "",
+              }}
+              className={styles.liFlexedImgAnchorContainer}
+            >
               <Link
                 data-testid="groups"
                 className={styles.anchorFlexedImgContainer}
@@ -237,7 +255,12 @@ function MainGridInterface({
                 />
               </Link>
             </li>
-            <li className={styles.liFlexedImgAnchorContainer}>
+            <li
+              style={{
+                backgroundColor: currentPath === "/profile/" ? "#393a3b" : "",
+              }}
+              className={styles.liFlexedImgAnchorContainer}
+            >
               <Link
                 data-testid="profile"
                 className={styles.anchorFlexedImgContainer}
@@ -251,6 +274,9 @@ function MainGridInterface({
               </Link>
             </li>
             <li
+              style={{
+                backgroundColor: currentPath === "/logout" ? "#393a3b" : "",
+              }}
               onClick={userLogOut}
               className={styles.liFlexedImgAnchorContainer}
             >

@@ -119,6 +119,7 @@
   overflow-wrap: anywhere;
   max-width: 50%;
   padding: 0.8rem;
+  color: white;
 }
 
 .sendMessageBtn {

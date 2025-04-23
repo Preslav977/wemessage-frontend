@@ -15,13 +15,13 @@ function RenderAllChats({ onClick }) {
   const [clickedSenderUser, setClickedSenderUser] = useState();
 
   function highlightTheCurrentSelectedReceiverUser(chat) {
-    console.log(chat);
+    // console.log(chat);
 
     setClickedReceiverUser(chat.receiverChatId);
   }
 
   function highlightTheCurrentSelectedSenderUser(chat) {
-    console.log(chat);
+    // console.log(chat);
 
     setClickedSenderUser(chat.senderChatId);
   }

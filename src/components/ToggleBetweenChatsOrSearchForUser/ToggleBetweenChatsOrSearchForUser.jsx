@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import RenderAllChats from "../RenderAllChats/RenderAllChats";
 import PopUpModal from "../PopUpModal/PopUpModal";
 
+import localhostURL from "../../utility/localhostURL";
+
 function ToggleBetweenChatsOrSearchForUser({ renderChatsOrGlobalChat }) {
   const [users, setUsers] = useContext(UsersContext);
 
@@ -21,7 +23,7 @@ function ToggleBetweenChatsOrSearchForUser({ renderChatsOrGlobalChat }) {
   async function searchForUsers(e) {
     try {
       const fetchUsersBySearching = await fetch(
-        `http://localhost:5000/users/search/?query=${e.target.value}`,
+        `${localhostURL}/users/search/?query=${e.target.value}`,
         {
           mode: "cors",
           headers: {

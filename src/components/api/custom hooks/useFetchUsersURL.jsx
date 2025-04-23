@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import { UsersContext } from "../../../contexts/UsersContext";
 import { useEffect } from "react";
 
+import localhostURL from "../../../utility/localhostURL";
+
 const useFetchUsersURL = () => {
   const [users, setUsers] = useContext(UsersContext);
 
@@ -10,7 +12,7 @@ const useFetchUsersURL = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/users/all", {
+    fetch(`${localhostURL}/users/all`, {
       mode: "cors",
       headers: {
         Authorization: localStorage.getItem("token"),

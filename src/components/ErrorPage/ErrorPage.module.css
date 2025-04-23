@@ -5,6 +5,17 @@
   align-items: center;
   justify-content: center;
   gap: 0.5em;
+  background-color: #1c1e21;
+  color: white;
+}
+
+.errorPageContainer a {
+  color: white;
+  text-decoration: underline;
+}
+
+.errorPageContainer a:visited {
+  color: white;
 }
 
 .errorPageImg {

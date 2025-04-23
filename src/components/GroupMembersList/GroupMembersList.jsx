@@ -4,17 +4,17 @@ import PropTypes from "prop-types";
 function GroupMembersList({ groupMembers, onClick }) {
   return (
     <>
-      {groupMembers.map((friend) => (
+      {groupMembers.map((member) => (
         <li
           style={{
             display: "flex",
           }}
-          key={friend.id}
+          key={member.id}
           className={styles.flexedLiDropDownUsersContainer}
           data-testid="select_member"
-          onClick={() => onClick(friend)}
+          onClick={() => onClick(member)}
         >
-          {friend.profile_picture === "" ? (
+          {member.profile_picture === "" ? (
             <img
               className={styles.dropDownUserMemberImg}
               src="/default_user_pfp.svg"
@@ -23,16 +23,16 @@ function GroupMembersList({ groupMembers, onClick }) {
           ) : (
             <img
               className={styles.userProfilePicture}
-              src={friend.profile_picture}
+              src={member.profile_picture}
               alt="user profile picture"
             />
           )}
           <div>
             <p className={styles.userFirstAndLastName}>
-              {friend.first_name} {friend.last_name}
+              {member.first_name} {member.last_name}
             </p>
 
-            <p className={styles.userUsername}>{"@" + friend.username}</p>
+            <p className={styles.userUsername}>{"@" + member.username}</p>
           </div>
         </li>
       ))}

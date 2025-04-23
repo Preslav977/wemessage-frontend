@@ -21,6 +21,8 @@ import {
 
 import PopUpModal from "../PopUpModal/PopUpModal";
 
+import localhostURL from "../../utility/localhostURL";
+
 function LogInForm() {
   const { username, setUsername } = useContext(UserNameContext);
 
@@ -42,7 +44,7 @@ function LogInForm() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/users/login", {
+      const response = await fetch(`${localhostURL}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -73,7 +75,7 @@ function LogInForm() {
       setIsUserLoggedIn(true);
 
       const fetchLoggedInUserInformation = await fetch(
-        "http://localhost:5000/users",
+        `${localhostURL}/users`,
         {
           mode: "cors",
           headers: {
@@ -106,7 +108,7 @@ function LogInForm() {
     setPassword(guestPassword);
 
     try {
-      const response = await fetch("http://localhost:5000/users/login_guest", {
+      const response = await fetch(`${localhostURL}/users/login_guest`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -128,7 +130,7 @@ function LogInForm() {
       setIsUserLoggedIn(true);
 
       const fetchLoggedInUserInformation = await fetch(
-        "http://localhost:5000/users",
+        `${localhostURL}/users`,
         {
           mode: "cors",
           headers: {

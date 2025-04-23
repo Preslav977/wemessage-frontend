@@ -9,10 +9,12 @@ import { BackgroundPictureContext } from "../../contexts/UserRegistrationContext
 import useFetchSingleUserURL from "../api/custom hooks/useFetchSingleUserURL";
 import PopUpModal from "../PopUpModal/PopUpModal";
 
+import localhostURL from "../../utility/localhostURL";
+
 function UserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
-  console.log(userLogInObj);
+  // console.log(userLogInObj);
 
   const { backgroundPicture, setBackgroundPicture } = useContext(
     BackgroundPictureContext,
@@ -51,7 +53,7 @@ function UserProfile() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/users/profile/background_image/${userLogInObj.id}`,
+        `${localhostURL}/users/profile/background_image/${userLogInObj.id}`,
         {
           method: "PUT",
           headers: {
@@ -80,7 +82,7 @@ function UserProfile() {
         }, 3000);
       }
 
-      console.log(response);
+      // console.log(response);
 
       const result = await response.json();
 
@@ -103,7 +105,7 @@ function UserProfile() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/chats", {
+      const response = await fetch(`${localhostURL}/chats`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -117,7 +119,7 @@ function UserProfile() {
 
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       navigate(`/chats/${result.id}`);
     } catch (err) {

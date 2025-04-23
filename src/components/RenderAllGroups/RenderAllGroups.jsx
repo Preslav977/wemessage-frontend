@@ -17,7 +17,7 @@ function RenderAllGroups() {
   ] = useState(false);
 
   function highlightTheCurrentSelectedGroup(group) {
-    console.log(group);
+    // console.log(group);
 
     setClickedGroup(group.id);
   }

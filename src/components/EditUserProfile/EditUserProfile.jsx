@@ -16,6 +16,8 @@ import {
 
 import PopUpModal from "../PopUpModal/PopUpModal";
 
+import localhostURL from "../../utility/localhostURL";
+
 function EditUserProfile() {
   let [userLogInObj, setUserLogInObj] = useContext(UserLogInObjectContext);
 
@@ -60,7 +62,7 @@ function EditUserProfile() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/users/profile/image/${userLogInObj.id}`,
+        `${localhostURL}/users/profile/image/${userLogInObj.id}`,
         {
           method: "PUT",
           headers: {
@@ -117,7 +119,7 @@ function EditUserProfile() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/users/profile/edit/${userLogInObj.id}`,
+        `${localhostURL}/users/profile/edit/${userLogInObj.id}`,
         {
           method: "PUT",
           headers: {
@@ -339,7 +341,6 @@ function EditUserProfile() {
                 onChange={(e) => setBio(e.target.value)}
                 minLength={1}
                 maxLength={150}
-                // rows={13}
                 name="bio"
                 id="bio"
                 data-testid="bio"
