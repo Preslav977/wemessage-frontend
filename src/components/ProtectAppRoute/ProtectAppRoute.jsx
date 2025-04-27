@@ -1,20 +1,22 @@
 import PropTypes from "prop-types";
-import { UserLoggedInContext } from "../../contexts/UserLoggedInContext";
-import LogInForm from "../LogInForm/LogInForm";
-import { useContext } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const ProtectedAppRoute = ({ children }) => {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useContext(UserLoggedInContext);
+const ProtectedAppRoute = ({ children, currentPath }) => {
+  const navigate = useNavigate();
 
-  if (!isUserLoggedIn || UserLoggedInContext === null) {
-    return <LogInForm />;
-  } else {
-    return children;
-  }
+  useEffect(() => {
+    if (currentPath === "/") {
+      navigate("/login");
+    }
+  }, [currentPath]);
+
+  return <>{children}</>;
 };
 
 ProtectedAppRoute.propTypes = {
   children: PropTypes.object,
+  currentPath: PropTypes.string,
 };
 
 export default ProtectedAppRoute;
