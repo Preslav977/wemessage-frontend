@@ -12,7 +12,7 @@ WeMessage is a messaging application that allows users to update their informati
 
 # Live Preview
 
--
+- [View the live site here](https://wemessage-frontend-git-main-preslav977s-projects.vercel.app/)
 
 # Features
 

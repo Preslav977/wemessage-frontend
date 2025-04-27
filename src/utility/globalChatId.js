@@ -1,2 +1,2 @@
 //pre-created globalChat
-export const globalChatId = "bb7bd1a7-51cb-4f04-acbd-375f4b40b4ed";
+export const globalChatId = "92d266d5-9706-4342-9a06-740db4661223";
