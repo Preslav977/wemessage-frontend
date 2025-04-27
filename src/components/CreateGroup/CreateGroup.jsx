@@ -1,7 +1,7 @@
 import styles from "./CreateGroup.module.css";
 import { useContext, useState } from "react";
 import { GroupsContext } from "../../contexts/GroupsContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { ChatsContext } from "../../contexts/ChatsContext";
 import { FilterGroupMembers } from "../FilterGroupMembers/FilterGroupMembers";
@@ -109,7 +109,14 @@ function CreateGroup() {
 
   return (
     <div>
-      <header>
+      <header className={styles.flexedGroupHeader}>
+        <Link className={styles.groupsAnchor} to={"/groups"}>
+          <img
+            className={styles.groupsAnchorImg}
+            src="/back-arrow.svg"
+            alt="go back to groups"
+          />
+        </Link>
         <h5 className={styles.createGroupHeader}>Create Group</h5>
       </header>
       <hr className={styles.createGroupHeaderBottomHr} />

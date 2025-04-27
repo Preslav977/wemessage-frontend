@@ -29,7 +29,7 @@
   align-items: center;
   padding: 0.8rem;
   gap: 0.5em;
-  transition: background-color 0.5s ease-in-out;
+  transition: background-color 0.15s ease-in-out;
   /* outline: 2px solid black; */
 }
 
@@ -112,5 +112,11 @@
   .ulLinkContainer {
     display: flex;
     justify-content: space-around;
+  }
+}
+
+@media screen and (max-width: 340px) {
+  .secondaryGridSection {
+    padding: 0.5em;
   }
 }

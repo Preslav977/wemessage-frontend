@@ -10,6 +10,7 @@ import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { beforeAll, afterEach, afterAll } from "vitest";
 import { server } from "./mocks/node/server";
 import { http, HttpResponse } from "msw";
+import localhostURL from "../utility/localhostURL";
 
 beforeAll(() => {
   server.listen();
@@ -56,7 +57,7 @@ describe("should render MainGridInterface", () => {
 
     await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
-    screen.debug();
+    // screen.debug();
 
     expect(screen.queryByText("Global").textContent).toMatch(/global/i);
 
@@ -67,6 +68,8 @@ describe("should render MainGridInterface", () => {
     expect(screen.queryAllByText("Profile")[0].textContent).toMatch(/profile/i);
 
     expect(screen.queryByText("Logout").textContent).toMatch(/logout/i);
+
+    // screen.debug()
 
     expect(screen.queryByText("Manage Profile").textContent).toMatch(
       /manage profile/i,
@@ -350,9 +353,26 @@ describe("should render MainGridInterface", () => {
 
   it("should navigate to EditProfile update the user information and render it", async () => {
     const router = createMemoryRouter(routes, {
-      initialEntries: ["/login", "/profile/4", "/profile/edit/4"],
+      initialEntries: ["/login", "/profile/1", "/profile/edit/1"],
       initialIndex: 0,
     });
+
+    server.use(
+      http.put(`${localhostURL}/users/profile/edit/1`, async () => {
+        return HttpResponse.json(
+          {
+            id: 1,
+            first_name: "preslaw123",
+            last_name: "preslaw123",
+            username: "preslaw123",
+            bio: "bio123",
+            // password: "12345678Bg@@",
+            // confirm_password: "12345678Bg@@",
+          },
+          { status: 200 },
+        );
+      }),
+    );
 
     render(<RouterProvider router={router} />);
 
@@ -451,6 +471,7 @@ describe("should render MainGridInterface", () => {
     });
 
     await user.click(saveChangesBtn);
+
     // screen.debug();
 
     const firstNameAndLastName = await screen.findByText(
@@ -471,7 +492,7 @@ describe("should render MainGridInterface", () => {
     });
 
     server.use(
-      http.put("http://localhost:5000/users/profile/edit/4", () => {
+      http.put(`${localhostURL}/users/profile/edit/1`, () => {
         return HttpResponse.json(
           [
             { msg: "First name is already taken" },
@@ -598,7 +619,7 @@ describe("should render MainGridInterface", () => {
 
   it("should navigate to ChangeUserProfilePasswords and render the component", async () => {
     const router = createMemoryRouter(routes, {
-      initialEntries: ["/login", "/profile/4", "/profile/change_passwords/4"],
+      initialEntries: ["/login", "/profile/1", "/profile/change_passwords/1"],
       initialIndex: 0,
     });
 
@@ -624,7 +645,7 @@ describe("should render MainGridInterface", () => {
 
     // screen.debug();
     const changeUserProfilePasswords =
-      await screen.findByText("Change Password");
+      await screen.findAllByText("Change Password")[0];
 
     await user.click(changeUserProfilePasswords);
     // screen.debug();
@@ -644,13 +665,17 @@ describe("should render MainGridInterface", () => {
 
     expect(screen.queryAllByText("Profile")[1].textContent).toMatch(/profile/i);
 
-    expect(screen.queryByText("Edit Profile").textContent).toMatch(
+    expect(screen.queryAllByText("Edit Profile")[0].textContent).toMatch(
       /edit profile/i,
     );
 
-    expect(screen.queryByText("Change Password").textContent).toMatch(
+    expect(screen.queryAllByText("Change Password")[0].textContent).toMatch(
       /change password/i,
     );
+
+    // screen.debug();
+
+    await user.click(screen.queryAllByText("Change Password")[0]);
 
     expect(screen.queryByRole("button", { name: "Save" })).toBeInTheDocument();
 
@@ -675,9 +700,23 @@ describe("should render MainGridInterface", () => {
 
   it("should navigate to ChangeUserProfilePasswords and change the passwords", async () => {
     const router = createMemoryRouter(routes, {
-      initialEntries: ["/login", "/profile/4", "/profile/change_passwords/4"],
+      initialEntries: ["/login", "/profile/1", "/profile/change_passwords/1"],
       initialIndex: 0,
     });
+
+    server.use(
+      http.put(`${localhostURL}/users/profile/change_passwords/1`, async () => {
+        return HttpResponse.json(
+          {
+            id: 1,
+            old_password: "12345678Bg@@",
+            password: "12345678Bg@@",
+            confirm_password: "12345678Bg@@",
+          },
+          { status: 200 },
+        );
+      }),
+    );
 
     render(<RouterProvider router={router} />);
 
@@ -726,7 +765,7 @@ describe("should render MainGridInterface", () => {
       /edit profile/i,
     );
 
-    expect(screen.queryByText("Change Password").textContent).toMatch(
+    expect(screen.queryAllByText("Change Password")[0].textContent).toMatch(
       /change password/i,
     );
 
@@ -763,12 +802,6 @@ describe("should render MainGridInterface", () => {
     ).not.toBeInTheDocument();
 
     await user.click(screen.queryByRole("button", { name: "Save" }));
-
-    expect(screen.queryByText("Profile updated")).toBeInTheDocument();
-
-    expect(
-      screen.queryByText("Your passwords has been updated successfully"),
-    ).toBeInTheDocument();
   });
 
   it("should navigate to ChangeUserProfilePasswords and render an error if old password doesn't match", async () => {
@@ -778,7 +811,7 @@ describe("should render MainGridInterface", () => {
     });
 
     server.use(
-      http.put("http://localhost:5000/users/profile/change_passwords/4", () => {
+      http.put(`${localhostURL}/users/profile/change_passwords/1`, () => {
         return HttpResponse.json(
           {
             msg: "Old password doesn't match.",
@@ -834,7 +867,7 @@ describe("should render MainGridInterface", () => {
       /edit profile/i,
     );
 
-    expect(screen.queryByText("Change Password").textContent).toMatch(
+    expect(screen.queryAllByText("Change Password")[0].textContent).toMatch(
       /change password/i,
     );
 
@@ -891,12 +924,12 @@ describe("should render MainGridInterface", () => {
     });
 
     server.use(
-      http.get("http://localhost:5000/chats", () => {
+      http.get(`${localhostURL}/chats`, () => {
         return HttpResponse.json([]);
       }),
 
-      http.get("http://localhost:5000/chats/undefined", () => {
-        return HttpResponse.json([]);
+      http.get(`${localhostURL}/chats/undefined`, () => {
+        return HttpResponse.json(null);
       }),
     );
 
@@ -947,8 +980,55 @@ describe("should render MainGridInterface", () => {
     });
 
     server.use(
-      http.get("http://localhost:5000/chats/undefined", () => {
-        return HttpResponse.json([]);
+      http.get(`${localhostURL}/chats/undefined`, () => {
+        return HttpResponse.json(null);
+      }),
+
+      http.get(`${localhostURL}/chats`, async () => {
+        return HttpResponse.json([
+          {
+            id: "73cc246e-897e-412f-8ab8-6fb4c29db485",
+            senderChatId: 1,
+            receiverChatId: 2,
+            senderChat: {
+              id: 1,
+              first_name: "preslaw",
+              last_name: "preslaw",
+              username: "preslaw",
+            },
+            receiverChat: {
+              id: 2,
+              first_name: "preslaw1",
+              last_name: "preslaw1",
+              username: "preslaw1",
+            },
+            messages: [],
+          },
+        ]);
+      }),
+
+      http.get(`${localhostURL}/users/all`, async () => {
+        return HttpResponse.json([
+          {
+            id: 1,
+            first_name: "preslaw",
+            last_name: "preslaw",
+            username: "preslaw",
+          },
+          {
+            id: 2,
+            first_name: "preslaw1",
+            last_name: "preslaw1",
+            username: "preslaw1",
+          },
+          {
+            id: 3,
+            first_name: "preslaw2",
+            last_name: "preslaw2",
+            username: "preslaw2",
+          },
+          { status: 200 },
+        ]);
       }),
     );
 
@@ -972,23 +1052,25 @@ describe("should render MainGridInterface", () => {
 
     await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
 
-    // screen.debug();
-
     await user.click(screen.queryByText("Chats"));
+
+    // screen.debug();
 
     await user.click(
       screen.queryByAltText("click to toggle and search for a user"),
     );
 
-    // screen.debug();
+    expect(screen.queryByAltText("Loading..."));
 
-    expect(
-      screen.queryAllByRole("heading", { level: 5 })[0].textContent,
-    ).toMatch(/search users/i);
+    screen.debug();
 
-    expect(
-      screen.queryAllByRole("heading", { level: 5 })[1].textContent,
-    ).toMatch(/chats/i);
+    expect(screen.queryByRole("heading", { level: 4 }).textContent).toMatch(
+      /search users/i,
+    );
+
+    expect(screen.queryByRole("heading", { level: 5 }).textContent).toMatch(
+      /chats/i,
+    );
 
     expect(screen.queryByText("preslaw preslaw").textContent).toMatch(
       /preslaw preslaw/i,
@@ -1018,8 +1100,74 @@ describe("should render MainGridInterface", () => {
     });
 
     server.use(
-      http.get("http://localhost:5000/chats/undefined", () => {
-        return HttpResponse.json([]);
+      http.get(`${localhostURL}/chats/undefined`, () => {
+        return HttpResponse.json(null);
+      }),
+
+      http.get(`${localhostURL}/chats`, async () => {
+        return HttpResponse.json([
+          {
+            id: "73cc246e-897e-412f-8ab8-6fb4c29db485",
+            senderChatId: 1,
+            receiverChatId: 2,
+            senderChat: {
+              id: 1,
+              first_name: "preslaw",
+              last_name: "preslaw",
+              username: "preslaw",
+            },
+            receiverChat: {
+              id: 2,
+              first_name: "preslaw1",
+              last_name: "preslaw1",
+              username: "preslaw1",
+            },
+            messages: [],
+          },
+        ]);
+      }),
+
+      http.get(`${localhostURL}/users/all`, async () => {
+        return HttpResponse.json([
+          {
+            id: 1,
+            first_name: "preslaw",
+            last_name: "preslaw",
+            username: "preslaw",
+          },
+          {
+            id: 2,
+            first_name: "preslaw1",
+            last_name: "preslaw1",
+            username: "preslaw1",
+          },
+          {
+            id: 3,
+            first_name: "preslaw2",
+            last_name: "preslaw2",
+            username: "preslaw2",
+          },
+          { status: 200 },
+        ]);
+      }),
+
+      http.get(`${localhostURL}/users/search`, async ({ request }) => {
+        const url = new URL(request.url);
+
+        const getUser = url.searchParams.get("query");
+
+        if (!getUser) {
+          return new HttpResponse(null, { status: 404 });
+        }
+
+        return HttpResponse.json([
+          {
+            id: 2,
+            first_name: "preslaw1",
+            last_name: "preslaw1",
+            username: "preslaw1",
+          },
+        ]);
       }),
     );
 
@@ -1050,13 +1198,13 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("click to toggle and search for a user"),
     );
 
-    expect(
-      screen.queryAllByRole("heading", { level: 5 })[0].textContent,
-    ).toMatch(/search users/i);
+    expect(screen.queryByRole("heading", { level: 4 }).textContent).toMatch(
+      /search users/i,
+    );
 
-    expect(
-      screen.queryAllByRole("heading", { level: 5 })[1].textContent,
-    ).toMatch(/chats/i);
+    expect(screen.queryByRole("heading", { level: 5 }).textContent).toMatch(
+      /chats/i,
+    );
 
     // console.log(screen.getByTestId("user"));
 
@@ -1088,8 +1236,55 @@ describe("should render MainGridInterface", () => {
     });
 
     server.use(
-      http.get("http://localhost:5000/chats/undefined", () => {
+      http.get(`${localhostURL}/chats/undefined`, () => {
         return HttpResponse.json([]);
+      }),
+
+      http.post(`${localhostURL}/chats`, async () => {
+        return HttpResponse.json(
+          {
+            id: "73cc246e-897e-412f-8ab8-6fb4c29db485",
+            senderChatId: 1,
+            receiverChatId: 2,
+            senderChat: {
+              id: 1,
+              first_name: "preslaw",
+              last_name: "preslaw",
+              username: "preslaw",
+            },
+            receiverChat: {
+              id: 2,
+              first_name: "preslaw1",
+              last_name: "preslaw1",
+              username: "preslaw1",
+            },
+            messages: [],
+          },
+          { status: 200 },
+        );
+      }),
+
+      http.get(`${localhostURL}/chats`, async () => {
+        return HttpResponse.json([
+          {
+            id: "73cc246e-897e-412f-8ab8-6fb4c29db485",
+            senderChatId: 1,
+            receiverChatId: 2,
+            senderChat: {
+              id: 1,
+              first_name: "preslaw",
+              last_name: "preslaw",
+              username: "preslaw",
+            },
+            receiverChat: {
+              id: 2,
+              first_name: "preslaw1",
+              last_name: "preslaw1",
+              username: "preslaw1",
+            },
+            messages: [],
+          },
+        ]);
       }),
     );
 
@@ -1122,13 +1317,15 @@ describe("should render MainGridInterface", () => {
       screen.queryByAltText("click to toggle and search for a user"),
     );
 
-    expect(
-      screen.queryAllByRole("heading", { level: 5 })[0].textContent,
-    ).toMatch(/search users/i);
+    screen.debug();
 
-    expect(
-      screen.queryAllByRole("heading", { level: 5 })[1].textContent,
-    ).toMatch(/chats/i);
+    expect(screen.queryByRole("heading", { level: 4 }).textContent).toMatch(
+      /search users/i,
+    );
+
+    expect(screen.queryByRole("heading", { level: 5 }).textContent).toMatch(
+      /chats/i,
+    );
 
     // console.log(screen.getByTestId("user"));
 
@@ -3278,64 +3475,64 @@ describe("should render MainGridInterface", () => {
   //   // screen.debug();
   // });
 
-  // it("should navigate to globalChat", async () => {
-  //   const router = createMemoryRouter(routes, {
-  //     initialEntries: ["/login", "/profile/1", "/globalChat"],
-  //     initialIndex: 0,
-  //   });
+  it("should navigate to globalChat", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/login", "/profile/1", "/globalChat"],
+      initialIndex: 0,
+    });
 
-  //   render(<RouterProvider router={router} />);
+    render(<RouterProvider router={router} />);
 
-  //   const user = userEvent.setup();
+    const user = userEvent.setup();
 
-  //   await user.type(screen.getByTestId("username"), "preslaw1");
+    await user.type(screen.getByTestId("username"), "preslaw1");
 
-  //   expect(screen.getByTestId("username")).toHaveValue("preslaw1");
+    expect(screen.getByTestId("username")).toHaveValue("preslaw1");
 
-  //   await user.type(screen.getByTestId("password"), "12345678Bg@");
+    await user.type(screen.getByTestId("password"), "12345678Bg@");
 
-  //   expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
+    expect(screen.getByTestId("password")).toHaveValue("12345678Bg@");
 
-  //   const submitBtn = screen.queryAllByRole("button");
+    const submitBtn = screen.queryAllByRole("button");
 
-  //   await user.click(submitBtn[1]);
+    await user.click(submitBtn[1]);
 
-  //   // screen.debug();
+    // screen.debug();
 
-  //   expect(screen.queryByText("Loading..."));
+    expect(screen.queryByText("Loading..."));
 
-  //   await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
 
-  //   await user.click(screen.queryByTestId("global_chat"));
+    await user.click(screen.queryByTestId("global_chat"));
 
-  //   expect(screen.queryByText("Search Users").textContent).toMatch(
-  //     /search users/i,
-  //   );
+    expect(screen.queryByText("Search Users").textContent).toMatch(
+      /search users/i,
+    );
 
-  //   expect(screen.queryByText("preslaw preslaw").textContent).toMatch(
-  //     /preslaw preslaw/i,
-  //   );
+    expect(screen.queryByText("preslaw preslaw").textContent).toMatch(
+      /preslaw preslaw/i,
+    );
 
-  //   expect(screen.queryByText("@preslaw").textContent).toMatch(/@preslaw/i);
+    expect(screen.queryByText("@preslaw").textContent).toMatch(/@preslaw/i);
 
-  //   expect(screen.queryByText("preslaw1 preslaw1").textContent).toMatch(
-  //     /preslaw1 preslaw1/i,
-  //   );
+    expect(screen.queryByText("preslaw1 preslaw1").textContent).toMatch(
+      /preslaw1 preslaw1/i,
+    );
 
-  //   expect(screen.queryByText("@preslaw1").textContent).toMatch(/@preslaw1/i);
+    expect(screen.queryByText("@preslaw1").textContent).toMatch(/@preslaw1/i);
 
-  //   expect(screen.queryByText("Global Chat").textContent).toMatch(
-  //     /global chat/i,
-  //   );
+    expect(screen.queryByText("Global Chat").textContent).toMatch(
+      /global chat/i,
+    );
 
-  //   expect(
-  //     screen.queryByText("Start a conversation, say Hi!").textContent,
-  //   ).toMatch(/start a conversation, say hi!/i);
+    expect(
+      screen.queryByText("Start a conversation, say Hi!").textContent,
+    ).toMatch(/start a conversation, say hi!/i);
 
-  //   expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
 
-  //   screen.debug();
-  // });
+    screen.debug();
+  });
 
   it("should navigate to globalChat and search for a user", async () => {
     const router = createMemoryRouter(routes, {

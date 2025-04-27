@@ -21,11 +21,11 @@
   text-transform: capitalize;
 }
 
-.userFirstAndLastName,
-.userUsername {
+.userFirstAndLastName {
   color: white;
 }
 
 .userUsername {
+  color: #b3b8bc;
   font-size: 0.75rem;
 }

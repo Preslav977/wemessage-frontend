@@ -12,8 +12,6 @@ function RenderGroupDetailsMessages() {
   const { groupDetails, setGroupDetails, loading, error } =
     useFetchSingleGroupURL();
 
-  // console.log(groupDetails);
-
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
   // this state will be used a condition to send a message or image in the form
@@ -41,10 +39,11 @@ function RenderGroupDetailsMessages() {
 
   const [groupName, setGroupName] = useState("");
 
-  const [
-    showPopUpWhenDeletingOrEditingMessage,
-    setShowPopUpWhenDeletingOrEditingMessage,
-  ] = useState(false);
+  const [showPopUpWhEditingMessage, setShowPopUpWhenEditingMessage] =
+    useState(false);
+
+  const [showPopUpWhDeletingMessage, setShowPopUpWhenDeletingMessage] =
+    useState(false);
 
   const [showPopUpModalOnExpiredToken, setShowPopUpModalOnExpiredToken] =
     useState(false);
@@ -271,10 +270,10 @@ L82,35.7z"
       }
 
       if (response.status === 200) {
-        setShowPopUpWhenDeletingOrEditingMessage(true);
+        setShowPopUpWhenEditingMessage(true);
 
         setTimeout(() => {
-          setShowPopUpWhenDeletingOrEditingMessage(false);
+          setShowPopUpWhenEditingMessage(false);
         }, 3000);
       }
 
@@ -334,10 +333,10 @@ L82,35.7z"
       }
 
       if (response.status === 200) {
-        setShowPopUpWhenDeletingOrEditingMessage(true);
+        setShowPopUpWhenDeletingMessage(true);
 
         setTimeout(() => {
-          setShowPopUpWhenDeletingOrEditingMessage(false);
+          setShowPopUpWhenDeletingMessage(false);
         }, 3000);
       }
 
@@ -527,8 +526,8 @@ L82,35.7z"
           {/* if the logged user is an admin render this form */}
           <>
             {groupDetails.users.map((user) => (
-              <>
-                {user.role === "ADMIN" ? (
+              <Fragment key={user.id}>
+                {user.role === "ADMIN" && userLogInObj.role === "ADMIN" ? (
                   <div className={styles.editingAndDeletingGroupForm}>
                     <button
                       className={styles.editGroupBtn}
@@ -545,7 +544,7 @@ L82,35.7z"
                 ) : (
                   ""
                 )}
-              </>
+              </Fragment>
             ))}
           </>
           <hr className={styles.groupDetailsHeaderBottomHr} />
@@ -561,25 +560,13 @@ L82,35.7z"
                 </div>
               ) : (
                 <ul className={styles.groupDetailsMessagesContainer}>
-                  {groupDetails.messagesGGChat.map((message, index) => (
+                  {groupDetails.messagesGGChat.map((message) => (
                     <Fragment key={message.id}>
-                      {/* if the first element index is 0 or the date of that 
-                message is not equal to the first one render the date 
-                otherwise  don't
-                 */}
-                      {index === 0 ||
-                      format(message.createdAt, "MM/dd/yy") !==
-                        format(
-                          groupDetails.messagesGGChat[0].createdAt,
-                          "MM/dd/yy",
-                        ) ? (
-                        <p className={styles.groupDetailsSendMessageDate}>
-                          {" "}
-                          {format(message.createdAt, "MM/dd/yy")}
-                        </p>
-                      ) : (
-                        ""
-                      )}
+                      <p className={styles.groupDetailsSendMessageDate}>
+                        {" "}
+                        {format(message.createdAt, "dd/MM/yy")}
+                      </p>
+
                       {message.userId === userLogInObj.id ? (
                         <div className={styles.groupDetailsUserMessage}>
                           {message.message_text ? (
@@ -825,9 +812,11 @@ L82,35.7z"
               )}
             </>
           ) : (
-            <p className={styles.groupDetailsJoinFirstPara}>
-              You must join a group first before sending a message!
-            </p>
+            <div className={styles.groupDetailsJoinParaContainer}>
+              <p className={styles.groupDetailsJoinFirstPara}>
+                You must join a group first before sending a message!
+              </p>
+            </div>
           )}
 
           {groupDetails.users.some((obj) => obj.id === userLogInObj.id) ? (
@@ -849,6 +838,7 @@ L82,35.7z"
                     type="text"
                     name="message_text"
                     id="message_text"
+                    placeholder="Note: you can't send a message or image at the same time!"
                     maxLength={200}
                     value={sendAGroupMessageState}
                     onChange={(e) => setSendAGroupMessageState(e.target.value)}
@@ -889,7 +879,7 @@ L82,35.7z"
             ""
           )}
         </div>
-        {showPopUpWhenDeletingOrEditingMessage && (
+        {showPopUpWhEditingMessage && (
           <PopUpModal
             popUpModalBackgroundColor={"white"}
             popUpModalContentColor={"black"}
@@ -897,7 +887,7 @@ L82,35.7z"
             popUpModalContentText={"Message edited!"}
           />
         )}
-        {showPopUpWhenDeletingOrEditingMessage && (
+        {showPopUpWhDeletingMessage && (
           <PopUpModal
             popUpModalBackgroundColor={"white"}
             popUpModalContentColor={"black"}

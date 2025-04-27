@@ -13,12 +13,17 @@
   font-size: 1.3rem;
 }
 
+.noChatsParagraph {
+  color: #b3b8bc;
+}
+
 .flexedNestedLiUserContainer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.25em;
   /* outline: 2px solid black; */
+  transition: background-color 0.15s ease-in-out;
   flex-wrap: wrap;
 }
 
@@ -46,7 +51,7 @@
   width: 40px;
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.5s ease-in-out;
+  transition: background-color 0.15s ease-in-out;
   animation-duration: 0.3s;
   animation-name: rotateFrom45degTo0deg;
   transform: rotate(0deg);
@@ -77,11 +82,11 @@
   text-transform: capitalize;
 }
 
-.userFirstAndLastName,
-.userUsername {
+.userFirstAndLastName {
   color: white;
 }
 
 .userUsername {
   font-size: 0.75rem;
+  color: #b3b8bc;
 }

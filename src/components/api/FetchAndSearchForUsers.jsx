@@ -11,6 +11,7 @@ function FetchAndSearchForUsers({ onClick, onChange }) {
 
     return (
       <svg
+      data-testid="loading_svg"
         version="1.1"
         id="L7"
         xmlns="http://www.w3.org/2000/svg"

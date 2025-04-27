@@ -14,6 +14,8 @@ import {
   ProfilePictureContext,
 } from "../../contexts/UserRegistrationContext";
 
+import { ShowPopUpModalOnProfileUpdateContext } from "../../contexts/PopUpModalContext";
+
 import PopUpModal from "../PopUpModal/PopUpModal";
 
 import localhostURL from "../../utility/localhostURL";
@@ -39,6 +41,9 @@ function EditUserProfile() {
 
   const [usernameError, setUsernameError] = useState("");
 
+  const [showPopUpModalProfileUpdate, setShowPopUpModalProfileUpdate] =
+    useContext(ShowPopUpModalOnProfileUpdateContext);
+
   const [showPopUpModalOnExpiredToken, setShowPopUpModalOnExpiredToken] =
     useState(false);
 
@@ -62,7 +67,7 @@ function EditUserProfile() {
 
     try {
       const response = await fetch(
-        `${localhostURL}/users/profile/image/${userLogInObj.id}`,
+        `${localhostURL}/users/profile_image/${userLogInObj.id}`,
         {
           method: "PUT",
           headers: {
@@ -82,6 +87,8 @@ function EditUserProfile() {
       }
 
       const result = await response.json();
+
+      // console.log(result);
 
       const userLoggedInInformation = {
         ...userLogInObj,
@@ -161,6 +168,13 @@ function EditUserProfile() {
         };
 
         setUserLogInObj(userLoggedInInformation);
+
+        setShowPopUpModalProfileUpdate(true);
+
+        //reset the state in order to popup the modal again
+        setTimeout(() => {
+          setShowPopUpModalProfileUpdate(false);
+        }, 3000);
 
         navigate(`/profile/${userLogInObj.id}`);
       } else {

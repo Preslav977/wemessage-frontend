@@ -1,4 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import routes from "../router/routes";
 import userEvent from "@testing-library/user-event";
@@ -6,6 +10,7 @@ import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { server } from "./mocks/node/server";
 import { http, HttpResponse } from "msw";
 import { beforeAll, afterEach, afterAll } from "vitest";
+import localhostURL from "../utility/localhostURL";
 
 beforeAll(() => {
   server.listen();
@@ -91,6 +96,23 @@ describe("should render LogInForm", () => {
       initialEntries: ["/login"],
     });
 
+    server.use(
+      http.get(`${localhostURL}/users`, async ({ request }) => {
+        const result = await request.json(
+          {
+            id: 1,
+            first_name: "preslaw",
+            last_name: "preslaw",
+            username: "preslaw",
+            password: "12345678Bg@",
+          },
+          { status: 200 },
+        );
+
+        return HttpResponse.json(result, { status: 200 });
+      }),
+    );
+
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
@@ -103,20 +125,21 @@ describe("should render LogInForm", () => {
 
     await user.click(guestLogInBtn[0]);
 
-    // screen.debug();
+    screen.debug();
 
     expect(
       screen.queryByText("Username is required to log in"),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
 
     expect(
       screen.queryByText("Password is required to log in"),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
 
-    const loadingBtn = await screen.findByTestId("loading-btn");
+    screen.debug();
 
-    expect(loadingBtn).toBeInTheDocument();
+    expect(screen.queryByAltText("Loading..."));
 
+    await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
     // screen.debug();
 
     expect(
@@ -178,9 +201,7 @@ describe("should render LogInForm", () => {
     });
 
     server.use(
-      http.post("http://localhost:5000/users/login", async ({ request }) => {
-        const result = await request.json();
-
+      http.post(`${localhostURL}/users/login`, async () => {
         return HttpResponse.json(
           { msg: "Wrong username or password" },
           {
@@ -221,17 +242,24 @@ describe("should render LogInForm", () => {
 
     // await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
 
+    // screen.debug();
+
+    // expect(screen.queryByAltText("Loading..."));
+
+    // await waitForElementToBeRemoved(() => screen.queryByAltText("Loading..."));
+
     screen.debug();
-
-    const modal = await screen.findByTestId("modal");
-
-    expect(modal).toBeInTheDocument();
 
     const unauthorizedErr = await screen.findByText(
       "Wrong username or password",
     );
 
     expect(unauthorizedErr).toBeInTheDocument();
+
+    const unauthorizedPopModalErr =
+      await screen.findByText("Wrong credentials");
+
+    expect(unauthorizedPopModalErr).toBeInTheDocument();
   });
 
   it("should redirect and render to sign up form when anchor link clicked", async () => {

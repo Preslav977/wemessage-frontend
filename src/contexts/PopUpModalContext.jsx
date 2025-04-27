@@ -1,3 +1,3 @@
 import { createContext } from "react";
 
-export const PopUpModalContext = createContext(null);
+export const ShowPopUpModalOnProfileUpdateContext = createContext(null);

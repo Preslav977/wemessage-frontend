@@ -3,7 +3,7 @@
 }
 
 .groupDetailsHeader {
-  color: white;
+  color: #b3b8bc;
   font-size: 2.5rem;
 }
 
@@ -18,7 +18,7 @@
 }
 
 .groupDetailsSendMessageDate {
-  color: white;
+  color: #b3b8bc;
   text-align: center;
   margin-top: 1.5em;
   font-size: 0.75rem;
@@ -48,6 +48,7 @@
   color: white;
   border: 0;
   padding: 0.5em 0.8em;
+  border-radius: 0.3rem;
 }
 
 .dropDownEditGroupNameForm {
@@ -66,6 +67,7 @@
 }
 
 .groupDetailsHeaderBottomHr {
+  color: #3a3b3c;
   margin-top: 0.5em;
 }
 
@@ -93,6 +95,7 @@
   color: white;
   border: 0;
   padding: 0.5em 0.8em;
+  border-radius: 0.3rem;
 }
 
 .joinedGroupBtn:hover,
@@ -113,7 +116,7 @@
 }
 
 .groupNoMessagesPara {
-  color: white;
+  color: #b3b8bc;
 }
 
 .groupDetailsUserMessage {
@@ -138,6 +141,7 @@
 
 .groupDetailsMessageDropDownImg {
   width: 5px;
+  cursor: pointer;
 }
 
 .groupDetailsSendMessage {
@@ -220,7 +224,7 @@
   text-align: left;
   margin-left: 5.5em;
   margin-bottom: 0.3em;
-  color: white;
+  color: #b3b8bc;
   font-size: 0.75rem;
 }
 
@@ -234,7 +238,19 @@
 .groupMessageDetailsBottomHr {
   /* color: red; */
   /* outline: 2px solid white; */
+  color: #3a3b3c;
   margin-bottom: 0.5em;
+}
+
+.groupDetailsJoinParaContainer {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.groupDetailsJoinFirstPara {
+  color: #b3b8bc;
 }
 
 .groupDetailsSendMessageOrImageContainer {
@@ -259,13 +275,13 @@
   border: 0;
   background-color: #242526;
   /* outline: 1px solid white; */
-  border: 1px solid white;
+  border: 1px solid #3a3b3c;
   color: white;
 }
 
 .groupDetailsSendImageContainer,
 .groupDetailsSendMessageContainer {
-  outline: 2px solid white;
+  outline: 2px solid #3a3b3c;
   /* width: 43px;
   height: 43px; */
   padding: 0.3em;
@@ -291,4 +307,10 @@
   width: 25px;
   opacity: 0;
   cursor: pointer;
+}
+
+@media screen and (max-width: 360px) {
+  .flexChatDetailsSendMessageOrImageForm {
+    margin-right: 0.5em;
+  }
 }

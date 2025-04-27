@@ -1,3 +1,16 @@
+.flexedGroupHeader {
+  display: flex;
+  gap: 0.5em;
+}
+
+.groupsAnchor {
+  display: none;
+}
+
+.groupsAnchorImg {
+  width: 30px;
+}
+
 .createGroupHeader {
   font-size: 1.5rem;
 }
@@ -10,6 +23,7 @@
 .createGroupHeaderBottomHr {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
+  color: #3a3b3c;
 }
 
 .flexedGroupProfileAndChangeBtn {
@@ -78,6 +92,7 @@
 .groupPreviewBottomHr {
   margin-top: 1em;
   margin-bottom: 0.5em;
+  color: #3a3b3c;
 }
 
 .formGroup {
@@ -88,7 +103,7 @@
 }
 
 .formGroupContent > label {
-  color: white;
+  color: #b3b8bc;
   margin-bottom: 0.25rem;
 }
 
@@ -119,7 +134,7 @@
 
 .createGroupButton {
   padding: 0.5em 0.9em;
-  transition: opacity 1s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
   font-size: 0.85rem;
 }
 
@@ -142,6 +157,10 @@
   cursor: pointer;
 }
 
+.flexedLiDropDownUsersContainer:hover {
+  background-color: #2d2e30;
+}
+
 .dropDownUserMemberImg {
   width: 40px;
 }
@@ -157,11 +176,17 @@
   text-transform: capitalize;
 }
 
-.userFirstAndLastName,
-.userUsername {
+.userFirstAndLastName {
   color: white;
 }
 
 .userUsername {
+  color: #b3b8bc;
   font-size: 0.75rem;
+}
+
+@media screen and (max-width: 630px) {
+  .groupsAnchor {
+    display: block;
+  }
 }

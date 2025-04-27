@@ -12,7 +12,11 @@ function RenderChatDetailsMessages() {
   const { chatDetails, setChatDetails, error, loading } =
     useFetchSingleChatURL();
 
+  console.log(chatDetails);
+
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
+
+  // console.log(userLogInObj.id);
 
   // this state will be used a condition to send a message or image in the form
   const [sendAMessageState, setSendAMessageState] = useState("");
@@ -35,10 +39,11 @@ function RenderChatDetailsMessages() {
   const [showPopUpModalOnExpiredToken, setShowPopUpModalOnExpiredToken] =
     useState(false);
 
-  const [
-    showPopUpWhenDeletingOrEditingMessage,
-    setShowPopUpWhenDeletingOrEditingMessage,
-  ] = useState(false);
+  const [showPopUpWhEditingMessage, setShowPopUpWhenEditingMessage] =
+    useState(false);
+
+  const [showPopUpWhDeletingMessage, setShowPopUpWhenDeletingMessage] =
+    useState(false);
 
   if (loading) {
     // return <img src="./loading_spinner.svg" alt="Loading..." />;
@@ -121,43 +126,97 @@ L82,35.7z"
     setSendAMessageState("");
 
     try {
-      const response = await fetch(
-        `${localhostURL}/chats/${chatDetails.id}/message`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
+      if (userLogInObj.id === chatDetails.senderChat.id) {
+        const response = await fetch(
+          `${localhostURL}/chats/${chatDetails.id}/message`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: localStorage.getItem("token"),
+            },
+            body: JSON.stringify({
+              message_text: getMessageTextFormData,
+              senderMessageId: userLogInObj.id,
+              receiverId: chatDetails.receiverChat.id,
+            }),
           },
-          body: JSON.stringify({
-            message_text: getMessageTextFormData,
-            senderMessageId: userLogInObj.id,
-            receiverId: chatDetails.receiverChat.id,
-          }),
-        },
-      );
+        );
 
-      if (response.status === 403) {
-        setShowPopUpModalOnExpiredToken(true);
+        console.log(
+          "The current loggedIn user",
+          userLogInObj.id,
+          "The receiverChatId",
+          chatDetails.receiverChat.id,
+        );
 
-        //reset the state in order to popup the modal again
-        setTimeout(() => {
-          setShowPopUpModalOnExpiredToken(false);
-        }, 3000);
+        if (response.status === 403) {
+          setShowPopUpModalOnExpiredToken(true);
+
+          //reset the state in order to popup the modal again
+          setTimeout(() => {
+            setShowPopUpModalOnExpiredToken(false);
+          }, 3000);
+        }
+
+        const result = await response.json();
+
+        console.log(result);
+
+        const sendMessageObj = {
+          ...chatDetails,
+          messages: result.messages,
+        };
+
+        // console.log(chatDetails);
+
+        setChatDetails(sendMessageObj);
+      } else {
+        const response = await fetch(
+          `${localhostURL}/chats/${chatDetails.id}/message`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: localStorage.getItem("token"),
+            },
+            body: JSON.stringify({
+              message_text: getMessageTextFormData,
+              senderMessageId: userLogInObj.id,
+              receiverId: chatDetails.senderChat.id,
+            }),
+          },
+        );
+
+        console.log(
+          "The current loggedIn user",
+          userLogInObj.id,
+          "The receiverChatId",
+          chatDetails.receiverChat.id,
+        );
+
+        if (response.status === 403) {
+          setShowPopUpModalOnExpiredToken(true);
+
+          //reset the state in order to popup the modal again
+          setTimeout(() => {
+            setShowPopUpModalOnExpiredToken(false);
+          }, 3000);
+        }
+
+        const result = await response.json();
+
+        console.log(result);
+
+        const sendMessageObj = {
+          ...chatDetails,
+          messages: result.messages,
+        };
+
+        // console.log(chatDetails);
+
+        setChatDetails(sendMessageObj);
       }
-
-      const result = await response.json();
-
-      // console.log(result);
-
-      const sendMessageObj = {
-        ...chatDetails,
-        messages: result.messages,
-      };
-
-      // console.log(chatDetails);
-
-      setChatDetails(sendMessageObj);
     } catch (err) {
       console.log(err);
     }
@@ -256,6 +315,7 @@ L82,35.7z"
           }),
         },
       );
+
       if (response.status === 403) {
         setShowPopUpModalOnExpiredToken(true);
 
@@ -266,12 +326,14 @@ L82,35.7z"
       }
 
       if (response.status === 200) {
-        setShowPopUpWhenDeletingOrEditingMessage(true);
+        setShowPopUpWhenEditingMessage(true);
 
         setTimeout(() => {
-          setShowPopUpWhenDeletingOrEditingMessage(false);
+          setShowPopUpWhenEditingMessage(false);
         }, 3000);
       }
+
+      // console.log(response);
 
       const result = await response.json();
 
@@ -324,10 +386,10 @@ L82,35.7z"
       }
 
       if (response.status === 200) {
-        setShowPopUpWhenDeletingOrEditingMessage(true);
+        setShowPopUpWhenDeletingMessage(true);
 
         setTimeout(() => {
-          setShowPopUpWhenDeletingOrEditingMessage(false);
+          setShowPopUpWhenDeletingMessage(false);
         }, 3000);
       }
 
@@ -353,28 +415,53 @@ L82,35.7z"
       <>
         <div className={styles.chatMessagesDetailsContainer}>
           <header className={styles.chatMessageDetailsHeader}>
-            <Link
-              className={styles.chatMessageDetailsFlexedAnchor}
-              to={`/profile/${chatDetails.receiverChat.id}`}
-            >
-              {chatDetails.receiverChat.profile_picture === "" ? (
-                <img
-                  className={styles.chatDetailsUserProfilePicture}
-                  src="/default_users_pfp.jpg"
-                  alt="user default profile picture"
-                />
-              ) : (
-                <img
-                  className={styles.chatDetailsUserProfilePicture}
-                  src={chatDetails.receiverChat.profile_picture}
-                  alt="user profile picture"
-                />
-              )}
-              <h6 className={styles.chatMessageDetailsUserFirstAndLastName}>
-                {chatDetails.receiverChat.first_name}{" "}
-                {chatDetails.receiverChat.last_name}
-              </h6>
-            </Link>
+            {userLogInObj.id === chatDetails.senderChat.id ? (
+              <Link
+                className={styles.chatMessageDetailsFlexedAnchor}
+                to={`/profile/${chatDetails.receiverChat.id}`}
+              >
+                {chatDetails.receiverChat.profile_picture === "" ? (
+                  <img
+                    className={styles.chatDetailsUserProfilePicture}
+                    src="/default_users_pfp.jpg"
+                    alt="user default profile picture"
+                  />
+                ) : (
+                  <img
+                    className={styles.chatDetailsUserProfilePicture}
+                    src={chatDetails.receiverChat.profile_picture}
+                    alt="user profile picture"
+                  />
+                )}
+                <h6 className={styles.chatMessageDetailsUserFirstAndLastName}>
+                  {chatDetails.receiverChat.first_name}{" "}
+                  {chatDetails.receiverChat.last_name}
+                </h6>
+              </Link>
+            ) : (
+              <Link
+                className={styles.chatMessageDetailsFlexedAnchor}
+                to={`/profile/${chatDetails.senderChat.id}`}
+              >
+                {chatDetails.senderChat.profile_picture === "" ? (
+                  <img
+                    className={styles.chatDetailsUserProfilePicture}
+                    src="/default_users_pfp.jpg"
+                    alt="user default profile picture"
+                  />
+                ) : (
+                  <img
+                    className={styles.chatDetailsUserProfilePicture}
+                    src={chatDetails.senderChat.profile_picture}
+                    alt="user profile picture"
+                  />
+                )}
+                <h6 className={styles.chatMessageDetailsUserFirstAndLastName}>
+                  {chatDetails.senderChat.first_name}{" "}
+                  {chatDetails.senderChat.last_name}
+                </h6>
+              </Link>
+            )}
             <hr className={styles.chatDetailsHeaderBottomHr} />
           </header>
 
@@ -386,21 +473,12 @@ L82,35.7z"
             </div>
           ) : (
             <ul className={styles.chatDetailsMessagesContainer}>
-              {chatDetails.messages.map((message, index) => (
+              {chatDetails.messages.map((message) => (
                 <Fragment key={message.id}>
-                  {/* if the first element index is 0 or the date of that 
-                message is not equal to the first one render the date 
-                otherwise  don't
-                 */}
-                  {index === 0 ||
-                  format(message.createdAt, "MM/dd/yy") !==
-                    format(chatDetails.messages[0].createdAt, "MM/dd/yy") ? (
-                    <p className={styles.chatDetailsSendMessageDate}>
-                      {format(message.createdAt, "MM/dd/yy")}
-                    </p>
-                  ) : (
-                    ""
-                  )}
+                  <p className={styles.chatDetailsSendMessageDate}>
+                    {format(message.createdAt, "dd/MM/yy")}
+                  </p>
+
                   {/* if the messageId equal the loggedIn userId render the message of that user  */}
                   {message.senderMessageId === userLogInObj.id ? (
                     <li className={styles.chatDetailsUserMessage}>
@@ -567,37 +645,93 @@ L82,35.7z"
                       <div
                         className={styles.chatReceiverSendingMessagesContainer}
                       >
-                        <div className={styles.chatDetailsUserUsername}>
-                          <p>{"@" + chatDetails.senderChat.username}</p>
-                        </div>
-                        <div className={styles.chatDetailsReceiverUserMessages}>
-                          <Link to={`/profile/${chatDetails.senderChat.id}`}>
-                            {chatDetails.senderChat.profile_picture === "" ? (
-                              <img
-                                className={
-                                  styles.chatDetailsUserDefaultProfilePicture
-                                }
-                                src="/default_users_pfp.jpg"
-                                alt="user default profile picture"
-                              />
-                            ) : (
-                              <img
-                                src={chatDetails.senderChat.profile_picture}
-                                alt="user profile picture"
-                              />
-                            )}
-                          </Link>
-                          {message.message_text ? (
-                            <li className={styles.chatDetailsSendMessage}>
-                              {message.message_text}
-                            </li>
-                          ) : (
-                            <img
-                              className={styles.chatDetailsSendImage}
-                              src={message.message_imageURL}
-                            />
-                          )}
-                        </div>
+                        {chatDetails.senderChat.id === userLogInObj.id ? (
+                          <>
+                            <div className={styles.chatDetailsUserUsername}>
+                              <p>{"@" + chatDetails.receiverChat.username}</p>
+                            </div>
+                            <div
+                              className={styles.chatDetailsReceiverUserMessages}
+                            >
+                              <Link
+                                to={`/profile/${chatDetails.receiverChat.id}`}
+                              >
+                                {chatDetails.receiverChat.profile_picture ===
+                                "" ? (
+                                  <img
+                                    className={
+                                      styles.chatDetailsUserDefaultProfilePicture
+                                    }
+                                    src="/default_users_pfp.jpg"
+                                    alt="user default profile picture"
+                                  />
+                                ) : (
+                                  <img
+                                    className={
+                                      styles.chatDetailsUserProfilePicture
+                                    }
+                                    src={
+                                      chatDetails.receiverChat.profile_picture
+                                    }
+                                    alt="user profile picture"
+                                  />
+                                )}
+                              </Link>
+                              {message.message_text ? (
+                                <li className={styles.chatDetailsSendMessage}>
+                                  {message.message_text}
+                                </li>
+                              ) : (
+                                <img
+                                  className={styles.chatDetailsSendImage}
+                                  src={message.message_imageURL}
+                                />
+                              )}
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className={styles.chatDetailsUserUsername}>
+                              <p>{"@" + chatDetails.senderChat.username}</p>
+                            </div>
+                            <div
+                              className={styles.chatDetailsReceiverUserMessages}
+                            >
+                              <Link
+                                to={`/profile/${chatDetails.senderChat.id}`}
+                              >
+                                {chatDetails.senderChat.profile_picture ===
+                                "" ? (
+                                  <img
+                                    className={
+                                      styles.chatDetailsUserDefaultProfilePicture
+                                    }
+                                    src="/default_users_pfp.jpg"
+                                    alt="user default profile picture"
+                                  />
+                                ) : (
+                                  <img
+                                    className={
+                                      styles.chatDetailsUserProfilePicture
+                                    }
+                                    src={chatDetails.senderChat.profile_picture}
+                                    alt="user profile picture"
+                                  />
+                                )}
+                              </Link>
+                              {message.message_text ? (
+                                <li className={styles.chatDetailsSendMessage}>
+                                  {message.message_text}
+                                </li>
+                              ) : (
+                                <img
+                                  className={styles.chatDetailsSendImage}
+                                  src={message.message_imageURL}
+                                />
+                              )}
+                            </div>
+                          </>
+                        )}
                       </div>
                     </>
                   )}
@@ -622,6 +756,7 @@ L82,35.7z"
                 name="message_text"
                 id="message_text"
                 value={sendAMessageState}
+                placeholder="Note: you can't send a message or image at the same time!"
                 onChange={(e) => setSendAMessageState(e.target.value)}
               />
 
@@ -657,7 +792,7 @@ L82,35.7z"
             </form>
           </div>
         </div>
-        {showPopUpWhenDeletingOrEditingMessage && (
+        {showPopUpWhEditingMessage && (
           <PopUpModal
             popUpModalBackgroundColor={"white"}
             popUpModalContentColor={"black"}
@@ -665,7 +800,7 @@ L82,35.7z"
             popUpModalContentText={"Message edited!"}
           />
         )}
-        {showPopUpWhenDeletingOrEditingMessage && (
+        {showPopUpWhDeletingMessage && (
           <PopUpModal
             popUpModalBackgroundColor={"white"}
             popUpModalContentColor={"black"}

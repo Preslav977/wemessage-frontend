@@ -6,7 +6,10 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { UserLogInObjectContext } from "../../contexts/UserLoggedInContext";
 import { BackgroundPictureContext } from "../../contexts/UserRegistrationContext";
 
+import { ShowPopUpModalOnProfileUpdateContext } from "../../contexts/PopUpModalContext";
+
 import useFetchSingleUserURL from "../api/custom hooks/useFetchSingleUserURL";
+
 import PopUpModal from "../PopUpModal/PopUpModal";
 
 import localhostURL from "../../utility/localhostURL";
@@ -24,7 +27,7 @@ function UserProfile() {
     useState(false);
 
   const [showPopUpModalProfileUpdate, setShowPopUpModalProfileUpdate] =
-    useState(false);
+    useContext(ShowPopUpModalOnProfileUpdateContext);
 
   const [showPopUpModalOnExpiredToken, setShowPopUpModalOnExpiredToken] =
     useState(false);
@@ -119,7 +122,7 @@ function UserProfile() {
 
       const result = await response.json();
 
-      // console.log(result);
+      console.log(result);
 
       navigate(`/chats/${result.id}`);
     } catch (err) {
@@ -139,11 +142,21 @@ function UserProfile() {
       <>
         <div className={styles.userBgContainer}>
           {userGetById.background_picture === "" ? (
-            <img
-              className={styles.userBgImg}
-              src="/default_users_bg_picture.jpg"
-              alt="user default background picture"
-            />
+            <>
+              <img
+                className={styles.userBgImg}
+                src="/default_users_bg_picture.png"
+                alt="user default background picture"
+              />
+              <div className={styles.flexedBackgroundPhotoCredits}>
+                <p className={styles.backgroundPhotoCredits}>
+                  Photo by{" "}
+                  <Link to={"https://unsplash.com/@ksushlapush"}>
+                    Kseniya Lapteva
+                  </Link>
+                </p>
+              </div>
+            </>
           ) : (
             <img
               className={styles.userBgImg}
@@ -205,11 +218,21 @@ function UserProfile() {
     <>
       <div className={styles.userBgContainer}>
         {userLogInObj.background_picture === "" ? (
-          <img
-            className={styles.userBgImg}
-            src="/default_users_bg_picture.jpg"
-            alt="user default background picture"
-          />
+          <>
+            <img
+              className={styles.userBgImg}
+              src="/default_users_bg_picture.png"
+              alt="user default background picture"
+            />
+            <div className={styles.flexedBackgroundPhotoCredits}>
+              <p className={styles.backgroundPhotoCredits}>
+                Photo by{" "}
+                <Link to={"https://unsplash.com/@ksushlapush"}>
+                  Kseniya Lapteva
+                </Link>
+              </p>
+            </div>
+          </>
         ) : (
           <img
             className={styles.userBgImg}
@@ -262,7 +285,7 @@ function UserProfile() {
           <img
             className={styles.changeBgImg}
             src="/update_pfp.svg"
-            alt="update background image"
+            alt="updated background image"
           />
         </div>
         {userLogInObj.online_presence === "ONLINE" ? (
@@ -313,7 +336,7 @@ function UserProfile() {
           popUpModalBackgroundColor={"white"}
           popUpModalContentColor={"black"}
           popUpModalBorderColor={"white"}
-          popUpModalContentHeader={"Profile updated"}
+          popUpModalContentHeader={"Profile Updated"}
           popUpModalContentText={"Your profile has been updated successfully"}
         />
       )}
@@ -322,7 +345,7 @@ function UserProfile() {
           popUpModalBackgroundColor={"white"}
           popUpModalContentColor={"black"}
           popUpModalBorderColor={"white"}
-          popUpModalContentHeader={"Cover photo"}
+          popUpModalContentHeader={"Cover Photo Updated"}
           popUpModalContentText={
             "Your cover photo has been updated successfully"
           }

@@ -128,7 +128,9 @@ L82,35.7z"
       </header>
       <>
         {groups.length === 0 ? (
-          <p>{"You currently have no groups"}</p>
+          <p className={styles.noGroupsPara}>
+            {"You currently have no groups"}
+          </p>
         ) : (
           <>
             <ul>

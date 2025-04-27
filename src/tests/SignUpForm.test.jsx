@@ -6,6 +6,7 @@ import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { afterEach } from "vitest";
 import { server } from "./mocks/node/server";
 import { http, HttpResponse } from "msw";
+import localhostURL from "../utility/localhostURL";
 
 beforeAll(() => {
   server.listen();
@@ -282,7 +283,7 @@ describe("should render SignUpForm", () => {
     });
 
     server.use(
-      http.post("http://localhost:5000/users/signup", async ({ request }) => {
+      http.post(`${localhostURL}/users/signup`, async () => {
         return HttpResponse.json(
           [
             { msg: "First name is already taken" },

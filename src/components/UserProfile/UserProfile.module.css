@@ -8,6 +8,27 @@
   object-fit: cover;
   height: 16rem;
   border-radius: 0.35em;
+  position: relative;
+}
+
+.flexedBackgroundPhotoCredits {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backgroundPhotoCredits {
+  position: absolute;
+  color: white;
+  bottom: 0.5em;
+}
+
+.backgroundPhotoCredits > a {
+  text-decoration: underline;
+}
+
+.backgroundPhotoCredits > a:visited {
+  color: white;
 }
 
 .userProfileContainer {
@@ -81,7 +102,7 @@
 }
 
 .changeBgImg {
-  width: 25px;
+  width: 20px;
 }
 
 .userPresenceStatus {
@@ -108,9 +129,12 @@
   margin-bottom: 0.15em;
 }
 
-.userFirstAndLastName,
-.userUsername {
+.userFirstAndLastName {
   color: white;
+}
+
+.userUsername {
+  color: #b3b8bc;
 }
 
 .usersBioParagraph {
@@ -119,7 +143,7 @@
   overflow-wrap: anywhere;
   max-width: 50%;
   padding: 0.8rem;
-  color: white;
+  color: #b3b8bc;
 }
 
 .sendMessageBtn {

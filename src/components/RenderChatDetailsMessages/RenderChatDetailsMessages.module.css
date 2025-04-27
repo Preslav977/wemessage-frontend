@@ -3,7 +3,7 @@
 }
 
 .chatDetailsHeader {
-  color: white;
+  color: #b3b8bc;
   font-size: 2.5rem;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .chatDetailsSendMessageDate {
-  color: white;
+  color: #b3b8bc;
   text-align: center;
   margin-top: 1.5em;
   font-size: 0.75rem;
@@ -37,6 +37,7 @@
 
 .chatDetailsHeaderBottomHr {
   margin-top: 0.5em;
+  color: #3a3b3c;
 }
 
 .chatMessageDetailsFlexedAnchor {
@@ -76,7 +77,7 @@
 }
 
 .chatNoMessagesPara {
-  color: white;
+  color: #b3b8bc;
 }
 
 .chatDetailsUserMessage {
@@ -100,6 +101,7 @@
 
 .chatDetailsMessageDropDownImg {
   width: 5px;
+  cursor: pointer;
 }
 
 .chatDetailsSendMessage {
@@ -134,6 +136,7 @@
   color: white;
   border: 0;
   padding: 0.4rem 0;
+  color: #b3b8bc;
 }
 
 .dropDownMenuCancelBtn,
@@ -159,6 +162,7 @@
 }
 
 .chatDetailsSendImage {
+  border-radius: 0.5rem;
   max-width: 16rem;
   height: auto;
   margin-bottom: 1em;
@@ -181,7 +185,7 @@
   text-align: left;
   margin-left: 5.5em;
   margin-bottom: 0.3em;
-  color: white;
+  color: #b3b8bc;
   font-size: 0.75rem;
 }
 
@@ -195,6 +199,7 @@
 .chatMessageDetailsBottomHr {
   /* color: red; */
   /* outline: 2px solid white; */
+  color: #3a3b3c;
   margin-bottom: 0.5em;
 }
 
@@ -212,9 +217,6 @@
   align-items: center;
   gap: 0.5em;
   padding: 0.15em 0.15em;
-  /* outline: 2px solid red; */
-  /* width: 400px; */
-  /* width: max-content; */
 }
 
 .flexChatDetailsSendMessageOrImageForm > input {
@@ -224,13 +226,13 @@
   border: 0;
   background-color: #242526;
   /* outline: 1px solid white; */
-  border: 1px solid white;
+  border: 1px solid #3a3b3c;
   color: white;
 }
 
 .chatDetailsSendImageContainer,
 .chatDetailsSendMessageContainer {
-  outline: 2px solid white;
+  outline: 2px solid #3a3b3c;
   /* width: 43px;
   height: 43px; */
   padding: 0.3em;
@@ -256,4 +258,10 @@
   width: 25px;
   opacity: 0;
   cursor: pointer;
+}
+
+@media screen and (max-width: 360px) {
+  .flexChatDetailsSendMessageOrImageForm {
+    margin-right: 0.5em;
+  }
 }

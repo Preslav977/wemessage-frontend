@@ -5,6 +5,7 @@
   bottom: -12%;
   right: 2.5%;
   border-radius: 0.5em;
+  z-index: 2;
 }
 
 .popUpModalContent {

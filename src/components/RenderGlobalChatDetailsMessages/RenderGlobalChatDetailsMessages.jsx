@@ -38,10 +38,11 @@ function RenderGlobalChatDetailsMessages() {
 
   const [clickedGlobalChatMessage, setClickedGlobalChatMessage] = useState();
 
-  const [
-    showPopUpWhenDeletingOrEditingMessage,
-    setShowPopUpWhenDeletingOrEditingMessage,
-  ] = useState(false);
+  const [showPopUpWhEditingMessage, setShowPopUpWhenEditingMessage] =
+    useState(false);
+
+  const [showPopUpWhDeletingMessage, setShowPopUpWhenDeletingMessage] =
+    useState(false);
 
   const [showPopUpModalOnExpiredToken, setShowPopUpModalOnExpiredToken] =
     useState(false);
@@ -268,10 +269,10 @@ L82,35.7z"
       }
 
       if (response.status === 200) {
-        setShowPopUpWhenDeletingOrEditingMessage(true);
+        setShowPopUpWhenEditingMessage(true);
 
         setTimeout(() => {
-          setShowPopUpWhenDeletingOrEditingMessage(false);
+          setShowPopUpWhenEditingMessage(false);
         }, 3000);
       }
 
@@ -331,10 +332,10 @@ L82,35.7z"
       }
 
       if (response.status === 200) {
-        setShowPopUpWhenDeletingOrEditingMessage(true);
+        setShowPopUpWhenDeletingMessage(true);
 
         setTimeout(() => {
-          setShowPopUpWhenDeletingOrEditingMessage(false);
+          setShowPopUpWhenDeletingMessage(false);
         }, 3000);
       }
 
@@ -373,24 +374,11 @@ L82,35.7z"
               </div>
             ) : (
               <ul className={styles.globalChatDetailsMessagesContainer}>
-                {globalChatDetails.messagesGGChat.map((message, index) => (
+                {globalChatDetails.messagesGGChat.map((message) => (
                   <Fragment key={message.id}>
-                    {/* if the first element index is 0 or the date of that 
-                message is not equal to the first one render the date 
-                otherwise  don't
-                 */}
-                    {index === 0 ||
-                    format(message.createdAt, "MM/dd/yy") !==
-                      format(
-                        globalChatDetails.messagesGGChat[0].createdAt,
-                        "MM/dd/yy",
-                      ) ? (
-                      <p className={styles.globalChatDetailsSendMessageDate}>
-                        {format(message.createdAt, "MM/dd/yy")}
-                      </p>
-                    ) : (
-                      ""
-                    )}
+                    <p className={styles.globalChatDetailsSendMessageDate}>
+                      {format(message.createdAt, "dd/MM/yy")}
+                    </p>
                     {message.userId === userLogInObj.id ? (
                       <ul className={styles.globalChatDetailsUserMessage}>
                         {message.message_text ? (
@@ -663,6 +651,7 @@ L82,35.7z"
                 type="text"
                 name="message_text"
                 id="message_text"
+                placeholder="Note: you can't send a message or image at the same time!"
                 maxLength={200}
                 value={sendAGlobalChatMessageState}
                 onChange={(e) => setSendAGlobalChatMessageState(e.target.value)}
@@ -700,7 +689,7 @@ L82,35.7z"
             </form>
           </div>
         </div>
-        {showPopUpWhenDeletingOrEditingMessage && (
+        {showPopUpWhEditingMessage && (
           <PopUpModal
             popUpModalBackgroundColor={"white"}
             popUpModalContentColor={"black"}
@@ -708,7 +697,7 @@ L82,35.7z"
             popUpModalContentText={"Message edited!"}
           />
         )}
-        {showPopUpWhenDeletingOrEditingMessage && (
+        {showPopUpWhDeletingMessage && (
           <PopUpModal
             popUpModalBackgroundColor={"white"}
             popUpModalContentColor={"black"}

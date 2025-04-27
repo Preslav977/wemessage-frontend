@@ -77,7 +77,7 @@ function UpdateUserPasswords() {
         setPassword("");
         setConfirmPassword("");
 
-        showPopUpModalUpdatedPasswords(true);
+        setShowPopUpModalUpdatedPasswords(true);
 
         //reset the state in order to popup the modal again
         setTimeout(() => {
@@ -86,6 +86,8 @@ function UpdateUserPasswords() {
       }
 
       const result = await response.json();
+
+      console.log(result);
 
       const userLoggedInInformation = {
         ...userLogInObj,
@@ -182,7 +184,7 @@ function UpdateUserPasswords() {
           popUpModalBackgroundColor={"white"}
           popUpModalContentColor={"black"}
           popUpModalBorderColor={"white"}
-          popUpModalContentHeader={"Profile updated"}
+          popUpModalContentHeader={"Profile Updated"}
           popUpModalContentText={"Your passwords has been updated successfully"}
         />
       )}

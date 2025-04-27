@@ -1,50 +1,41 @@
 import { http, HttpResponse } from "msw";
 
+import localhostURL from "../../utility/localhostURL";
+
 export const handlers = [
-  http.post("http://localhost:5000/users/signup", async ({ request }) => {
-    const result = await request.json();
-
-    const signUpObject = {
-      first_name: result.first_name,
-      last_name: result.last_name,
-      username: result.username,
-      password: result.password,
-      confirm_password: result.confirm_password,
-      role: "ADMIN",
-    };
-
-    // console.log(signUpObject);
-
-    return HttpResponse.json(signUpObject, { status: 200 });
-  }),
-
-  http.post("http://localhost:5000/users/login_guest", async ({ request }) => {
-    const result = await request.json();
-
-    const logInObject = {
-      username: "preslaw1",
-      password: result.password,
-    };
-
-    // console.log(logInObject);
-
-    return HttpResponse.json(logInObject, { status: 200 });
-  }),
-
-  http.post("http://localhost:5000/users/login", async ({ request }) => {
-    const result = await request.json();
-
-    const logInObject = {
+  http.post(`${localhostURL}/users/signup`, async ({ request }) => {
+    const result = await request.json({
+      first_name: "preslaw",
+      last_name: "preslaw",
       username: "preslaw",
-      password: result.password,
-    };
+      password: "12345678Bg@",
+      confirm_password: "12345678Bg@",
+      role: "ADMIN",
+    });
 
-    // console.log(logInObject);
-
-    return HttpResponse.json(logInObject, { status: 200 });
+    return HttpResponse.json(result, { status: 200 });
   }),
 
-  http.get("http://localhost:5000/users", async () => {
+  http.post(`${localhostURL}/users/login_guest`, async ({ request }) => {
+    const result = await request.json({
+      username: "preslaw1",
+      password: "12345678Bg@",
+    });
+
+    return HttpResponse.json(result, { status: 200 });
+  }),
+  http.post(`${localhostURL}/users/login`, async ({ request }) => {
+    const result = await request.json({
+      username: "preslaw",
+      password: "12345678Bg@",
+    });
+
+    // console.log(result);
+
+    return HttpResponse.json(result, { status: 200 });
+  }),
+
+  http.get(`${localhostURL}/users`, async () => {
     return HttpResponse.json(
       {
         id: 1,
@@ -57,7 +48,7 @@ export const handlers = [
     );
   }),
 
-  http.get("http://localhost:5000/users/1", async () => {
+  http.get(`${localhostURL}/users/1`, async () => {
     return HttpResponse.json(
       {
         id: 1,
@@ -70,93 +61,75 @@ export const handlers = [
     );
   }),
 
-  http.put(
-    "http://localhost:5000/users/profile/background_image/1",
-    async () => {
-      const form = new FormData();
-
-      const bgImageFile = new File(["image"], "image.png", {
-        type: "image/png",
-      });
-
-      form.set("file", bgImageFile, "image/png");
-
-      fetch("http://localhost:5000/users/profile/background_image/1", {
-        method: "PUT",
-        body: form,
-      });
-    },
-  ),
-
-  http.put("http://localhost:5000/users/profile/image/1", async () => {
+  http.put(`${localhostURL}/users/profile/background_image/1`, async () => {
     const form = new FormData();
 
-    const bgImageFile = new File(["image"], "image.png", { type: "image/png" });
+    const bgImageFile = new File(["image"], "image.png", {
+      type: "image/png",
+    });
 
     form.set("file", bgImageFile, "image/png");
 
-    console.log(form);
-
-    fetch("http://localhost:5000/users/profile/background_image/1", {
+    fetch(`${localhostURL}/users/profile/background_image/1`, {
       method: "PUT",
       body: form,
     });
   }),
+];
 
-  http.put("http://localhost:5000/users/profile/edit/1", async () => {
-    return HttpResponse.json(
-      {
-        id: 1,
-        first_name: "preslaw123",
-        last_name: "preslaw123",
-        username: "preslaw123",
-        password: "12345678Bg@@",
-        confirm_password: "12345678Bg@@",
-        bio: "bio123",
-      },
-      { status: 200 },
-    );
-  }),
+http.put(`${localhostURL}/users/profile/image/1`, async () => {
+  const form = new FormData();
 
-  http.put(
-    "http://localhost:5000/users/profile/change_passwords/1",
-    async () => {
-      return HttpResponse.json(
-        {
-          id: 1,
-          old_password: "12345678Bg@@",
-          password: "12345678Bg@@",
-          confirm_password: "12345678Bg@@",
-        },
-        { status: 200 },
-      );
+  const bgImageFile = new File(["image"], "image.png", { type: "image/png" });
+
+  form.set("file", bgImageFile, "image/png");
+
+  console.log(form);
+
+  fetch(`${localhostURL}/users/profile/background_image/1`, {
+    method: "PUT",
+    body: form,
+  });
+});
+
+http.put(`${localhostURL}/users/profile/edit/1`, async () => {
+  return HttpResponse.json(
+    {
+      id: 1,
+      first_name: "preslaw123",
+      last_name: "preslaw123",
+      username: "preslaw123",
+      bio: "bio123",
+      // password: "12345678Bg@@",
+      // confirm_password: "12345678Bg@@",
     },
-  ),
+    { status: 200 },
+  );
+});
 
-  http.get("http://localhost:5000/chats", async () => {
-    return HttpResponse.json([
-      {
-        id: "73cc246e-897e-412f-8ab8-6fb4c29db485",
-        senderChatId: 1,
-        receiverChatId: 2,
-        senderChat: {
-          id: 1,
-          first_name: "preslaw",
-          last_name: "preslaw",
-          username: "preslaw",
-        },
-        receiverChat: {
-          id: 2,
-          first_name: "preslaw1",
-          last_name: "preslaw1",
-          username: "preslaw1",
-        },
-        messages: [],
+http.get(`${localhostURL}/chats`, async () => {
+  return HttpResponse.json([
+    {
+      id: "73cc246e-897e-412f-8ab8-6fb4c29db485",
+      senderChatId: 1,
+      receiverChatId: 2,
+      senderChat: {
+        id: 1,
+        first_name: "preslaw",
+        last_name: "preslaw",
+        username: "preslaw",
       },
-    ]);
-  }),
-
-  http.get("http://localhost:5000/users", async () => {
+      receiverChat: {
+        id: 2,
+        first_name: "preslaw1",
+        last_name: "preslaw1",
+        username: "preslaw1",
+      },
+      messages: [],
+    },
+  ]);
+}),
+  http.get(`${localhostURL}/users`, async () => {
     return HttpResponse.json(
       {
         id: 1,
@@ -167,8 +140,7 @@ export const handlers = [
       { status: 200 },
     );
   }),
-
-  http.get("http://localhost:5000/users/1", async () => {
+  http.get(`${localhostURL}/users/1`, async () => {
     return HttpResponse.json(
       {
         id: 1,
@@ -184,8 +156,7 @@ export const handlers = [
       { status: 200 },
     );
   }),
-
-  http.get("http://localhost:5000/users/all", async () => {
+  http.get(`${localhostURL}/users/all`, async () => {
     return HttpResponse.json([
       {
         id: 1,
@@ -208,8 +179,7 @@ export const handlers = [
       { status: 200 },
     ]);
   }),
-
-  http.get("http://localhost:5000/users/search", async ({ request }) => {
+  http.get(`${localhostURL}/users/search`, async ({ request }) => {
     const url = new URL(request.url);
 
     const getUser = url.searchParams.get("query");
@@ -227,8 +197,7 @@ export const handlers = [
       },
     ]);
   }),
-
-  http.get("http://localhost:5000/users/2", async () => {
+  http.get(`${localhostURL}/users/2`, async () => {
     return HttpResponse.json(
       {
         id: 2,
@@ -239,8 +208,7 @@ export const handlers = [
       { status: 200 },
     );
   }),
-
-  http.post("http://localhost:5000/chats", async () => {
+  http.post(`${localhostURL}/chats`, async () => {
     return HttpResponse.json(
       {
         id: "73cc246e-897e-412f-8ab8-6fb4c29db485",
@@ -263,9 +231,8 @@ export const handlers = [
       { status: 200 },
     );
   }),
-
   http.get(
-    "http://localhost:5000/chats/73cc246e-897e-412f-8ab8-6fb4c29db485",
+    `${localhostURL}/chats/73cc246e-897e-412f-8ab8-6fb4c29db485`,
     async () => {
       return HttpResponse.json(
         {
@@ -291,9 +258,8 @@ export const handlers = [
       );
     },
   ),
-
   http.post(
-    "http://localhost:5000/chats/73cc246e-897e-412f-8ab8-6fb4c29db485/message",
+    `${localhostURL}/chats/73cc246e-897e-412f-8ab8-6fb4c29db485/message`,
     async () => {
       return HttpResponse.json(
         {
@@ -332,9 +298,8 @@ export const handlers = [
       );
     },
   ),
-
   http.put(
-    "http://localhost:5000/chats/73cc246e-897e-412f-8ab8-6fb4c29db485/message/1",
+    `${localhostURL}/chats/73cc246e-897e-412f-8ab8-6fb4c29db485/message/1`,
     async () => {
       return HttpResponse.json(
         {
@@ -373,9 +338,8 @@ export const handlers = [
       );
     },
   ),
-
   http.delete(
-    "http://localhost:5000/chats/73cc246e-897e-412f-8ab8-6fb4c29db485/message/1",
+    `${localhostURL}/chats/73cc246e-897e-412f-8ab8-6fb4c29db485/message/1`,
     async () => {
       return HttpResponse.json(
         {
@@ -400,17 +364,15 @@ export const handlers = [
         { status: 200 },
       );
     },
-  ),
+  );
 
-  http.get("http://localhost:5000/groups", async () => {
-    return HttpResponse.json([]);
-  }),
-
-  http.get("http://localhost:5000/groups/undefined", async () => {
+http.get(`${localhostURL}/groups`, async () => {
+  return HttpResponse.json([]);
+}),
+  http.get(`${localhostURL}/groups/undefined`, async () => {
     return HttpResponse.json(null, { status: 404 });
   }),
-
-  http.get("http://localhost:5000/groups/search", async ({ request }) => {
+  http.get(`${localhostURL}/groups/search`, async ({ request }) => {
     const url = new URL(request.url);
 
     const getUser = url.searchParams.get("query");
@@ -428,8 +390,7 @@ export const handlers = [
       },
     ]);
   }),
-
-  http.post("http://localhost:5000/groups", async () => {
+  http.post(`${localhostURL}/groups`, async () => {
     return HttpResponse.json(
       {
         id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
@@ -455,9 +416,8 @@ export const handlers = [
       { status: 200 },
     );
   }),
-
   http.get(
-    "http://localhost:5000/groups/56cfae47-9d7f-4583-8d12-f6039ef61240",
+    `${localhostURL}/groups/56cfae47-9d7f-4583-8d12-f6039ef61240`,
     async () => {
       return HttpResponse.json(
         {
@@ -486,9 +446,8 @@ export const handlers = [
       );
     },
   ),
-
   http.put(
-    "http://localhost:5000/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/join",
+    `${localhostURL}/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/join`,
     async () => {
       return HttpResponse.json(
         {
@@ -522,9 +481,8 @@ export const handlers = [
       );
     },
   ),
-
   http.post(
-    "http://localhost:5000/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/message",
+    `${localhostURL}/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/message`,
     async () => {
       return HttpResponse.json(
         {
@@ -570,9 +528,8 @@ export const handlers = [
       );
     },
   ),
-
   http.post(
-    "http://localhost:5000/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/image",
+    `${localhostURL}/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/image`,
     async () => {
       return HttpResponse.json(
         {
@@ -618,9 +575,8 @@ export const handlers = [
       );
     },
   ),
-
   http.put(
-    "http://localhost:5000/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/message/1",
+    `${localhostURL}/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/message/1`,
     async () => {
       return HttpResponse.json(
         {
@@ -666,9 +622,9 @@ export const handlers = [
       );
     },
   ),
-
+  
   http.delete(
-    "http://localhost:5000/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/message/1",
+    `${localhostURL}/groups/56cfae47-9d7f-4583-8d12-f6039ef61240/message/1`,
     async () => {
       return HttpResponse.json(
         {
@@ -704,7 +660,7 @@ export const handlers = [
   ),
 
   http.put(
-    "http://localhost:5000/groups/56cfae47-9d7f-4583-8d12-f6039ef61240",
+    `${localhostURL}/groups/56cfae47-9d7f-4583-8d12-f6039ef61240`,
     async () => {
       return HttpResponse.json(
         {
@@ -737,9 +693,9 @@ export const handlers = [
         { status: 200 },
       );
     },
-  ),
+  );
 
-  http.post("http://localhost:5000/globalChat", async () => {
+  http.post(`${localhostURL}/globalChat`, async () => {
     return HttpResponse.json(
       {
         id: "e280338e-f5b9-4942-884f-b48ea0e6c2df",
@@ -763,193 +719,192 @@ export const handlers = [
     );
   }),
 
-  http.get(
-    "http://localhost:5000/globalChat/e280338e-f5b9-4942-884f-b48ea0e6c2df",
-    async () => {
-      return HttpResponse.json(
-        {
-          id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
-          users: [
-            {
-              id: 1,
-              first_name: "preslaw",
-              last_name: "preslaw",
-              username: "preslaw",
-            },
-            {
-              id: 2,
-              first_name: "preslaw1",
-              last_name: "preslaw1",
-              username: "preslaw1",
-            },
-          ],
-          messagesGGChat: [],
-        },
-        { status: 200 },
-      );
-    },
-  ),
-
-  http.get("http://localhost:5000/users/search", async ({ request }) => {
-    const url = new URL(request.url);
-
-    const getUser = url.searchParams.get("query");
-
-    if (!getUser) {
-      return new HttpResponse(null, { status: 404 });
-    }
-
-    return HttpResponse.json([
-      {
-        id: 1,
-        first_name: "preslaw1",
-        last_name: "preslaw1",
-        username: "preslaw1",
+    http.get(
+      `http://localhost:5000/globalChat/e280338e-f5b9-4942-884f-b48ea0e6c2df`,
+      async () => {
+        return HttpResponse.json(
+          {
+            id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
+            users: [
+              {
+                id: 1,
+                first_name: "preslaw",
+                last_name: "preslaw",
+                username: "preslaw",
+              },
+              {
+                id: 2,
+                first_name: "preslaw1",
+                last_name: "preslaw1",
+                username: "preslaw1",
+              },
+            ],
+            messagesGGChat: [],
+          },
+          { status: 200 },
+        );
       },
-    ]);
-  }),
+    ),
 
-  http.post(
-    "http://localhost:5000/globalChat/56cfae47-9d7f-4583-8d12-f6039ef61240/message",
-    async () => {
-      return HttpResponse.json(
+    http.get(`http://localhost:5000/users/search`, async ({ request }) => {
+      const url = new URL(request.url);
+  
+      const getUser = url.searchParams.get("query");
+  
+      if (!getUser) {
+        return new HttpResponse(null, { status: 404 });
+      }
+  
+      return HttpResponse.json([
         {
-          id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
-          users: [
-            {
-              id: 1,
-              first_name: "preslaw",
-              last_name: "preslaw",
-              username: "preslaw",
-            },
-            {
-              id: 2,
-              first_name: "preslaw1",
-              last_name: "preslaw1",
-              username: "preslaw1",
-            },
-          ],
-          messagesGGChat: [
-            {
-              id: 1,
-              message_text: "hello",
-              message_imageName: "",
-              message_imageURL: "",
-              message_imageType: "",
-              message_imageSize: 0,
-              createdAt: "2025-03-24T10:42:22.213Z",
-              updatedAt: "2025-03-24T10:42:22.216Z",
-              userId: 1,
-            },
-          ],
+          id: 1,
+          first_name: "preslaw1",
+          last_name: "preslaw1",
+          username: "preslaw1",
         },
-        { status: 200 },
-      );
-    },
-  ),
+      ]);
+    }),
 
-  http.post(
-    "http://localhost:5000/globalChat/56cfae47-9d7f-4583-8d12-f6039ef61240/image",
-    async () => {
-      return HttpResponse.json(
-        {
-          id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
-          users: [
-            {
-              id: 1,
-              first_name: "preslaw",
-              last_name: "preslaw",
-              username: "preslaw",
-            },
-            {
-              id: 2,
-              first_name: "preslaw1",
-              last_name: "preslaw1",
-              username: "preslaw1",
-            },
-          ],
-          messagesGGChat: [
-            {
-              id: 1,
-              message_text: "",
-              message_imageName: "image",
-              message_imageURL: "http://image.com",
-              message_imageType: "image/png",
-              message_imageSize: 120,
-              createdAt: "2025-03-24T10:42:22.213Z",
-              updatedAt: "2025-03-24T10:42:22.216Z",
-              userId: 1,
-            },
-          ],
-        },
-        { status: 200 },
-      );
-    },
-  ),
+    http.post(
+      `http://localhost:5000/globalChat/56cfae47-9d7f-4583-8d12-f6039ef61240/message`,
+      async () => {
+        return HttpResponse.json(
+          {
+            id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
+            users: [
+              {
+                id: 1,
+                first_name: "preslaw",
+                last_name: "preslaw",
+                username: "preslaw",
+              },
+              {
+                id: 2,
+                first_name: "preslaw1",
+                last_name: "preslaw1",
+                username: "preslaw1",
+              },
+            ],
+            messagesGGChat: [
+              {
+                id: 1,
+                message_text: "hello",
+                message_imageName: "",
+                message_imageURL: "",
+                message_imageType: "",
+                message_imageSize: 0,
+                createdAt: "2025-03-24T10:42:22.213Z",
+                updatedAt: "2025-03-24T10:42:22.216Z",
+                userId: 1,
+              },
+            ],
+          },
+          { status: 200 },
+        );
+      },
+    ),
 
-  http.put(
-    "http://localhost:5000/globalChat/56cfae47-9d7f-4583-8d12-f6039ef61240/message/1",
-    async () => {
-      return HttpResponse.json(
-        {
-          id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
-          users: [
-            {
-              id: 1,
-              first_name: "preslaw",
-              last_name: "preslaw",
-              username: "preslaw",
-            },
-            {
-              id: 2,
-              first_name: "preslaw1",
-              last_name: "preslaw1",
-              username: "preslaw1",
-            },
-          ],
-          messagesGGChat: [
-            {
-              id: 1,
-              message_text: "edited message",
-              message_imageName: "",
-              message_imageURL: "",
-              message_imageType: "",
-              message_imageSize: 0,
-              createdAt: "2025-03-24T10:42:22.213Z",
-              updatedAt: "2025-03-24T10:42:22.216Z",
-              userId: 1,
-            },
-          ],
-        },
-        { status: 200 },
-      );
-    },
-  ),
+    http.post(
+      `http://localhost:5000/globalChat/56cfae47-9d7f-4583-8d12-f6039ef61240/image`,
+      async () => {
+        return HttpResponse.json(
+          {
+            id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
+            users: [
+              {
+                id: 1,
+                first_name: "preslaw",
+                last_name: "preslaw",
+                username: "preslaw",
+              },
+              {
+                id: 2,
+                first_name: "preslaw1",
+                last_name: "preslaw1",
+                username: "preslaw1",
+              },
+            ],
+            messagesGGChat: [
+              {
+                id: 1,
+                message_text: "",
+                message_imageName: "image",
+                message_imageURL: "http://image.com",
+                message_imageType: "image/png",
+                message_imageSize: 120,
+                createdAt: "2025-03-24T10:42:22.213Z",
+                updatedAt: "2025-03-24T10:42:22.216Z",
+                userId: 1,
+              },
+            ],
+          },
+          { status: 200 },
+        );
+      },
+    ),
 
-  http.delete(
-    "http://localhost:5000/globalChat/56cfae47-9d7f-4583-8d12-f6039ef61240/message/1",
-    async () => {
-      return HttpResponse.json(
-        {
-          id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
-          users: [
-            {
-              id: 1,
-              first_name: "preslaw",
-              last_name: "preslaw",
-              username: "preslaw",
-            },
-            {
-              id: 2,
-              first_name: "preslaw1",
-              last_name: "preslaw1",
-              username: "preslaw1",
-            },
-          ],
-          messagesGGChat: [],
-        },
-        { status: 200 },
-      );
-    },
-  ),
-];
+    http.put(
+      `http://localhost:5000/globalChat/56cfae47-9d7f-4583-8d12-f6039ef61240/message/1`,
+      async () => {
+        return HttpResponse.json(
+          {
+            id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
+            users: [
+              {
+                id: 1,
+                first_name: "preslaw",
+                last_name: "preslaw",
+                username: "preslaw",
+              },
+              {
+                id: 2,
+                first_name: "preslaw1",
+                last_name: "preslaw1",
+                username: "preslaw1",
+              },
+            ],
+            messagesGGChat: [
+              {
+                id: 1,
+                message_text: "edited message",
+                message_imageName: "",
+                message_imageURL: "",
+                message_imageType: "",
+                message_imageSize: 0,
+                createdAt: "2025-03-24T10:42:22.213Z",
+                updatedAt: "2025-03-24T10:42:22.216Z",
+                userId: 1,
+              },
+            ],
+          },
+          { status: 200 },
+        );
+      },
+    ),
+
+    http.delete(
+      `http://localhost:5000/globalChat/56cfae47-9d7f-4583-8d12-f6039ef61240/message/1`,
+      async () => {
+        return HttpResponse.json(
+          {
+            id: "56cfae47-9d7f-4583-8d12-f6039ef61240",
+            users: [
+              {
+                id: 1,
+                first_name: "preslaw",
+                last_name: "preslaw",
+                username: "preslaw",
+              },
+              {
+                id: 2,
+                first_name: "preslaw1",
+                last_name: "preslaw1",
+                username: "preslaw1",
+              },
+            ],
+            messagesGGChat: [],
+          },
+          { status: 200 },
+        );
+      },
+    );

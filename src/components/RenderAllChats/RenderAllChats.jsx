@@ -107,7 +107,9 @@ L82,35.7z"
         />
       </header>
       {chats.length === 0 ? (
-        <p>{"You currently have no chats"}</p>
+        <p className={styles.noChatsParagraph}>
+          {"You currently have no chats"}
+        </p>
       ) : (
         <ul>
           {chats.map((chat) => (

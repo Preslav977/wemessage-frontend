@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 2rem;
   position: relative;
   z-index: 1;
 }
@@ -38,7 +38,7 @@
 }
 
 .formContainer label {
-  color: white;
+  color: #b3b8bc;
   margin-bottom: 0.25rem;
 }
 
@@ -68,17 +68,17 @@
 }
 
 .loginAnchorLink {
-  font-size: 0.85rem;
-  color: white;
+  font-size: 0.75rem;
+  color: #b3b8bc;
 }
 
 .loginAnchor {
   text-decoration: underline;
-  color: white;
+  color: #b3b8bc;
 }
 
 .loginAnchor:visited {
-  color: white;
+  color: #b3b8bc;
 }
 
 .submitBtnContainer {
@@ -87,8 +87,10 @@
 }
 
 .submitBtn {
-  padding: 0.35rem 0.6rem;
+  padding: 0.45rem 0.6rem;
   transition: opacity 1s ease-in-out;
+  border: 0;
+  border-radius: 0.3em;
 }
 
 .submitBtn:hover {
@@ -166,6 +168,23 @@
 
   .formRightSideFlexedContainer {
     display: none;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .leftSlatedRotatedSquare {
+    top: 10em;
+    left: -5em;
+  }
+
+  .RightSlantedRotatedBottomSquare {
+    bottom: 7em;
+    right: -5em;
+  }
+
+  .RightSlantedRotatedRightSquare {
+    top: 5em;
+    right: -5em;
   }
 }
 

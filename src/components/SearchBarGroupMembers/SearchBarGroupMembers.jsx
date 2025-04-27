@@ -9,6 +9,7 @@ function SearchBarGroupMembers({ query, onChange }) {
         type="text"
         name="group_member"
         id="group_member"
+        placeholder="Note: if the members are not appearing refetch the component!"
         value={query}
         onChange={onChange}
       />
