@@ -228,6 +228,7 @@ function LogInForm() {
                 </button>
               ) : (
                 <>
+                  <button className={styles.submitBtn}>Submit</button>
                   <button
                     className={styles.submitBtn}
                     type="submit"
@@ -235,7 +236,6 @@ function LogInForm() {
                   >
                     Guest Login
                   </button>
-                  <button className={styles.submitBtn}>Submit</button>
                 </>
               )}
             </div>

@@ -1,6 +1,8 @@
 .userBgContainer {
   max-width: inherit;
   position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .userBgImg {
@@ -12,13 +14,12 @@
 }
 
 .flexedBackgroundPhotoCredits {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  /* outline: 2px solid white; */
+  position: absolute;
 }
 
 .backgroundPhotoCredits {
-  position: absolute;
+  /* position: absolute; */
   color: white;
   bottom: 0.5em;
 }

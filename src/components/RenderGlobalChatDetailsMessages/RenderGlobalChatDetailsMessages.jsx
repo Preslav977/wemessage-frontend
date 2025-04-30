@@ -668,7 +668,6 @@ L82,35.7z"
                   type="file"
                   name="file"
                   id="file"
-                  disabled={userLogInObj.role === "GUEST" ? true : false}
                 />
               </div>
 
@@ -681,7 +680,6 @@ L82,35.7z"
                 <button
                   className={styles.globalChatDetailsSendMessageOrImageButton}
                   type="submit"
-                  disabled={userLogInObj.role === "GUEST" ? true : false}
                 >
                   Send
                 </button>
