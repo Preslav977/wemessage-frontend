@@ -12,8 +12,6 @@ function RenderChatDetailsMessages() {
   const { chatDetails, setChatDetails, error, loading } =
     useFetchSingleChatURL();
 
-  console.log(chatDetails);
-
   const [userLogInObj, setUserLoginInObj] = useContext(UserLogInObjectContext);
 
   // console.log(userLogInObj.id);

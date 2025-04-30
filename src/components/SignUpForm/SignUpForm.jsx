@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 import { passwordRegex } from "../../utility/passwordRegex";
 
+import { globalChatId } from "../../utility/globalChatId";
+
 import {
   FirstNameContext,
   LastNameContext,
@@ -16,6 +18,8 @@ import {
   ConfirmPasswordContext,
   UserSignUpObjectContext,
 } from "../../contexts/UserRegistrationContext";
+
+import { GlobalChatDetailsContext } from "../../contexts/GlobalChatContext";
 
 import localhostURL from "../../utility/localhostURL";
 
@@ -41,6 +45,10 @@ function SignUpForm() {
   const [lastNameError, setLastNameError] = useState("");
 
   const [usernameError, setUsernameError] = useState("");
+
+  const [globalChatDetails, setGlobalChatDetails] = useContext(
+    GlobalChatDetailsContext,
+  );
 
   const navigate = useNavigate();
 
@@ -86,6 +94,36 @@ function SignUpForm() {
         setUsername("");
         setPassword("");
         setConfirmPassword("");
+
+        const result = await response.json();
+
+        // console.log(result);
+
+        //add the new registered user to globalChat to the globalChatDetails state
+        const fetchGlobalChatIdAndAddRegisteredUser = await fetch(
+          `${localhostURL}/globalChat/${globalChatId}/join`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: result.id,
+            }),
+          },
+        );
+
+        const resultFetchGlobalChatIdAndAddRegisteredUser =
+          await fetchGlobalChatIdAndAddRegisteredUser.json();
+
+        // console.log(resultFetchGlobalChatIdAndAddRegisteredUser);
+
+        const addNewUserToGlobalChatState = {
+          ...globalChatDetails,
+          users: resultFetchGlobalChatIdAndAddRegisteredUser.users,
+        };
+
+        setGlobalChatDetails(addNewUserToGlobalChatState);
 
         navigate("/login");
       } else if (response.status === 400) {

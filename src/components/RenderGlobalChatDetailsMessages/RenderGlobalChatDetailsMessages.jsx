@@ -565,7 +565,7 @@ L82,35.7z"
                       <>
                         {globalChatDetails.users.map((user) => (
                           <Fragment key={user.id}>
-                            {user.id !== userLogInObj.id ? (
+                            {user.id === message.userId ? (
                               <div
                                 className={
                                   styles.globalChatReceiverSendingMessagesContainer
